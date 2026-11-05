@@ -6,6 +6,7 @@ The script follows Wahid's way of talking (greeting, the car, "from the real
 ground", WhatsApp, goodbye) and fills it with the car's own data.
 """
 import json, os, sys, urllib.request
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ONES = ['', 'واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة']
 TEENS = ['عشرة', 'حداش', 'طناش', 'طلطاش', 'ربعطاش', 'خمسطاش', 'سطاش', 'سبعطاش', 'ثمنطاش', 'تسعطاش']
@@ -76,16 +77,41 @@ def build(car):
     photos = [p for p in (car.get('photos_urls') or []) if p]
     video = car.get('video_url')
 
-    media = [{'src': p, 'move': mv} for p, mv in zip(photos, ['pull', 'pan', 'push', 'pan', 'pull', 'push', 'push', 'pull', 'push', 'pull', 'pan', 'push'] * 3)]
+    # look at the media and decide which shot goes where
+    from pick_shots import analyse, best, video_runs, EXTERIOR
+    a = analyse(photos, video)
+    MOVE = {'front34': 'pull', 'front': 'push', 'side': 'pan', 'rear': 'pull', 'dash': 'push', 'gear': 'push',
+            'seats': 'pull', 'rearseats': 'pull', 'trunk': 'push'}
+    media, P = [], {}
+    for i, kind, _ in a['photos']:
+        if kind in ('door', 'other'): continue
+        P[i] = len(media); media.append({'src': photos[i], 'move': MOVE.get(kind, 'push'), 'kind': kind})
+    good = [(P[i], k, sc) for i, k, sc in a['photos'] if i in P]
     V = None
     if video:
         media.append({'src': video, 'type': 'video'}); V = len(media) - 1
-    P = list(range(len(photos))) or ([V] if V is not None else [])
+    used = set()
 
-    def pick(i): return P[i % len(P)]
+    def photos_of(kinds, n):
+        return [m for m, _, _ in best(good, kinds, used, n)]
 
-    def vid(frac):  # a moment in the walk-around, as a fraction of its length (resolved by the renderer)
-        return {'m': V, 'frac': frac}
+    def clips_of(kinds, n):  # steady moments of the walk-around showing these kinds
+        if V is None: return []
+        runs = video_runs(a['video'], set(kinds))
+        return [{'m': V, 'at': float(st + max(0, ln - 2.6) / 2)} for st, ln in runs[:n]]
+
+    def shots(video_kinds, photo_kinds, n):
+        out = clips_of(video_kinds, 1) if video_kinds else []
+        out += photos_of(photo_kinds, n - len(out))
+        if not out: out = [m for m, _, _ in good[:n]] or ([{'m': V, 'at': 0.0}] if V is not None else [0])
+        return out
+
+    hook = shots(['front34', 'front'], ['front34', 'front', 'side'], 2)
+    s_car = shots(['side'], ['side', 'front34', 'front'], 2)
+    s_where = shots(['rear'], ['rear', 'side'], 2)
+    s_inside = shots(['dash', 'gear'], ['dash', 'gear', 'seats'], 3)
+    s_real = shots(['seats', 'rearseats'], ['rearseats', 'trunk', 'seats'], 2)
+    price_bg = next((m for m, k, _ in good if k in ('front34', 'front')), good[0][0] if good else 0)
 
     title = f'{brand} {model}'.upper().strip()
     millions = round(float(price) / 10000) if price else None
@@ -101,17 +127,17 @@ def build(car):
 
     script = [
         {'kind': 'hook', 'say': 'السلام عليكم خوتنا. وحيد أوتو، كالعادة مع الجديد.',
-         'shots': [vid(0.08), pick(0)] if V is not None else [pick(0), pick(1)]},
-        {'say': line_car + '.', 'shots': [vid(0.25), pick(1)] if V is not None else [pick(1), pick(2)],
+         'shots': hook},
+        {'say': line_car + '.', 'shots': s_car,
          'label': [say_name(model) or say_name(brand), str(year or '')]},
-        {'say': line_where + '.', 'shots': [pick(2), pick(3)],
+        {'say': line_where + '.', 'shots': s_where,
          'label': [LOCATION_LABEL.get(loc, ''), chips[0] if km else '']},
         {'say': 'كيما راكم تشوفوا، الداخل والخارج، كلشي واضح.',
-         'shots': [vid(0.5), vid(0.68), vid(0.84)] if V is not None else [pick(4), pick(5), pick(6)]},
-        {'say': 'الصور والفيديو من أرض الواقع. كلشي بالشفافية.', 'shots': [pick(5), pick(6)] if V is not None else [pick(7), pick(8)],
+         'shots': s_inside, 'label': ['من الداخل', '']},
+        {'say': 'الصور والفيديو من أرض الواقع. كلشي بالشفافية.', 'shots': s_real,
          'label': ['من أرض الواقع', '']},
         ({'kind': 'price', 'say': f'السعر: {words(millions)} مليون.'} if millions else
-         {'say': 'للسعر، راسلونا على الواتساب.', 'shots': [pick(2)], 'label': ['السعر', 'WHATSAPP']}),
+         {'say': 'للسعر، راسلونا على الواتساب.', 'shots': [price_bg], 'label': ['السعر', 'WHATSAPP']}),
         {'kind': 'end', 'say': 'المهتم، تواصل معانا عبر الواتساب. مع السلامة.'},
     ]
     return {
@@ -121,7 +147,8 @@ def build(car):
                 'chips': chips},
         # no synthetic voice: the lines below are the script Wahid reads (see script.txt)
         'voice': None,
-        'priceShot': pick(2),
+        'priceShot': price_bg,
+        'analysis': {'photos': a['photos'], 'video': a['video']},
         'media': media,
         'script': script,
     }
