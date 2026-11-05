@@ -11,6 +11,7 @@ import numpy as np
 from PIL import Image, ImageOps
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
 FPS = 30
 SR = 44100
 KR = '<svg width="52" height="36" viewBox="0 0 30 20" style="border-radius:4px"><rect width="30" height="20" fill="#fff"/><g transform="translate(15 10) rotate(33.7)"><circle r="5" fill="#0047A0"/><path d="M-5 0A5 5 0 0 1 5 0A2.5 2.5 0 0 0 0 0A2.5 2.5 0 0 1 -5 0Z" fill="#CD2E3A"/></g><g fill="#111"><rect x="4" y="3" width="1" height="4" transform="rotate(-56 4.5 5)"/><rect x="25" y="13" width="1" height="4" transform="rotate(-56 25.5 15)"/><rect x="25" y="3" width="1" height="4" transform="rotate(56 25.5 5)"/><rect x="4" y="13" width="1" height="4" transform="rotate(56 4.5 15)"/></g></svg>'
@@ -146,7 +147,7 @@ def prepare_media(job, work):
             # contact sheet of the clip (one frame per second) so the editor can pick the best moments
             sheet = os.path.join(os.path.dirname(os.path.abspath(sys.argv[2])), f'clip{i}-sheet.jpg')
             subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', src, '-vf', 'fps=1,scale=180:-1,drawtext=text=%{pts\\:hms}:x=4:y=4:fontcolor=yellow:fontsize=14,tile=8x4', '-frames:v', '1', sheet])
-            m.update(dir=os.path.relpath(d, HERE), frames=len(os.listdir(d)), fps=FPS, w=first.width, h=first.height,
+            m.update(dir=os.path.relpath(d, HERE), _abs_dir=d, frames=len(os.listdir(d)), fps=FPS, w=first.width, h=first.height,
                      length=len(os.listdir(d)) / FPS, motion=camera_motion(d, first.width))
         else:
             im = ImageOps.exif_transpose(Image.open(src)).convert('RGB'); im.thumbnail((1600, 1600))
@@ -305,7 +306,20 @@ def main():
     car = job['car']
     car['chips'] = [c.replace('{KR}', KR).replace('{CN}', CN).replace('{DZ}', DZ) for c in car['chips']]
     shots = prepare_media(job, work)
-    timing, sfx, vo = build(job, shots, work)
+    if job.get('mode') == 'talking':
+        # raw walk-around with someone talking: his voice drives the edit
+        import talking
+        vid = next(i for i, m in enumerate(shots) if m.get('type') == 'video')
+        src = os.path.join(work, f'src{vid}.mp4')
+        words = job.get('words') or talking.transcribe(src)
+        json.dump(words, open(out[:-4] + '-words.json', 'w'), ensure_ascii=False)
+        shots[vid]['move'] = 'none'
+        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid)
+        vo = [(talking.INTRO, talking.speech_track(src, timing['ranges'], os.path.join(work, 'speech.wav')))]
+        job.setdefault('style', 'neon')
+    else:
+        timing, sfx, vo = build(job, shots, work)
+    for m in shots: m.pop('_abs_dir', None)
     cfg = {'car': car, 'shots': shots, 'priceShot': job.get('priceShot', 0), 'style': job.get('style', 'classic'), **timing}
     asyncio.run(render(cfg, frames))
     wav = os.path.join(work, 'mix.wav')

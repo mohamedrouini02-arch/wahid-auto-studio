@@ -52,7 +52,9 @@ jobs:
           ffmpeg -loglevel error -y -i "out/$CAR_ID.mp4" -vf "fps=1/2,scale=216:-1,tile=8x3" -frames:v 1 "out/$CAR_ID-sheet.jpg"
       - name: Save the video next to the car in the app
         if: env.VOICE_URL == ''
-        run: python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4"
+        run: |
+          MODE=$(python -c "import json;print(json.load(open('jobs/auto/$CAR_ID.json')).get('mode',''))")
+          if [ "$MODE" = "talking" ]; then python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4" --voiced; else python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4"; fi
       - name: Keep a copy on the renders branch
         run: |
           mkdir -p out

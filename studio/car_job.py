@@ -5,7 +5,7 @@
 The script follows Wahid's way of talking (greeting, the car, "from the real
 ground", WhatsApp, goodbye) and fills it with the car's own data.
 """
-import json, os, random, sys, urllib.request
+import json, os, random, subprocess, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ONES = ['', 'واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة']
@@ -83,6 +83,28 @@ def say_name(text):
     return NAMES.get(t, ' '.join(NAMES.get(w, w) for w in t.split()))
 
 
+def talking_job(car, video, words):
+    specs = car.get('specs') or {}
+    cond = car.get('condition') or {}
+    price = car.get('selling_price') if car.get('show_price_on_website') else None
+    km = car.get('mileage')
+    paint = [PANELS[p][0] for p in (cond.get('paint') or []) if p in PANELS]
+    talk = {
+        'brand': (car.get('brand') or '').strip(), 'model': (car.get('model') or '').strip(),
+        'km_label': f'{int(km):,} KM'.replace(',', '.') if km else None,
+        'price_label': f'{round(float(price) / 10000)} MILLIONS' if price else None,
+        'engine_label': ' '.join(b for b in [specs.get('engine') or '', FUELS.get(specs.get('fuel', ''), ('',))[0]] if b) or None,
+        'paint_label': ('ZÉRO PEINTURE' if cond and not cond.get('paint') and not cond.get('replaced') else ('PEINTURE: ' + ', '.join(paint)) if paint else None),
+        'paint_ar': 'زيرو صبغة' if cond and not cond.get('paint') else '',
+        'features_fr': [FEATURES[f][0] for f in (car.get('features') or []) if f in FEATURES],
+    }
+    millions = round(float(price) / 10000) if price else None
+    return {'mode': 'talking', 'style': 'neon', 'voice': None, 'talk': talk, 'words': words,
+            'car': {'title': f"{talk['brand']} {talk['model']}".upper(), 'year': str(car.get('year') or ''), 'priceMillions': millions,
+                    'priceDa': f'{int(float(price)):,} DA'.replace(',', '.') if price else '', 'ticker': '', 'chips': []},
+            'media': [{'src': video, 'type': 'video'}], 'script': []}
+
+
 def fetch_car(car_id):
     url = os.environ['SUPABASE_URL'].rstrip('/') + f'/rest/v1/car_inventory?id=eq.{car_id}&select=*'
     key = os.environ['SUPABASE_SERVICE_KEY']
@@ -99,6 +121,16 @@ def build(car):
     price = car.get('selling_price') if car.get('show_price_on_website') else None
     photos = [p for p in (car.get('photos_urls') or []) if p]
     video = car.get('video_url')
+
+    # a raw walk-around where someone talks: keep his voice and build the edit around it
+    if video:
+        import tempfile, talking
+        tmpv = os.path.join(tempfile.mkdtemp(), 'v.mp4'); urllib.request.urlretrieve(video, tmpv)
+        words = talking.transcribe(tmpv)
+        length = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', tmpv],
+                                      capture_output=True, text=True).stdout.strip() or 0)
+        if talking.has_speech(words, length):
+            return talking_job(car, video, words)
 
     # look at the media and decide which shot goes where
     from pick_shots import analyse, best, video_runs, EXTERIOR
