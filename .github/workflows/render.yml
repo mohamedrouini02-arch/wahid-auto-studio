@@ -15,8 +15,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
-      - run: which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
-        timeout-minutes: 8
+      - name: ffmpeg (static build, avoids slow apt mirrors)
+        timeout-minutes: 6
+        run: |
+          curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar -xJ -C /tmp
+          sudo cp /tmp/ffmpeg-*-static/ffmpeg /tmp/ffmpeg-*-static/ffprobe /usr/local/bin/
+          ffmpeg -version | head -1
       - run: pip install -q playwright numpy pillow edge-tts && python -m playwright install --with-deps chromium
       - name: Render
         run: |
