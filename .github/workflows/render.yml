@@ -5,6 +5,8 @@ on:
       job:
         description: "Job file under jobs/"
         required: true
+permissions:
+  contents: write
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -23,3 +25,12 @@ jobs:
           ffmpeg -loglevel error -y -i "out/$name.mp4" -vf "fps=1/2,scale=216:-1,tile=8x3" -frames:v 1 "out/$name-sheet.jpg"
       - uses: actions/upload-artifact@v4
         with: { name: video, path: out }
+      - name: Publish to the renders branch
+        run: |
+          name=$(basename "${{ inputs.job }}" .json)
+          mkdir -p /tmp/pub && cp out/* /tmp/pub/
+          git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
+          git fetch origin renders || true
+          if git rev-parse --verify origin/renders >/dev/null 2>&1; then git checkout -B renders origin/renders; else git checkout --orphan renders && git rm -rqf .; fi
+          mkdir -p "$name" && cp /tmp/pub/* "$name/"
+          git add "$name" && git commit -qm "render $name ${{ github.run_id }}" && git push -q origin renders
