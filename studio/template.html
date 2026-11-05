@@ -1,0 +1,207 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Jost; src: url(assets/jost.woff2) format('woff2'); font-weight: 100 900; }
+@font-face { font-family: Plex; src: url(assets/plex600.woff2) format('woff2'); font-weight: 600; }
+@font-face { font-family: Manal; src: url(assets/manal.ttf); }
+:root { --ink:#F2F2EE; --dark:#0B0D0C; --green:#5FB89B; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+.media { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+video.media, img.media { display: block; }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 60%, rgba(0,0,0,.6) 100%); }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+.layer { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.tag { display: inline-flex; align-items: center; gap: 16px; padding: 10px 28px 14px; transform-origin: center; white-space: nowrap; }
+.lat { font-family: Jost, sans-serif; font-weight: 700; letter-spacing: .02em; }
+.ar { font-family: Manal, Plex, sans-serif; direction: rtl; }
+.white { background: var(--ink); color: var(--dark); }
+.green { background: var(--green); color: var(--dark); }
+.blackbox { background: rgba(11,13,12,.86); color: var(--ink); border: 2px solid rgba(242,242,238,.25); }
+.chips { display: flex; gap: 14px; }
+.chip { font-family: Jost, sans-serif; font-weight: 600; font-size: 38px; padding: 10px 22px; border-radius: 999px; background: rgba(11,13,12,.78); color: var(--ink); border: 2px solid rgba(95,184,155,.8); display: inline-flex; gap: 12px; align-items: center; }
+.brandbar { position: absolute; top: 205px; left: 0; right: 0; display: flex; justify-content: center; }
+.brandpill { display: inline-flex; align-items: center; gap: 16px; padding: 10px 26px 10px 12px; border-radius: 999px; background: rgba(11,13,12,.62); border: 1.5px solid rgba(242,242,238,.28); color: var(--ink); font-family: Jost; font-size: 30px; letter-spacing: .32em; }
+.phone { position: absolute; bottom: 395px; left: 0; right: 0; display: flex; justify-content: center; }
+.phonepill { display: inline-flex; align-items: center; gap: 14px; padding: 10px 26px; border-radius: 999px; background: rgba(11,13,12,.66); color: var(--ink); font-family: Jost; font-weight: 600; font-size: 36px; letter-spacing: .06em; }
+.wa { width: 40px; height: 40px; border-radius: 50%; background: #25D366; display: grid; place-items: center; }
+#end { position: absolute; inset: 0; background: radial-gradient(60% 40% at 50% 38%, rgba(95,184,155,.22), rgba(11,13,12,0) 70%), #0B0D0C; opacity: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; color: var(--ink); }
+#price { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; opacity: 0; }
+</style></head>
+<body><div id="stage">
+  <div id="mediaBox"></div>
+  <div class="shade"></div>
+  <div class="flash" id="flash"></div>
+
+  <div class="layer" id="hook" style="top: 420px">
+    <div class="tag white lat" id="h1" style="font-size: 118px; font-weight: 800"></div>
+    <div class="tag green lat" id="h2" style="font-size: 92px; font-weight: 800"></div>
+  </div>
+  <div class="layer" id="hookChips" style="top: 1060px"><div class="chips" id="chipRow"></div></div>
+  <div class="layer" id="hookPrice" style="top: 1300px"><div class="tag green ar" id="hp" style="font-size: 96px; padding: 0 36px 10px"></div></div>
+
+  <div class="layer" id="label" style="top: 1180px">
+    <div class="tag blackbox ar" id="labelAr" style="font-size: 78px; padding: 0 30px 10px"></div>
+    <div class="tag white lat" id="labelLat" style="font-size: 52px"></div>
+  </div>
+  <div class="layer" id="ticker" style="top: 360px"><div class="chip" id="tick" style="font-size: 34px"></div></div>
+
+  <div id="price">
+    <div class="tag white ar" style="font-size: 64px; padding: 0 30px 8px" id="pLabel">السعر</div>
+    <div style="display:flex; align-items: baseline; gap: 26px; direction: rtl">
+      <div class="lat" id="pNum" style="font-size: 300px; font-weight: 800; color: #F2F2EE; line-height: 1; text-shadow: 0 10px 50px rgba(0,0,0,.6)"></div>
+      <div class="ar" id="pUnit" style="font-size: 120px; color: #5FB89B">مليون</div>
+    </div>
+    <div class="chip" id="pDa" style="font-size: 40px"></div>
+  </div>
+
+  <div id="end">
+    <svg id="mono" width="230" height="230" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="2.4"/><polyline points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#5FB89B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="lat" id="eName" style="font-size: 76px; letter-spacing: .3em; font-weight: 400; margin-right: -.3em">WAHID AUTO</div>
+    <div class="ar" id="eCall" style="font-size: 92px; margin-top: 30px">راسلنا على واتساب</div>
+    <div class="phonepill" id="eNum" style="font-size: 62px; padding: 16px 40px; border: 2px solid #5FB89B"><span class="wa"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>0557 06 04 78</div>
+    <div class="lat" id="eWeb" style="font-size: 40px; color: #9A9E98; letter-spacing: .08em">wahid-auto.com</div>
+  </div>
+
+  <div class="brandbar" id="brand"><div class="brandpill"><svg width="56" height="56" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="3"/><polyline points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#5FB89B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>WAHID AUTO</div></div>
+  <div class="phone" id="phoneBar"><div class="phonepill"><span class="wa"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>0557 06 04 78</div></div>
+</div>
+<script>
+// ---------- Wahid Auto "new arrival" engine ----------
+// CONFIG = { car: {...}, shots: [{src, type:'photo'|'video', w, h, focus:[x,y], move:'push'|'pan'|'pull', from (video sec), label:[ar, lat]}], timing: {...} }
+const C = window.CONFIG
+const W = 1080, H = 1920
+const $ = id => document.getElementById(id)
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x))
+const smooth = x => { x = clamp(x); return x * x * (3 - 2 * x) }
+const easeOut = x => 1 - Math.pow(1 - clamp(x), 3)
+const back = x => { x = clamp(x); const c = 1.4; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2) }
+const pop = (el, t, t0, t1 = 1e9) => {
+  const k = clamp((t - t0) / 0.3), o = clamp((t1 - t) / 0.2)
+  el.style.opacity = t < t0 ? 0 : Math.min(k * 2.5, o)
+  el.style.transform = `scale(${t < t0 ? 0.7 : 0.7 + 0.3 * back(k)}) translateY(${(1 - easeOut(k)) * 26}px)`
+}
+// smooth pseudo-random "hand-held" drift (sum of slow sines), so photos never look like a perfect robot zoom
+const hand = (t, seed) => [
+  Math.sin(t * 0.9 + seed) * 5 + Math.sin(t * 2.1 + seed * 2) * 2,
+  Math.cos(t * 0.7 + seed * 1.3) * 5 + Math.sin(t * 1.7 + seed) * 2,
+  Math.sin(t * 0.6 + seed * 0.7) * 0.25,
+]
+
+// ---- timeline comes from make_video.py (it is timed to the voice-over) ----
+const tl = C.tl.map(e => ({ ...e, shot: C.shots[e.shot] }))
+const T = { hook: C.hookEnd }
+const bodyEnd = C.bodyEnd, priceEnd = C.priceEnd, total = C.total
+window.TOTAL = total
+
+// ---- media elements ----
+const box = $('mediaBox'), els = []
+C.shots.forEach((s, i) => {
+  // videos are pre-extracted to numbered JPEG frames (frame-exact, no codec issues)
+  const el = document.createElement('img')
+  el.className = 'media'; el.src = s.type === 'video' ? `${s.dir}/${String(1).padStart(5, '0')}.jpg` : s.src; el.style.opacity = 0
+  box.appendChild(el); els.push(el)
+})
+
+function place(el, s, k, t, seed) {
+  // cover-fit, then the move: push (slow zoom in), pull (out), pan (slide across a wide photo)
+  const sw = s.w, sh = s.h
+  const cover = Math.max(W / sw, H / sh)
+  let scale = cover * 1.06, fx = s.focus ? s.focus[0] / 100 : 0.5, fy = s.focus ? s.focus[1] / 100 : 0.5
+  const m = s.move || 'push', e = smooth(k)
+  if (m === 'push') scale *= 1 + 0.07 * e
+  if (m === 'pull') scale *= 1.08 - 0.07 * e
+  if (m === 'pan') { const dir = (seed % 2) ? 1 : -1; fx = 0.5 + dir * (0.18 - 0.36 * e) }
+  const iw = sw * scale, ih = sh * scale
+  let x = W / 2 - iw * fx, y = H / 2 - ih * fy
+  x = Math.min(0, Math.max(W - iw, x)); y = Math.min(0, Math.max(H - ih, y))
+  const [hx, hy, hr] = s.type === 'video' ? [0, 0, 0] : hand(t, seed)
+  el.style.transform = `translate(${x + hx}px, ${y + hy}px) rotate(${hr}deg) scale(${scale})`
+}
+
+async function render(t) {
+  let flash = 0, shake = 0
+  const cur = tl.find(c => t >= c.t0 && t < c.t1)
+  els.forEach(e => e.style.opacity = 0)
+  if (cur) {
+    const i = C.shots.indexOf(cur.shot), el = els[i], s = cur.shot
+    const k = (t - cur.t0) / (cur.t1 - cur.t0)
+    el.style.opacity = 1; el.style.filter = 'none'
+    if (s.type === 'video') {
+      const idx = Math.min(s.frames, 1 + Math.floor(((cur.from || 0) + (t - cur.t0)) * s.fps))
+      const src = `${s.dir}/${String(idx).padStart(5, '0')}.jpg`
+      if (!el.src.endsWith(src)) { el.src = src; await el.decode().catch(() => {}) }
+    }
+    place(el, s, k, t, i + 1)
+    // short cross-dissolve from the previous shot (6 frames) instead of flashy whips
+    const prev = tl[tl.indexOf(cur) - 1]
+    const dk = (t - cur.t0) / 0.2
+    if (prev && dk < 1) { const pi = C.shots.indexOf(prev.shot); if (pi !== i) { const pe = els[pi]; pe.style.opacity = 1 - smooth(dk); el.style.opacity = smooth(dk); place(pe, prev.shot, 1, t, pi + 1) } }
+    if (cur.hook) flash = clamp(1 - t / 0.25)
+  } else if (t < priceEnd) {
+    const el = els[C.priceShot ?? 0], s = C.shots[C.priceShot ?? 0]
+    el.style.opacity = 1; el.style.filter = 'blur(10px) brightness(.45)'; place(el, s, (t - bodyEnd) / (priceEnd - bodyEnd), t, 3)
+    flash = clamp(0.5 - (t - bodyEnd) / 0.2)
+  } else {
+    const el = els[C.priceShot ?? 0]; el.style.opacity = 1; el.style.filter = 'blur(14px) brightness(.3)'
+  }
+  $('flash').style.opacity = flash
+
+  // hook text, paced so it can be read
+  const hk = t < T.hook
+  for (const id of ['hook', 'hookChips', 'hookPrice']) $(id).style.display = hk ? 'flex' : 'none'
+  if (hk) {
+    const out = T.hook - 0.05
+    pop($('h1'), t, 0.3, out); pop($('h2'), t, 0.7, out)
+    ;[...$('chipRow').children].forEach((c, i) => pop(c, t, 1.3 + i * 0.25, out))
+    pop($('hp'), t, 2.3, out)
+  }
+
+  // labels: shown for most of the shot, never flashing by
+  const lab = cur && !cur.hook && cur.label
+  $('label').style.display = lab ? 'flex' : 'none'
+  if (lab) {
+    const [ar, lat] = cur.label
+    $('labelAr').textContent = ar; $('labelAr').style.display = ar ? 'inline-flex' : 'none'
+    $('labelLat').textContent = lat; $('labelLat').style.display = lat ? 'inline-flex' : 'none'
+    pop($('labelAr'), t, cur.t0 + 0.25, cur.t1 - 0.1); pop($('labelLat'), t, cur.t0 + 0.4, cur.t1 - 0.1)
+  }
+  const body = t >= T.hook && t < bodyEnd
+  $('ticker').style.display = body ? 'flex' : 'none'
+  if (body) pop($('tick'), t, T.hook + 0.2)
+
+  // price
+  const pt = t - bodyEnd
+  $('price').style.opacity = pt >= 0 && t < priceEnd ? Math.min(1, pt / 0.15, (priceEnd - t) / 0.25) : 0
+  if (pt >= 0 && t < priceEnd) {
+    pop($('pLabel'), t, bodyEnd + 0.1)
+    const target = C.car.priceMillions, startN = Math.round(target * 0.75)
+    $('pNum').textContent = String(Math.round(startN + (target - startN) * easeOut((pt - 0.15) / 1.1)))
+    const s = pt > 1.25 && pt < 1.45 ? 1.1 - 0.1 * clamp((pt - 1.25) / 0.2) : 1
+    $('pNum').style.transform = `scale(${s})`
+    pop($('pUnit'), t, bodyEnd + 1.25); pop($('pDa'), t, bodyEnd + 1.7)
+    if (pt > 1.25 && pt < 1.38) shake = (1 - (pt - 1.25) / 0.13) * 10
+  }
+
+  // end card
+  const te = t - priceEnd
+  $('end').style.opacity = te > 0 ? clamp(te / 0.35) : 0
+  if (te > 0) {
+    $('mono').style.transform = `scale(${0.7 + 0.3 * back(te / 0.5)}) rotate(${(1 - easeOut(te / 0.6)) * -40}deg)`
+    pop($('eName'), t, priceEnd + 0.35); pop($('eCall'), t, priceEnd + 0.75); pop($('eNum'), t, priceEnd + 1.1); pop($('eWeb'), t, priceEnd + 1.45)
+  }
+  $('brand').style.opacity = te > 0 ? 0 : 1
+  $('phoneBar').style.opacity = te > 0 || hk ? 0 : 1
+  $('stage').style.transform = shake ? `translate(${Math.sin(t * 90) * shake}px, ${Math.cos(t * 70) * shake}px)` : 'none'
+}
+
+// static text from the car
+const car = C.car
+$('h1').textContent = car.title; $('h2').textContent = car.year
+$('chipRow').innerHTML = car.chips.map(c => `<div class="chip">${c}</div>`).join('')
+$('hp').textContent = `${car.priceMillions} مليون`
+$('tick').textContent = car.ticker
+$('pDa').textContent = car.priceDa
+window.render = render
+</script></body></html>

@@ -1,0 +1,30 @@
+{
+ "car": {"title": "KIA MORNING", "year": "2022", "priceMillions": 205, "priceDa": "2.050.000 DA",
+         "ticker": "KIA MORNING 2022 · 58.368 KM",
+         "chips": ["58.368 KM", "BOÎTE AUTO", "{KR} → {DZ}"]},
+ "voice": {"name": "ar-DZ-IsmaelNeural", "rate": "+4%"},
+ "priceShot": 2,
+ "media": [
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5851568792392997.jpg", "focus": [50, 45], "move": "pull"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.943004773931492.jpg", "move": "pan"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2038310875989945.jpg", "focus": [50, 55], "move": "push"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.710181280650952.jpg", "move": "pan"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.020482091043389272.jpg", "focus": [50, 50], "move": "pull"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5706302802593132.jpg", "focus": [50, 55], "move": "push"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6695132004442171.jpg", "focus": [55, 65], "move": "push"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.8235509605597922.jpg", "focus": [45, 50], "move": "pull"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2884765367966091.jpg", "focus": [55, 60], "move": "push"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.0571944549183343.jpg", "focus": [50, 60], "move": "pull"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.9511639869993733.jpg", "move": "pan"},
+  {"src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5244170311701282.mp4", "type": "video"}
+ ],
+ "script": [
+  {"kind": "hook", "say": "السلام عليكم خوتنا. وحيد أوتو، كالعادة مع الخدمة ومع الجديد.", "shots": [0]},
+  {"say": "اليوم جبنالكم كيا مورنينغ، موديل ألفين واثنين وعشرين، لونها أبيض.", "shots": [1, 2], "label": ["كيا مورنينغ 2022", ""]},
+  {"say": "السيارة راهي في كوريا الجنوبية، العداد تاعها ثمانية وخمسين ألف كيلومتر برك.", "shots": [3, 4, 5], "label": ["من كوريا", "58.368 KM"]},
+  {"say": "البوات أوتوماتيك، والداخل نظيف كيما راكم تشوفوا.", "shots": [6, 7, 8, 9], "label": ["أوتوماتيك", "BOÎTE AUTO"]},
+  {"say": "وكالعادة، الصور والفيديوهات من أرض الواقع مباشرة. كلشي بالشفافية.", "shots": [11, 10, 11], "label": ["من أرض الواقع", ""]},
+  {"kind": "price", "say": "السعر: ميتين وخمسة مليون."},
+  {"kind": "end", "say": "المهتم ما تترددش، تواصل معانا عبر الواتساب. وحيد أوتو، مع السلامة."}
+ ]
+}
