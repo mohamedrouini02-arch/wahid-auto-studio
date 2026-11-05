@@ -1,6 +1,8 @@
 name: research
 on:
   workflow_dispatch:
+    inputs:
+      files: { description: "audio files to transcribe (glob)", required: false, default: "research/audio/*.ogg" }
 jobs:
   transcribe:
     runs-on: ubuntu-latest
@@ -22,7 +24,7 @@ jobs:
       - name: Transcribe Wahid's recordings
         run: |
           mkdir -p research/out
-          for f in research/audio/*.ogg; do python research/transcribe.py "$f" "research/out/$(basename "$f" .ogg).json"; done
+          for f in ${{ inputs.files || 'research/audio/*.ogg' }}; do python research/transcribe.py "$f" "research/out/$(basename "$f" .ogg).json"; done
       - name: Show transcripts in the log
         run: cat research/out/*.json
       - name: Save to the research branch
