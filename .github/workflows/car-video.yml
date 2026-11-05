@@ -15,7 +15,7 @@ concurrency:
 jobs:
   video:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     env:
       CAR_ID: ${{ github.event.client_payload.car_id || inputs.car_id }}
       VOICE_URL: ${{ github.event.client_payload.voice_url }}
@@ -42,7 +42,7 @@ jobs:
           python studio/publish.py "$CAR_ID" "out/$CAR_ID-voice.mp4" --voiced
       - name: Python tools and browser
         if: env.VOICE_URL == ''
-        timeout-minutes: 8
+        timeout-minutes: 15
         run: pip install -q -r studio/requirements.txt && python -m playwright install --with-deps chromium
       - name: Write the script and render
         if: env.VOICE_URL == ''
