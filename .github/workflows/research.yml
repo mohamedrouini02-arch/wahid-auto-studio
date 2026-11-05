@@ -1,0 +1,31 @@
+name: research
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Space-separated video URLs to transcribe"
+        required: true
+jobs:
+  transcribe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -q yt-dlp faster-whisper
+      - name: Download, transcribe, sample frames
+        run: |
+          mkdir -p out
+          i=0
+          for u in ${{ inputs.urls }}; do
+            i=$((i+1))
+            yt-dlp -q -f "b[ext=mp4]/b" -o "out/v$i.%(ext)s" "$u" || { echo "download failed $u"; continue; }
+            f=$(ls out/v$i.* | head -1)
+            ffmpeg -loglevel error -y -i "$f" -vf "fps=1/2,scale=270:-1,tile=6x4" -frames:v 1 "out/v$i-frames.jpg" || true
+            python research/transcribe.py "$f" "out/v$i.json"
+            rm -f "$f"
+          done
+      - uses: actions/upload-artifact@v4
+        with: { name: research, path: out }
