@@ -1,0 +1,159 @@
+{
+ "car": {
+  "title": "KIA MORNING",
+  "year": "2022",
+  "priceMillions": 205,
+  "priceDa": "2.050.000 DA",
+  "ticker": "KIA MORNING · 2022 · 58.368 KM",
+  "chips": [
+   "58.368 KM",
+   "{KR} → {DZ}"
+  ]
+ },
+ "voice": null,
+ "priceShot": 2,
+ "media": [
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5851568792392997.jpg",
+   "move": "pull"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6695132004442171.jpg",
+   "move": "pan"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.020482091043389272.jpg",
+   "move": "push"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.8968218917965369.jpg",
+   "move": "pan"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.22591970557892604.jpg",
+   "move": "pull"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2884765367966091.jpg",
+   "move": "push"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6085849906090128.jpg",
+   "move": "push"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.0571944549183343.jpg",
+   "move": "pull"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.943004773931492.jpg",
+   "move": "push"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.8235509605597922.jpg",
+   "move": "pull"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2038310875989945.jpg",
+   "move": "pan"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.46359080837267286.jpg",
+   "move": "push"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6101636731476384.jpg",
+   "move": "pull"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.710181280650952.jpg",
+   "move": "pan"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5706302802593132.jpg",
+   "move": "push"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.9511639869993733.jpg",
+   "move": "pan"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5244170311701282.mp4",
+   "type": "video"
+  }
+ ],
+ "script": [
+  {
+   "kind": "hook",
+   "say": "السلام عليكم خوتنا. وحيد أوتو، كالعادة مع الجديد.",
+   "shots": [
+    {
+     "m": 16,
+     "frac": 0.08
+    },
+    0
+   ]
+  },
+  {
+   "say": "كيا مورنينغ، موديل ألفين واثنين وعشرين، لونها أبيض.",
+   "shots": [
+    {
+     "m": 16,
+     "frac": 0.25
+    },
+    1
+   ],
+   "label": [
+    "مورنينغ",
+    "2022"
+   ]
+  },
+  {
+   "say": "راهي في كوريا، العداد تاعها ثمانية وخمسين ألف كيلو.",
+   "shots": [
+    2,
+    3
+   ],
+   "label": [
+    "من كوريا",
+    "58.368 KM"
+   ]
+  },
+  {
+   "say": "كيما راكم تشوفوا، الداخل والخارج، كلشي واضح.",
+   "shots": [
+    {
+     "m": 16,
+     "frac": 0.5
+    },
+    {
+     "m": 16,
+     "frac": 0.68
+    },
+    {
+     "m": 16,
+     "frac": 0.84
+    }
+   ]
+  },
+  {
+   "say": "الصور والفيديو من أرض الواقع. كلشي بالشفافية.",
+   "shots": [
+    5,
+    6
+   ],
+   "label": [
+    "من أرض الواقع",
+    ""
+   ]
+  },
+  {
+   "kind": "price",
+   "say": "السعر: ميتين وخمسة مليون."
+  },
+  {
+   "kind": "end",
+   "say": "المهتم، تواصل معانا عبر الواتساب. مع السلامة."
+  }
+ ]
+}
