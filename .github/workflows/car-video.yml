@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 30
     env:
       CAR_ID: ${{ github.event.client_payload.car_id || inputs.car_id }}
+      VOICE_URL: ${{ github.event.client_payload.voice_url }}
+      SILENT_URL: ${{ github.event.client_payload.silent_url }}
       SUPABASE_URL: https://qtgvmqdvghvijfbacnza.supabase.co
       SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
     steps:
@@ -29,19 +31,28 @@ jobs:
         run: |
           curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar -xJ -C /tmp
           sudo cp /tmp/ffmpeg-*-static/ffmpeg /tmp/ffmpeg-*-static/ffprobe /usr/local/bin/
+      - name: Wahid's voice on the existing edit (fast path)
+        if: env.VOICE_URL != ''
+        run: |
+          mkdir -p out && python studio/voice_mix.py "$SILENT_URL" "$VOICE_URL" "out/$CAR_ID-voice.mp4"
+          python studio/publish.py "$CAR_ID" "out/$CAR_ID-voice.mp4" --voiced
       - name: Python tools and browser
+        if: env.VOICE_URL == ''
         timeout-minutes: 8
         run: pip install -q -r studio/requirements.txt && python -m playwright install --with-deps chromium
       - name: Write the script and render
+        if: env.VOICE_URL == ''
         run: |
           python studio/car_job.py "$CAR_ID" "jobs/auto/$CAR_ID.json"
           python studio/make_video.py "jobs/auto/$CAR_ID.json" "out/$CAR_ID.mp4"
           ffmpeg -loglevel error -y -i "out/$CAR_ID.mp4" -vf "fps=1/2,scale=216:-1,tile=8x3" -frames:v 1 "out/$CAR_ID-sheet.jpg"
       - name: Save the video next to the car in the app
+        if: env.VOICE_URL == ''
         run: python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4"
       - name: Keep a copy on the renders branch
         run: |
-          mkdir -p /tmp/pub && cp out/* jobs/auto/$CAR_ID* /tmp/pub/
+          mkdir -p out
+          mkdir -p /tmp/pub && cp out/* /tmp/pub/ && (cp jobs/auto/$CAR_ID* /tmp/pub/ 2>/dev/null || true)
           git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
           git fetch -q origin renders && git checkout -q -B renders origin/renders
           mkdir -p "auto/$CAR_ID" && cp /tmp/pub/* "auto/$CAR_ID/"

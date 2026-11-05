@@ -147,7 +147,7 @@ def build(job, shots, work):
             b['_vo'], b['_len'] = p, audio_len(p)
         else:
             b['_len'] = 0
-    tl, sfx, vo = [], [], []
+    tl, sfx, vo, marks = [], [], [], []
     t = 0.0
     hook_end = body_end = price_end = None
     video_cursor = {}
@@ -165,6 +165,8 @@ def build(job, shots, work):
             dur = max(dur, 3.0)
         if b.get('_vo'):
             vo.append((t + b.get('delay', 0.15), b['_vo']))
+        if b.get('say'):
+            marks.append({'t': round(t, 2), 'end': round(t + dur, 2), 'say': b['say']})
         if kind in ('hook', 'body'):
             ids = b['shots']
             each = dur / len(ids)
@@ -188,31 +190,40 @@ def build(job, shots, work):
                         c = 0
                     e['from'] = c; video_cursor[si] = c + each
                 tl.append(e)
-                # a soft whoosh only where a new idea starts, not on every cut
                 if j == 0 and kind == 'body':
-                    sfx.append((e['t0'] - 0.25, 'whoosh', 0.45))
+                    sfx.append((e['t0'] - 0.25, 'whoosh', 0.5))      # a new idea starts
+                elif j > 0:
+                    sfx.append((e['t0'] - 0.05, 'cut', 0.35))        # light hit on other cuts
+                if e.get('label'):
+                    sfx.append((e['t0'] + 0.25, 'pop', 0.6))          # label box
+                    sfx.append((e['t0'] + 0.4, 'click', 0.45))        # second line
             if kind == 'hook':
                 hook_end = t + dur
+                sfx += [(0.0, 'impact', 0.55), (0.3, 'pop', 0.6), (0.7, 'pop', 0.55),
+                        (1.3, 'click', 0.45), (1.55, 'click', 0.45), (1.8, 'click', 0.45), (2.3, 'pop', 0.6)]
 
         elif kind == 'price':
             body_end = t
-            sfx += [(t - 0.6, 'transition', 0.5)]
+            sfx += [(t - 1.0, 'riser', 0.5), (t - 0.3, 'transition', 0.5), (t + 0.1, 'pop', 0.5),
+                    (t + 1.25, 'impact', 0.8), (t + 1.7, 'click', 0.45)]
         elif kind == 'end':
             price_end = t
-            sfx += [(t - 0.25, 'whoosh', 0.4)]
+            sfx += [(t - 0.25, 'whoosh', 0.45), (t + 0.35, 'pop', 0.5), (t + 0.75, 'click', 0.4),
+                    (t + 1.1, 'click', 0.4), (t + 1.45, 'click', 0.35)]
         t += dur
-    return {'tl': tl, 'hookEnd': hook_end, 'bodyEnd': body_end, 'priceEnd': price_end, 'total': round(t, 3)}, sfx, vo
+    return {'tl': tl, 'hookEnd': hook_end, 'bodyEnd': body_end, 'priceEnd': price_end, 'total': round(t, 3), 'marks': marks}, sfx, vo
 
 
 def mix(total, sfx, vo, music, out):
     n = int(total * SR) + SR
     bus = np.zeros(n, np.float32)
-    lib = make_sfx()
-    # real recorded sounds win over the synthesised ones
-    for name in ('whoosh', 'transition', 'pop', 'impact'):
-        f = os.path.join(HERE, 'sfx', f'{name}.wav')
-        if os.path.exists(f):
-            lib[name] = read_audio(f)
+    # only real recorded sounds from studio/sfx/<name>.(wav|mp3); a missing one is simply silent
+    lib = {}
+    for name in ('whoosh', 'transition', 'cut', 'pop', 'click', 'impact', 'riser'):
+        for ext in ('wav', 'mp3'):
+            f = os.path.join(HERE, 'sfx', f'{name}.{ext}')
+            if os.path.exists(f):
+                lib[name] = read_audio(f); break
     for at, name, gain in sfx:
         if name not in lib: continue
         x = lib[name] * gain * 0.6
@@ -263,6 +274,7 @@ def main():
     run('ffmpeg', '-loglevel', 'error', '-y', '-framerate', str(FPS), '-i', f'{frames}/f%05d.jpg', '-i', wav,
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k',
         '-shortest', '-movflags', '+faststart', out)
+    json.dump({'total': timing['total'], 'lines': timing['marks']}, open(out[:-4] + '-script.json', 'w'), ensure_ascii=False, indent=1)
     print(out, timing['total'], 's')
 
 
