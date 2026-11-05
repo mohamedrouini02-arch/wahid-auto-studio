@@ -1,31 +1,26 @@
 name: research
 on:
   workflow_dispatch:
-    inputs:
-      urls:
-        description: "Space-separated video URLs to transcribe"
-        required: true
 jobs:
   transcribe:
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
-      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-      - run: pip install -q yt-dlp faster-whisper
-      - name: Download, transcribe, sample frames
+      - name: ffmpeg (static build)
         run: |
-          mkdir -p out
-          i=0
-          for u in ${{ inputs.urls }}; do
-            i=$((i+1))
-            yt-dlp -q -f "b[ext=mp4]/b" -o "out/v$i.%(ext)s" "$u" || { echo "download failed $u"; continue; }
-            f=$(ls out/v$i.* | head -1)
-            ffmpeg -loglevel error -y -i "$f" -vf "fps=1/2,scale=270:-1,tile=6x4" -frames:v 1 "out/v$i-frames.jpg" || true
-            python research/transcribe.py "$f" "out/v$i.json"
-            rm -f "$f"
-          done
-      - uses: actions/upload-artifact@v4
-        with: { name: research, path: out }
+          curl -sSL https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar -xJ -C /tmp
+          sudo cp /tmp/ffmpeg-*-static/ffmpeg /usr/local/bin/
+      - run: pip install -q faster-whisper
+      - name: Transcribe Wahid's recordings
+        run: |
+          mkdir -p research/out
+          for f in research/audio/*.ogg; do python research/transcribe.py "$f" "research/out/$(basename "$f" .ogg).json"; done
+      - name: Save
+        run: |
+          git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
+          git add research/out && git commit -qm "transcripts ${{ github.run_id }}" && git push -q origin HEAD:main
