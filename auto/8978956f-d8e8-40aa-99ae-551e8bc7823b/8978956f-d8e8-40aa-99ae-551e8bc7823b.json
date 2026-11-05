@@ -1,0 +1,345 @@
+{
+ "car": {
+  "title": "RENAULT ARKANA",
+  "year": "2023",
+  "priceMillions": 300,
+  "priceDa": "3.000.000 DA",
+  "ticker": "RENAULT ARKANA · 2023 · 101.000 KM",
+  "chips": [
+   "101.000 KM",
+   "{KR} → {DZ}"
+  ]
+ },
+ "voice": null,
+ "priceShot": 10,
+ "analysis": {
+  "photos": [
+   [
+    0,
+    "gear",
+    0.9177061915397644
+   ],
+   [
+    1,
+    "rear",
+    0.5149085521697998
+   ],
+   [
+    2,
+    "door",
+    0.9022649526596069
+   ],
+   [
+    3,
+    "side",
+    0.5225573778152466
+   ],
+   [
+    4,
+    "dash",
+    0.8645136952400208
+   ],
+   [
+    5,
+    "rear",
+    0.974210262298584
+   ],
+   [
+    6,
+    "rear",
+    0.9777615070343018
+   ],
+   [
+    7,
+    "side",
+    0.9503698945045471
+   ],
+   [
+    8,
+    "rear",
+    0.7249193787574768
+   ],
+   [
+    9,
+    "side",
+    0.8735034465789795
+   ],
+   [
+    10,
+    "rearseats",
+    0.8139188289642334
+   ],
+   [
+    11,
+    "front34",
+    0.8880288004875183
+   ],
+   [
+    12,
+    "seats",
+    0.5126991868019104
+   ],
+   [
+    13,
+    "seats",
+    0.9426981806755066
+   ],
+   [
+    14,
+    "dash",
+    0.8854126930236816
+   ],
+   [
+    15,
+    "side",
+    0.9679639339447021
+   ],
+   [
+    16,
+    "door",
+    0.9882821440696716
+   ],
+   [
+    17,
+    "door",
+    0.7129923701286316
+   ],
+   [
+    18,
+    "dash",
+    0.5181748270988464
+   ],
+   [
+    19,
+    "dash",
+    0.9864363074302673
+   ],
+   [
+    20,
+    "door",
+    0.5218161344528198
+   ],
+   [
+    21,
+    "front34",
+    0.5480949878692627
+   ],
+   [
+    22,
+    "front34",
+    0.7145874500274658
+   ],
+   [
+    23,
+    "side",
+    0.9049143195152283
+   ],
+   [
+    24,
+    "front",
+    0.8841276168823242
+   ],
+   [
+    25,
+    "rear",
+    0.9991058707237244
+   ],
+   [
+    26,
+    "side",
+    0.9666202664375305
+   ],
+   [
+    27,
+    "front",
+    0.37531578540802
+   ]
+  ],
+  "video": []
+ },
+ "media": [
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5943487849933824.jpg",
+   "move": "push",
+   "kind": "gear"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.369312119602626.jpg",
+   "move": "pull",
+   "kind": "rear"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.9350722828250538.jpg",
+   "move": "pan",
+   "kind": "side"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.33569727764504365.jpg",
+   "move": "push",
+   "kind": "dash"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.33733033239649446.jpg",
+   "move": "pull",
+   "kind": "rear"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.11412836546608385.jpg",
+   "move": "pull",
+   "kind": "rear"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.08361808864555731.jpg",
+   "move": "pan",
+   "kind": "side"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5173865017187588.jpg",
+   "move": "pull",
+   "kind": "rear"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.29756532480310727.jpg",
+   "move": "pan",
+   "kind": "side"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.09803185671391101.jpg",
+   "move": "pull",
+   "kind": "rearseats"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5249247342962713.jpg",
+   "move": "pull",
+   "kind": "front34"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.04440147622563506.jpg",
+   "move": "pull",
+   "kind": "seats"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5168220951368726.jpg",
+   "move": "pull",
+   "kind": "seats"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.7111343062902309.jpg",
+   "move": "push",
+   "kind": "dash"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.31212395320078035.jpg",
+   "move": "pan",
+   "kind": "side"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.1964280197547439.jpg",
+   "move": "push",
+   "kind": "dash"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2698879616432699.jpg",
+   "move": "push",
+   "kind": "dash"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.7498907659172047.jpg",
+   "move": "pull",
+   "kind": "front34"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.938545953839773.jpg",
+   "move": "pull",
+   "kind": "front34"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.21736710895699551.jpg",
+   "move": "pan",
+   "kind": "side"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.7231759423225395.jpg",
+   "move": "push",
+   "kind": "front"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.013646311114402954.jpg",
+   "move": "pull",
+   "kind": "rear"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.15506763659962486.jpg",
+   "move": "pan",
+   "kind": "side"
+  },
+  {
+   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.002331154573795513.jpg",
+   "move": "push",
+   "kind": "front"
+  }
+ ],
+ "script": [
+  {
+   "kind": "hook",
+   "say": "السلام عليكم ورحمة الله وبركاته. وحيد أوتو، كالعادة مع الخدمة ومع الجديد.",
+   "shots": [
+    10,
+    18
+   ]
+  },
+  {
+   "say": "اليوم خاوتنا جبنالكم رونو أركانا، موديل ألفين وثلاثة وعشرين، اللون تاعها Blanche، ربي بارك ما شاء الله.",
+   "shots": [
+    14,
+    22
+   ],
+   "label": [
+    "أركانا",
+    "2023"
+   ]
+  },
+  {
+   "say": "السيارة راهي في كوريا، فيها مية وواحد ألف كيلومتر برك.",
+   "shots": [
+    21,
+    5
+   ],
+   "label": [
+    "من كوريا",
+    "101.000 KM"
+   ]
+  },
+  {
+   "say": "كما راكم تشوفو خاوتنا، الداخل والخارج، كلشي من أرض الواقع مباشرة.",
+   "shots": [
+    16,
+    13,
+    3
+   ],
+   "label": [
+    "من الداخل",
+    ""
+   ]
+  },
+  {
+   "say": "وحيد أوتو، الصدق والمصداقية، كلشي بالشفافية.",
+   "shots": [
+    9,
+    12
+   ],
+   "label": [
+    "الصدق والمصداقية",
+    ""
+   ]
+  },
+  {
+   "kind": "price",
+   "say": "السعر خاوتنا: ثلاث مية مليون."
+  },
+  {
+   "kind": "end",
+   "say": "للمهتم، يتواصل معانا عبر الواتساب، الأرقام موجودين في أسفل الفيديو. والسلام عليكم ورحمة الله وبركاته، مع السلامة."
+  }
+ ]
+}
