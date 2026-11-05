@@ -119,7 +119,8 @@ def build(car):
                 'priceDa': f'{int(float(price)):,} DA'.replace(',', '.') if price else 'راسلونا',
                 'ticker': ' · '.join(x for x in [title, str(year or ''), chips[0] if km else ''] if x),
                 'chips': chips},
-        'voice': {'name': 'ar-DZ-IsmaelNeural', 'rate': '+12%'},
+        # no synthetic voice: the lines below are the script Wahid reads (see script.txt)
+        'voice': None,
         'priceShot': pick(2),
         'media': media,
         'script': script,
@@ -130,4 +131,6 @@ if __name__ == '__main__':
     job = build(fetch_car(sys.argv[1]))
     os.makedirs(os.path.dirname(os.path.abspath(sys.argv[2])), exist_ok=True)
     json.dump(job, open(sys.argv[2], 'w'), ensure_ascii=False, indent=1)
+    lines = [b['say'] for b in job['script'] if b.get('say')]
+    open(os.path.splitext(sys.argv[2])[0] + '-script.txt', 'w').write('\n'.join(lines) + '\n')
     print(sys.argv[2])

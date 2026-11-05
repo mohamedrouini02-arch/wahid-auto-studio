@@ -41,7 +41,7 @@ jobs:
         run: python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4"
       - name: Keep a copy on the renders branch
         run: |
-          mkdir -p /tmp/pub && cp out/* "jobs/auto/$CAR_ID.json" /tmp/pub/
+          mkdir -p /tmp/pub && cp out/* jobs/auto/$CAR_ID* /tmp/pub/
           git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
           git fetch -q origin renders && git checkout -q -B renders origin/renders
           mkdir -p "auto/$CAR_ID" && cp /tmp/pub/* "auto/$CAR_ID/"

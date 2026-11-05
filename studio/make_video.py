@@ -142,7 +142,7 @@ def build(job, shots, work):
     beats = job['script']
     clips = []
     for k, b in enumerate(beats):
-        if b.get('say'):
+        if b.get('say') and job.get('voice'):
             p = os.path.join(work, f'vo{k}.mp3'); tts(b['say'], p, vname, vrate)
             b['_vo'], b['_len'] = p, audio_len(p)
         else:
@@ -153,13 +153,16 @@ def build(job, shots, work):
     video_cursor = {}
     for k, b in enumerate(beats):
         kind = b.get('kind', 'body')
-        dur = max(b.get('min', 0), b['_len'] + pad)
+        if b.get('_vo'):
+            dur = max(b.get('min', 0), b['_len'] + pad)
+        else:  # no voice-over: give every shot time to be seen
+            dur = b.get('dur') or (len(b.get('shots', [])) * job.get('shot', 2.4) if kind == 'body' else 0)
         if kind == 'hook':
-            dur = max(dur, 3.0)
+            dur = max(dur, 3.4)
         if kind == 'price':
             dur = max(dur, 3.4)
         if kind == 'end':
-            dur = max(dur, 2.8)
+            dur = max(dur, 3.0)
         if b.get('_vo'):
             vo.append((t + b.get('delay', 0.15), b['_vo']))
         if kind in ('hook', 'body'):
@@ -185,22 +188,18 @@ def build(job, shots, work):
                         c = 0
                     e['from'] = c; video_cursor[si] = c + each
                 tl.append(e)
-                if not (kind == 'hook' and j == 0):
-                    sfx.append((e['t0'] - 0.18, 'whoosh', 0.55))
-                if e.get('label'):
-                    sfx.append((e['t0'] + 0.25, 'pop', 0.7)); sfx.append((e['t0'] + 0.4, 'pop', 0.5))
+                # a soft whoosh only where a new idea starts, not on every cut
+                if j == 0 and kind == 'body':
+                    sfx.append((e['t0'] - 0.25, 'whoosh', 0.45))
             if kind == 'hook':
                 hook_end = t + dur
-                for at in (0.3, 0.7, 1.3, 1.55, 1.8, 2.3):
-                    sfx.append((at, 'pop', 0.6))
+
         elif kind == 'price':
             body_end = t
-            sfx += [(t - 1.1, 'riser', 0.6), (t, 'whoosh', 0.6), (t + 0.1, 'pop', 0.6), (t + 1.25, 'impact', 0.9), (t + 1.7, 'pop', 0.6)]
-            for q in np.arange(t + 0.15, t + 1.2, 0.07):
-                sfx.append((float(q), 'tick', 0.5))
+            sfx += [(t - 0.6, 'transition', 0.5)]
         elif kind == 'end':
             price_end = t
-            sfx += [(t - 0.15, 'whoosh', 0.6), (t + 0.35, 'pop', 0.6), (t + 0.75, 'pop', 0.6), (t + 1.1, 'pop', 0.6), (t + 1.45, 'pop', 0.5)]
+            sfx += [(t - 0.25, 'whoosh', 0.4)]
         t += dur
     return {'tl': tl, 'hookEnd': hook_end, 'bodyEnd': body_end, 'priceEnd': price_end, 'total': round(t, 3)}, sfx, vo
 
@@ -209,7 +208,13 @@ def mix(total, sfx, vo, music, out):
     n = int(total * SR) + SR
     bus = np.zeros(n, np.float32)
     lib = make_sfx()
+    # real recorded sounds win over the synthesised ones
+    for name in ('whoosh', 'transition', 'pop', 'impact'):
+        f = os.path.join(HERE, 'sfx', f'{name}.wav')
+        if os.path.exists(f):
+            lib[name] = read_audio(f)
     for at, name, gain in sfx:
+        if name not in lib: continue
         x = lib[name] * gain * 0.6
         i = int(max(0, at) * SR); bus[i:i + len(x)] += x[: n - i]
     voice = np.zeros(n, np.float32)
