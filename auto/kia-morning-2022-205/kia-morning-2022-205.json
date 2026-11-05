@@ -11,71 +11,378 @@
   ]
  },
  "voice": null,
- "priceShot": 2,
+ "priceShot": 0,
+ "analysis": {
+  "photos": [
+   [
+    0,
+    "front34",
+    0.7494679093360901
+   ],
+   [
+    1,
+    "seats",
+    0.9045653343200684
+   ],
+   [
+    2,
+    "side",
+    0.5030501484870911
+   ],
+   [
+    3,
+    "door",
+    0.944170355796814
+   ],
+   [
+    4,
+    "door",
+    0.8378307819366455
+   ],
+   [
+    5,
+    "seats",
+    0.9582563638687134
+   ],
+   [
+    6,
+    "door",
+    0.9844154715538025
+   ],
+   [
+    7,
+    "rearseats",
+    0.8677080869674683
+   ],
+   [
+    8,
+    "front34",
+    0.7764249444007874
+   ],
+   [
+    9,
+    "dash",
+    0.9510809183120728
+   ],
+   [
+    10,
+    "front34",
+    0.8728588223457336
+   ],
+   [
+    11,
+    "side",
+    0.6688227653503418
+   ],
+   [
+    12,
+    "door",
+    0.9960172772407532
+   ],
+   [
+    13,
+    "side",
+    0.8442968726158142
+   ],
+   [
+    14,
+    "trunk",
+    0.9460381269454956
+   ],
+   [
+    15,
+    "seats",
+    0.9360649585723877
+   ]
+  ],
+  "video": [
+   [
+    0,
+    "other",
+    0.9999990463256836
+   ],
+   [
+    1,
+    "side",
+    0.5058469176292419
+   ],
+   [
+    2,
+    "front34",
+    0.42508962750434875
+   ],
+   [
+    3,
+    "front",
+    0.8973855972290039
+   ],
+   [
+    4,
+    "front",
+    0.6933951377868652
+   ],
+   [
+    5,
+    "front34",
+    0.608242392539978
+   ],
+   [
+    6,
+    "side",
+    0.8806033134460449
+   ],
+   [
+    7,
+    "front",
+    0.64090895652771
+   ],
+   [
+    8,
+    "front34",
+    0.7991884350776672
+   ],
+   [
+    9,
+    "front34",
+    0.5522260665893555
+   ],
+   [
+    10,
+    "side",
+    0.770426869392395
+   ],
+   [
+    11,
+    "side",
+    0.8973431587219238
+   ],
+   [
+    12,
+    "dash",
+    0.7160685658454895
+   ],
+   [
+    13,
+    "dash",
+    0.803722083568573
+   ],
+   [
+    14,
+    "dash",
+    0.883853554725647
+   ],
+   [
+    15,
+    "dash",
+    0.9517308473587036
+   ],
+   [
+    16,
+    "dash",
+    0.5928182005882263
+   ],
+   [
+    17,
+    "dash",
+    0.4885067641735077
+   ],
+   [
+    18,
+    "dash",
+    0.5974234938621521
+   ],
+   [
+    19,
+    "gear",
+    0.5027207136154175
+   ],
+   [
+    20,
+    "door",
+    0.8045749664306641
+   ],
+   [
+    21,
+    "door",
+    0.603297770023346
+   ],
+   [
+    22,
+    "dash",
+    0.6865742206573486
+   ],
+   [
+    23,
+    "dash",
+    0.7647472620010376
+   ],
+   [
+    24,
+    "dash",
+    0.8022715449333191
+   ],
+   [
+    25,
+    "dash",
+    0.7643476128578186
+   ],
+   [
+    26,
+    "door",
+    0.9945289492607117
+   ],
+   [
+    27,
+    "rearseats",
+    0.6472472548484802
+   ],
+   [
+    28,
+    "rearseats",
+    0.8880225419998169
+   ],
+   [
+    29,
+    "rearseats",
+    0.8528327345848083
+   ],
+   [
+    30,
+    "rearseats",
+    0.5005764961242676
+   ],
+   [
+    31,
+    "side",
+    0.6492753624916077
+   ],
+   [
+    32,
+    "trunk",
+    0.9344671368598938
+   ],
+   [
+    33,
+    "trunk",
+    0.9355239868164062
+   ],
+   [
+    34,
+    "rear",
+    0.9541696310043335
+   ],
+   [
+    35,
+    "rear",
+    0.8485274910926819
+   ],
+   [
+    36,
+    "side",
+    0.702011227607727
+   ],
+   [
+    37,
+    "side",
+    0.7113890647888184
+   ],
+   [
+    38,
+    "side",
+    0.9230191707611084
+   ],
+   [
+    39,
+    "side",
+    0.9527949690818787
+   ],
+   [
+    40,
+    "rear",
+    0.9258593320846558
+   ],
+   [
+    41,
+    "rear",
+    0.9212429523468018
+   ],
+   [
+    42,
+    "rear",
+    0.8602232336997986
+   ],
+   [
+    43,
+    "side",
+    0.8849413990974426
+   ],
+   [
+    44,
+    "side",
+    0.9325904250144958
+   ]
+  ]
+ },
  "media": [
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5851568792392997.jpg",
-   "move": "pull"
+   "move": "pull",
+   "kind": "front34"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6695132004442171.jpg",
-   "move": "pan"
+   "move": "pull",
+   "kind": "seats"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.020482091043389272.jpg",
-   "move": "push"
-  },
-  {
-   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.8968218917965369.jpg",
-   "move": "pan"
-  },
-  {
-   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.22591970557892604.jpg",
-   "move": "pull"
+   "move": "pan",
+   "kind": "side"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2884765367966091.jpg",
-   "move": "push"
-  },
-  {
-   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6085849906090128.jpg",
-   "move": "push"
+   "move": "pull",
+   "kind": "seats"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.0571944549183343.jpg",
-   "move": "pull"
+   "move": "pull",
+   "kind": "rearseats"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.943004773931492.jpg",
-   "move": "push"
+   "move": "pull",
+   "kind": "front34"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.8235509605597922.jpg",
-   "move": "pull"
+   "move": "push",
+   "kind": "dash"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.2038310875989945.jpg",
-   "move": "pan"
+   "move": "pull",
+   "kind": "front34"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.46359080837267286.jpg",
-   "move": "push"
-  },
-  {
-   "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.6101636731476384.jpg",
-   "move": "pull"
+   "move": "pan",
+   "kind": "side"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.710181280650952.jpg",
-   "move": "pan"
+   "move": "pan",
+   "kind": "side"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5706302802593132.jpg",
-   "move": "push"
+   "move": "push",
+   "kind": "trunk"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.9511639869993733.jpg",
-   "move": "pan"
+   "move": "pull",
+   "kind": "seats"
   },
   {
    "src": "https://qtgvmqdvghvijfbacnza.supabase.co/storage/v1/object/public/car-media/0.5244170311701282.mp4",
@@ -88,20 +395,20 @@
    "say": "السلام عليكم خوتنا. وحيد أوتو، كالعادة مع الجديد.",
    "shots": [
     {
-     "m": 16,
-     "frac": 0.08
+     "m": 12,
+     "at": 2.7
     },
-    0
+    7
    ]
   },
   {
    "say": "كيا مورنينغ، موديل ألفين واثنين وعشرين، لونها أبيض.",
    "shots": [
     {
-     "m": 16,
-     "frac": 0.25
+     "m": 12,
+     "at": 36.7
     },
-    1
+    9
    ],
    "label": [
     "مورنينغ",
@@ -111,8 +418,11 @@
   {
    "say": "راهي في كوريا، العداد تاعها ثمانية وخمسين ألف كيلو.",
    "shots": [
-    2,
-    3
+    {
+     "m": 12,
+     "at": 40.2
+    },
+    8
    ],
    "label": [
     "من كوريا",
@@ -123,24 +433,25 @@
    "say": "كيما راكم تشوفوا، الداخل والخارج، كلشي واضح.",
    "shots": [
     {
-     "m": 16,
-     "frac": 0.5
+     "m": 12,
+     "at": 14.7
     },
-    {
-     "m": 16,
-     "frac": 0.68
-    },
-    {
-     "m": 16,
-     "frac": 0.84
-    }
+    6,
+    3
+   ],
+   "label": [
+    "من الداخل",
+    ""
    ]
   },
   {
    "say": "الصور والفيديو من أرض الواقع. كلشي بالشفافية.",
    "shots": [
-    5,
-    6
+    {
+     "m": 12,
+     "at": 27.7
+    },
+    4
    ],
    "label": [
     "من أرض الواقع",
