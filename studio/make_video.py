@@ -110,6 +110,28 @@ def tts(text, out, voice, rate):
 
 
 # ---------------- media ----------------
+def camera_motion(frames_dir, width):
+    """How far the footage has drifted at every frame (in frame pixels), so labels can stick to the car."""
+    try:
+        import cv2
+    except ImportError:
+        return None
+    files = sorted(os.listdir(frames_dir)); small = 360; k = width / small
+    prev, acc, out = None, [0.0, 0.0], []
+    win = None
+    for f in files:
+        g = cv2.imread(os.path.join(frames_dir, f), cv2.IMREAD_GRAYSCALE)
+        g = cv2.resize(g, (small, int(g.shape[0] * small / g.shape[1]))).astype('float32')
+        if win is None: win = cv2.createHanningWindow((g.shape[1], g.shape[0]), cv2.CV_32F)
+        if prev is not None:
+            (dx, dy), resp = cv2.phaseCorrelate(prev, g, win)
+            if resp > 0.05 and abs(dx) < 40 and abs(dy) < 40:   # ignore cuts and blur
+                acc[0] -= dx * k; acc[1] -= dy * k
+        out.append([round(acc[0], 1), round(acc[1], 1)])
+        prev = g
+    return out
+
+
 def prepare_media(job, work):
     shots = []
     for i, m in enumerate(job['media']):
@@ -125,7 +147,7 @@ def prepare_media(job, work):
             sheet = os.path.join(os.path.dirname(os.path.abspath(sys.argv[2])), f'clip{i}-sheet.jpg')
             subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', src, '-vf', 'fps=1,scale=180:-1,drawtext=text=%{pts\\:hms}:x=4:y=4:fontcolor=yellow:fontsize=14,tile=8x4', '-frames:v', '1', sheet])
             m.update(dir=os.path.relpath(d, HERE), frames=len(os.listdir(d)), fps=FPS, w=first.width, h=first.height,
-                     length=len(os.listdir(d)) / FPS)
+                     length=len(os.listdir(d)) / FPS, motion=camera_motion(d, first.width))
         else:
             im = ImageOps.exif_transpose(Image.open(src)).convert('RGB'); im.thumbnail((1600, 1600))
             out = os.path.join(work, f'p{i}.jpg'); im.save(out, quality=90)
@@ -180,6 +202,12 @@ def build(job, shots, work):
                     e['hook'] = True
                 if b.get('label') and j == 0:
                     e['label'] = b['label']
+                fx = [dict(f) for f in b.get('fx', []) if f.get('on', 0) == j]
+                if fx:
+                    e['fx'] = fx
+                    for f in fx:   # each neon label pops with its sound
+                        if f.get('kind') == 'ground': sfx.append((e['t0'] + f.get('at', 0.25), 'impact', 0.35))
+                        else: sfx.append((e['t0'] + f.get('at', 0.25), 'pop', 0.6))
                 s = shots[si]
                 if s.get('type') == 'video':
                     if isinstance(spec, dict) and 'frac' in spec:
@@ -201,8 +229,13 @@ def build(job, shots, work):
                     sfx.append((e['t0'] + 0.4, 'click', 0.45))        # second line
             if kind == 'hook':
                 hook_end = t + dur
-                sfx += [(0.0, 'impact', 0.55), (0.3, 'pop', 0.6), (0.7, 'pop', 0.55),
-                        (1.3, 'click', 0.45), (1.55, 'click', 0.45), (1.8, 'click', 0.45), (2.3, 'pop', 0.6)]
+                if job.get('style') == 'neon':   # logo sting: air while it draws, a hit when the footage appears
+                    sfx += [(0.0, 'riser', 0.45), (0.15, 'whoosh', 0.35), (1.38, 'impact', 0.6)]
+                else:
+                    sfx.append((0.0, 'impact', 0.55))
+                if job.get('style', 'classic') == 'classic':
+                    sfx += [(0.3, 'pop', 0.6), (0.7, 'pop', 0.55), (1.3, 'click', 0.45), (1.55, 'click', 0.45),
+                            (1.8, 'click', 0.45), (2.3, 'pop', 0.6)]
 
         elif kind == 'price':
             body_end = t
@@ -210,7 +243,7 @@ def build(job, shots, work):
                     (t + 1.25, 'impact', 0.8), (t + 1.7, 'click', 0.45)]
         elif kind == 'end':
             price_end = t
-            sfx += [(t - 0.25, 'whoosh', 0.45), (t + 0.35, 'pop', 0.5), (t + 0.75, 'click', 0.4),
+            sfx += [(t - 0.25, 'whoosh', 0.45), (t + 0.62, 'impact', 0.35), (t + 0.35, 'pop', 0.5), (t + 0.75, 'click', 0.4),
                     (t + 1.1, 'click', 0.4), (t + 1.45, 'click', 0.35)]
         t += dur
     return {'tl': tl, 'hookEnd': hook_end, 'bodyEnd': body_end, 'priceEnd': price_end, 'total': round(t, 3), 'marks': marks}, sfx, vo
@@ -273,7 +306,7 @@ def main():
     car['chips'] = [c.replace('{KR}', KR).replace('{CN}', CN).replace('{DZ}', DZ) for c in car['chips']]
     shots = prepare_media(job, work)
     timing, sfx, vo = build(job, shots, work)
-    cfg = {'car': car, 'shots': shots, 'priceShot': job.get('priceShot', 0), **timing}
+    cfg = {'car': car, 'shots': shots, 'priceShot': job.get('priceShot', 0), 'style': job.get('style', 'classic'), **timing}
     asyncio.run(render(cfg, frames))
     wav = os.path.join(work, 'mix.wav')
     mix(timing['total'], sfx, vo, job.get('music'), wav)

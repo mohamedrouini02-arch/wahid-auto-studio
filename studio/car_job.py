@@ -5,7 +5,7 @@
 The script follows Wahid's way of talking (greeting, the car, "from the real
 ground", WhatsApp, goodbye) and fills it with the car's own data.
 """
-import json, os, sys, urllib.request
+import json, os, random, sys, urllib.request
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ONES = ['', 'واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة']
@@ -51,6 +51,29 @@ NAMES = {
     'arkana': 'أركانا', 'xm3': 'إكس إم ثري', 'qm6': 'كيو إم سيكس', 'koleos': 'كوليوس', 'spark': 'سبارك', 'trax': 'تراكس',
     'trailblazer': 'تريلبلايزر', 'coolray': 'كولراي', 'torres': 'توريس', 'tivoli': 'تيفولي',
 }
+FEATURES = {  # key: (label in the video, Arabic for the script, where it is seen)
+    'volant_multi': ('VOLANT MULTIFONCTION', 'مقود متعدد الوظائف', 'dash'), 'camera': ('CAMÉRA DE RECUL', 'كاميرا دريكيل', 'rear'),
+    'radars': ('RADARS DE STATIONNEMENT', 'رادارات', 'rear'), 'ecran': ('ÉCRAN TACTILE', 'شاشة تاكتيل', 'gear'),
+    'carplay': ('CARPLAY / ANDROID AUTO', 'كاربلاي', 'gear'), 'gps': ('GPS', 'جي بي إس', 'gear'), 'cockpit': ('COCKPIT DIGITAL', 'كوكبيت ديجيتال', 'dash'),
+    'clim_auto': ('CLIMATISATION AUTO', 'الكليم أوتو', 'gear'), 'keyless': ('DÉMARRAGE SANS CLÉ', 'ديماراج بلا كلي', 'dash'),
+    'regulateur': ('RÉGULATEUR DE VITESSE', 'ريغولاتور', 'dash'), 'regulateur_adaptatif': ('RÉGULATEUR ADAPTATIF', 'ريغولاتور أدابتاتيف', 'dash'),
+    'maintien_voie': ('MAINTIEN DE VOIE', 'مانتيان دو فوا', 'dash'), 'angles_morts': ('DÉTECTION ANGLES MORTS', 'كشف الأنغل مور', 'side'),
+    'sieges_cuir': ('SIÈGES EN CUIR', 'كراسي جلد', 'seats'), 'sieges_chauffants': ('SIÈGES CHAUFFANTS', 'كراسي شوفون', 'seats'),
+    'sieges_ventiles': ('SIÈGES VENTILÉS', 'كراسي فونتيلي', 'seats'), 'sieges_electriques': ('SIÈGES ÉLECTRIQUES', 'كراسي إلكتريك', 'seats'),
+    'volant_chauffant': ('VOLANT CHAUFFANT', 'فولون شوفون', 'dash'), 'toit_ouvrant': ('TOIT OUVRANT', 'تو ڨوفرون', 'seats'),
+    'toit_pano': ('TOIT PANORAMIQUE', 'تو بانوراميك', 'seats'), 'wireless': ('CHARGEUR WIRELESS', 'شارجور وايرلس', 'gear'),
+    'palettes': ('PALETTES AU VOLANT', 'باليت في الفولون', 'dash'), 'phares_led': ('PHARES LED', 'فارات LED', 'front'),
+    'jantes': ('JANTES EN ALLIAGE', 'جونط ألمنيوم', 'side'), 'retros_rabattables': ('RÉTROS RABATTABLES', 'روترو رابتابل', 'side'),
+    'coffre_electrique': ('COFFRE ÉLECTRIQUE', 'مالبقاج إلكتريك', 'trunk'),
+}
+FUELS = {'essence': ('ESSENCE', 'ليسونس'), 'diesel': ('DIESEL', 'مازوت'), 'hybride': ('HYBRIDE', 'هيبريد'), 'electrique': ('ÉLECTRIQUE', 'إلكتريك'), 'gpl': ('GPL', 'سيرغاز')}
+GENERIC = {'dash': ('TABLEAU DE BORD', 'الطابلو'), 'gear': ('CONSOLE CENTRALE', 'الكونسول'), 'seats': ('SIÈGES AVANT', 'الكراسي'),
+           'rearseats': ('SIÈGES ARRIÈRE', 'الكراسي اللورانيين'), 'trunk': ('COFFRE', 'المالبقاج')}
+GEARBOXES = {'auto': ('BOÎTE AUTOMATIQUE', 'أوتوماتيك'), 'manuelle': ('BOÎTE MANUELLE', 'مانويل')}
+PANELS = {'capot': ('Capot', 'الكابو'), 'toit': ('Toit', 'السقف'), 'coffre': ('Coffre', 'المالبقاج'), 'pc_av': ('Pare-choc AV', 'البارشوك القدامي'),
+    'pc_ar': ('Pare-choc AR', 'البارشوك اللوراني'), 'aile_avg': ('Aile AV G', 'الجناح القدامي اليسار'), 'aile_avd': ('Aile AV D', 'الجناح القدامي اليمين'),
+    'aile_arg': ('Aile AR G', 'الجناح اللوراني اليسار'), 'aile_ard': ('Aile AR D', 'الجناح اللوراني اليمين'), 'porte_avg': ('Porte AV G', 'الباب القدامي اليسار'),
+    'porte_avd': ('Porte AV D', 'الباب القدامي اليمين'), 'porte_arg': ('Porte AR G', 'الباب اللوراني اليسار'), 'porte_ard': ('Porte AR D', 'الباب اللوراني اليمين')}
 LOCATION = {'korea': 'في كوريا', 'china': 'في الصين', 'algeria': 'في الجزائر'}
 LOCATION_LABEL = {'korea': 'من كوريا', 'china': 'من الصين', 'algeria': 'في الجزائر'}
 
@@ -118,30 +141,112 @@ def build(car):
     chips = []
     if km: chips.append(f'{int(km):,} KM'.replace(',', '.'))
     chips.append('{KR} → {DZ}' if loc != 'china' else '{CN} → {DZ}')
+    specs = car.get('specs') or {}
+    feats = [f for f in (car.get('features') or []) if f in FEATURES]
+    cond = car.get('condition') or None
 
-    # lines in Wahid's own way of talking (learned from his videos: research/wahid-style.md)
+    # every remake picks other phrasings, so videos don't all sound the same
+    rnd = random.Random(f"{car.get('id')}-{os.environ.get('GITHUB_RUN_ID', '')}")
+    pick1 = rnd.choice
     name = f'{say_name(brand)} {say_name(model)}'.strip()
-    line_car = f'اليوم خاوتنا جبنالكم {name}'
-    if year: line_car += f'، موديل {words(year)}'
-    if color: line_car += f'، اللون تاعها {color}'
-    line_car += '، ربي بارك ما شاء الله'
-    line_where = f'السيارة راهي {LOCATION[loc]}' if loc in LOCATION else 'السيارة جاهزة'
-    if km: line_where += f'، فيها {words(round(int(km) / 1000) * 1000)} كيلومتر برك'
+    yr = f'موديل {words(year)}' if year else ''
+    col = f'اللون {color}' if color else ''
+    line_car = pick1([
+        f'اليوم جبنالكم {name}، {yr}، {col}.',
+        f'هاد المرة عندنا {name}، {yr}، {col}.',
+        f'سيارة اليوم خاوتنا: {name}، {yr}، {col}.',
+        f'عندنا {name} {yr}، {col}، ربي بارك.',
+    ]).replace('، ،', '،').replace(' ،', '،')
+
+    eng_bits = [specs.get('engine') or '', FUELS.get(specs.get('fuel', ''), ('', ''))[1]]
+    eng = ' '.join(b for b in eng_bits if b).strip()
+    box = GEARBOXES.get(specs.get('gearbox', ''), ('', ''))[1]
+    line_engine = None
+    if eng or box:
+        line_engine = pick1([
+            f'تجي بموتور {eng}' + (f'، وبوات {box}.' if box else '.'),
+            f'الموتور {eng}' + (f'، والبوات {box}.' if box else '.'),
+            (f'بوات {box}، ' if box else '') + f'موتور {eng}.',
+        ]) if eng else f'البوات {box}.'
+
+    km_words = f'{words(round(int(km) / 1000) * 1000)} كيلومتر' if km else ''
+    where = LOCATION.get(loc, '')
+    line_where = pick1([
+        f'العداد فيه {km_words} برك، والسيارة راهي {where}.',
+        f'{km_words} برك، وراهي حاليا {where}.',
+        f'السيارة راهي {where}، والكيلومترات: {km_words}.',
+    ]) if km and where else (f'السيارة راهي {where}.' if where else None)
+
+    feat_ar = [FEATURES[f][1] for f in feats]
+    line_feats = None
+    if feat_ar:
+        top = feat_ar[:4]
+        joined = '، '.join(top[:-1]) + (f' و{top[-1]}' if len(top) > 1 else top[0])
+        line_feats = pick1([f'فيها {joined}.', f'من بين المميزات: {joined}.', f'كاين {joined}، وزيد بزاف حوايج.'])
+
+    line_cond = None
+    if cond and (cond.get('paint') is not None):
+        paint, repl = cond.get('paint') or [], cond.get('replaced') or []
+        if not paint and not repl:
+            line_cond = pick1(['زيرو صبغة، زيرو تبديل.', 'الحالة نقية: لا صبغة لا تبديل.', 'لا صبغة، لا تبديل، ربي بارك.'])
+        else:
+            parts = []
+            if paint: parts.append('فيها صبغة في ' + '، '.join(PANELS[p][1] for p in paint if p in PANELS))
+            if repl: parts.append('وتبدل ' + '، '.join(PANELS[p][1] for p in repl if p in PANELS))
+            line_cond = 'بالصراحة، ' + ' '.join(parts) + '، وكلشي واضح في الفيديو.'
+
+    line_trust = pick1(['كلشي من أرض الواقع مباشرة.', 'الصور والفيديو حقيقيين، كيما راكم تشوفو.', 'الشفافية قبل كلشي.', 'وحيد أوتو، الصدق والمصداقية.'])
+    line_price = pick1([f'السعر: {words(millions)} مليون.', f'السعر خاوتنا {words(millions)} مليون.', f'دايرينلها {words(millions)} مليون.']) if millions else None
+    line_end = pick1([
+        'للمهتم، تواصل معانا على الواتساب، الأرقام في أسفل الفيديو.',
+        'اللي حاب يحجزها، الأرقام موجودين، راسلونا على الواتساب.',
+        'للحجز والمعلومات، الواتساب مفتوح، الأرقام في الفيديو.',
+    ]) + ' والسلام عليكم ورحمة الله وبركاته.'
+
+    # El Hadj–style neon labels, placed on the shots that show the thing they name
+    sides = [(32, 46, 16), (68, 52, -16), (36, 60, 14), (64, 40, -14)]
+    def neon(j, t, sub='', ar='', at=0.3):
+        x, y, ry = sides[j % len(sides)]
+        return {'on': j, 'kind': 'neon', 't': t, 's': sub, 'a': ar, 'x': x, 'y': y, 'ry': ry, 'at': at}
+
+    s_inside_all = s_inside + photos_of(['seats', 'rearseats', 'trunk'], 2)
+    def kind_of(spec):
+        if isinstance(spec, dict): return 'dash'
+        return media[spec].get('kind', '')
+    inside_fx, left = [], list(feats)
+    for j, spec in enumerate(s_inside_all):
+        k = kind_of(spec)
+        want = [f for f in left if FEATURES[f][2] == k] or left
+        if want:
+            f = want[0]; left.remove(f)
+            inside_fx.append(neon(j, FEATURES[f][0], ar=FEATURES[f][1]))
+        elif k in GENERIC:   # no features filled in yet: name what the shot shows
+            inside_fx.append(neon(j, GENERIC[k][0], ar=GENERIC[k][1]))
+
     script = [
-        {'kind': 'hook', 'say': 'السلام عليكم ورحمة الله وبركاته. وحيد أوتو، كالعادة مع الخدمة ومع الجديد.',
-         'shots': hook},
-        {'say': line_car + '.', 'shots': s_car,
-         'label': [say_name(model) or say_name(brand), str(year or '')]},
-        {'say': line_where + '.', 'shots': s_where,
-         'label': [LOCATION_LABEL.get(loc, ''), chips[0] if km else '']},
-        {'say': 'كما راكم تشوفو خاوتنا، الداخل والخارج، كلشي من أرض الواقع مباشرة.',
-         'shots': s_inside, 'label': ['من الداخل', '']},
-        {'say': 'وحيد أوتو، الصدق والمصداقية، كلشي بالشفافية.', 'shots': s_real,
-         'label': ['الصدق والمصداقية', '']},
-        ({'kind': 'price', 'say': f'السعر خاوتنا: {words(millions)} مليون.'} if millions else
-         {'say': 'للسعر، راسلونا على الواتساب.', 'shots': [price_bg], 'label': ['السعر', 'WHATSAPP']}),
-        {'kind': 'end', 'say': 'للمهتم، يتواصل معانا عبر الواتساب، الأرقام موجودين في أسفل الفيديو. والسلام عليكم ورحمة الله وبركاته، مع السلامة.'},
+        {'kind': 'hook', 'say': 'السلام عليكم ورحمة الله وبركاته. وحيد أوتو، كالعادة مع الخدمة ومع الجديد.', 'shots': hook, 'min': 4.6,
+         'fx': [{'on': 0, 'kind': 'title', 's': brand.upper(), 't': model.upper(), 'x': 50, 'y': 30, 'at': 1.5},
+                {'on': 0, 'kind': 'ground', 't': (specs.get('version') or str(year or '')).upper(), 'x': 50, 'y': 88, 'at': 2.3, 'size': 150}]
+                + ([{'on': 1 if len(hook) > 1 else 0, 'kind': 'neon', 't': chips[0], 's': color.upper() if color.isascii() else '', 'a': '' if color.isascii() else color, 'x': 50, 'y': 58, 'ry': -12, 'at': 0.3}] if km else [])},
+        {'say': line_car, 'shots': s_car, 'fx': [neon(0, title, ar=color)]},
     ]
+    if line_engine:
+        script.append({'say': line_engine, 'shots': s_where[:1] or s_car[:1],
+                       'fx': [neon(0, ' '.join(b for b in [specs.get('engine') or '', FUELS.get(specs.get('fuel', ''), ('',))[0]] if b) or 'MOTEUR',
+                                   sub=GEARBOXES.get(specs.get('gearbox', ''), ('',))[0])]})
+    if line_where:
+        script.append({'say': line_where, 'shots': s_where[1:] or s_where, 'fx': [neon(0, chips[0] if km else '', ar=LOCATION_LABEL.get(loc, ''))]})
+    script.append({'say': line_feats or line_trust, 'shots': s_inside_all, 'fx': inside_fx})
+    if line_cond:
+        clean = not (cond.get('paint') or cond.get('replaced'))
+        script.append({'say': line_cond, 'shots': s_real[:1] or s_car[:1], 'fx': [neon(0, 'ZÉRO PEINTURE' if clean else 'ÉTAT DE LA CARROSSERIE',
+                       sub='ZÉRO CHANGEMENT' if clean else ', '.join(PANELS[p][0] for p in (cond.get('paint') or []) + (cond.get('replaced') or []) if p in PANELS)[:60],
+                       ar='زيرو صبغة' if clean else '')]})
+    else:
+        script.append({'say': line_trust, 'shots': s_real, 'fx': []})
+    script.append({'kind': 'price', 'say': line_price} if line_price else
+                  {'say': 'للسعر، راسلونا على الواتساب.', 'shots': [price_bg], 'fx': [neon(0, 'PRIX', sub='SUR WHATSAPP')]})
+    script.append({'kind': 'end', 'say': line_end})
     return {
         'car': {'title': title, 'year': str(year or ''), 'priceMillions': millions,
                 'priceDa': f'{int(float(price)):,} DA'.replace(',', '.') if price else 'راسلونا',
@@ -149,6 +254,7 @@ def build(car):
                 'chips': chips},
         # no synthetic voice: the lines below are the script Wahid reads (see script.txt)
         'voice': None,
+        'style': 'neon',
         'priceShot': price_bg,
         'analysis': {'photos': a['photos'], 'video': a['video']},
         'media': media,

@@ -28,11 +28,39 @@ video.media, img.media { display: block; }
 .wa { width: 40px; height: 40px; border-radius: 50%; background: #25D366; display: grid; place-items: center; }
 #end { position: absolute; inset: 0; background: radial-gradient(60% 40% at 50% 38%, rgba(95,184,155,.22), rgba(11,13,12,0) 70%), #0B0D0C; opacity: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; color: var(--ink); }
 #price { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; opacity: 0; }
+
+/* ---- El Hadj–style graphics: neon glass labels, tracked, in perspective ---- */
+:root { --neon: #6FF3D8; --neon-glow: rgba(111,243,216,.75); }
+#fx { position: absolute; inset: 0; perspective: 1400px; pointer-events: none; }
+.neon { position: absolute; transform-style: preserve-3d; display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 18px 34px 20px; border-radius: 22px; border: 3.5px solid var(--neon);
+  background: linear-gradient(180deg, rgba(14,28,28,.62), rgba(6,14,14,.55)); backdrop-filter: blur(8px);
+  box-shadow: 0 0 22px var(--neon-glow), 0 0 60px rgba(111,243,216,.35), inset 0 0 18px rgba(111,243,216,.25);
+  color: #fff; text-align: center; white-space: nowrap; }
+.neon .t { font-family: Jost, sans-serif; font-weight: 800; font-size: 58px; letter-spacing: .01em; line-height: 1; text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255,255,255,.55); }
+.neon .s { font-family: Jost, sans-serif; font-weight: 600; font-size: 30px; letter-spacing: .04em; text-transform: uppercase; opacity: .92; }
+.neon .a { font-family: Manal, Jost, sans-serif; font-size: 40px; direction: rtl; }
+.ground { position: absolute; left: 50%; transform-origin: 50% 100%; font-family: Jost, sans-serif; font-weight: 800; color: #fff;
+  text-transform: uppercase; white-space: nowrap; letter-spacing: .02em; text-shadow: 0 0 18px rgba(255,255,255,.35); }
+.title3d { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; font-family: Jost, sans-serif; color: #fff; }
+.title3d .big { font-weight: 800; font-size: 150px; line-height: .95; letter-spacing: -.01em; text-transform: uppercase;
+  -webkit-text-stroke: 3px var(--neon); color: rgba(255,255,255,.96); text-shadow: 0 0 26px var(--neon-glow), 0 0 70px rgba(111,243,216,.45); }
+.title3d .small { font-weight: 600; font-size: 46px; letter-spacing: .35em; margin-right: -.35em; color: var(--neon); text-shadow: 0 0 14px var(--neon-glow); }
+.hdr { position: absolute; top: 190px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 26px; }
+.hdr i { display: block; width: 150px; height: 3px; background: #fff; border-radius: 2px; box-shadow: 0 1px 6px rgba(0,0,0,.4); }
+.hdr b { font-family: Jost, sans-serif; font-weight: 800; font-style: italic; font-size: 64px; letter-spacing: .02em; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.45); }
+.hdr small { position: absolute; top: 74px; font-family: Jost; font-size: 18px; letter-spacing: .3em; color: rgba(255,255,255,.85); }
+.ftr { position: absolute; bottom: 330px; left: 54px; right: 54px; display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: Jost, sans-serif; font-weight: 600; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+.ftr .nums { border-left: 3px solid rgba(255,255,255,.85); padding-left: 16px; font-size: 30px; line-height: 1.25; letter-spacing: .04em; }
+.ftr .who { text-align: right; font-size: 26px; line-height: 1.35; }
 </style></head>
 <body><div id="stage">
   <div id="mediaBox"></div>
   <div class="shade"></div>
   <div class="flash" id="flash"></div>
+  <div id="fx"></div>
 
   <div class="layer" id="hook" style="top: 420px">
     <div class="tag white lat" id="h1" style="font-size: 118px; font-weight: 800"></div>
@@ -57,15 +85,23 @@ video.media, img.media { display: block; }
   </div>
 
   <div id="end">
-    <svg id="mono" width="230" height="230" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="2.4"/><polyline points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#5FB89B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg id="mono" width="230" height="230" viewBox="0 0 120 120" style="overflow:visible; filter: drop-shadow(0 0 12px rgba(111,243,216,.7))"><circle class="dr2" pathLength="1" cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="2.4" transform="rotate(-90 60 60)"/><polyline class="dr2" pathLength="1" points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline class="dr2" pathLength="1" points="60,50 76,82 90,40" fill="none" stroke="#6FF3D8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <div class="lat" id="eName" style="font-size: 76px; letter-spacing: .3em; font-weight: 400; margin-right: -.3em">WAHID AUTO</div>
     <div class="ar" id="eCall" style="font-size: 92px; margin-top: 30px">راسلنا على واتساب</div>
     <div id="eNum" style="display:flex; flex-direction:column; gap:16px; align-items:center"><div class="phonepill" style="font-size: 54px; padding: 12px 36px; border: 2px solid #5FB89B"><span class="wa"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>0557 06 04 78</div><div class="phonepill" style="font-size: 54px; padding: 12px 36px; border: 2px solid #5FB89B"><span class="wa"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>0781 66 32 01</div><div class="phonepill" style="font-size: 54px; padding: 12px 36px; border: 2px solid #5FB89B"><span class="wa"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg></span>0672 14 73 90</div></div>
     <div class="lat" id="eWeb" style="font-size: 40px; color: #9A9E98; letter-spacing: .08em">wahid-auto.com</div>
   </div>
 
-  <div class="brandbar" id="brand"><div class="brandpill"><svg width="56" height="56" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="3"/><polyline points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#5FB89B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>WAHID AUTO</div></div>
-  <div class="phone" id="phoneBar"><div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center"><div class="phonepill" style="font-size: 30px; padding: 8px 18px; gap: 10px">0557 06 04 78</div><div class="phonepill" style="font-size: 30px; padding: 8px 18px; gap: 10px">0781 66 32 01</div><div class="phonepill" style="font-size: 30px; padding: 8px 18px; gap: 10px">0672 14 73 90</div></div></div>
+  <div id="intro" style="position:absolute; inset:0; background:#060807; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:36px; opacity:0">
+    <svg id="introMono" width="340" height="340" viewBox="0 0 120 120" style="overflow:visible; filter: drop-shadow(0 0 14px rgba(111,243,216,.75))">
+      <circle class="dr" pathLength="1" cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="2.4" transform="rotate(-90 60 60)"/>
+      <polyline class="dr" pathLength="1" points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline class="dr" pathLength="1" points="60,50 76,82 90,40" fill="none" stroke="#6FF3D8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div id="introWord" style="font-family:Jost; font-size:78px; letter-spacing:.42em; margin-right:-.42em; color:#F2F2EE; opacity:0">WAHID AUTO</div>
+  </div>
+  <div class="hdr" id="brand"><i></i><b>WAHID AUTO</b><i></i><small>KOREA · CHINA → ALGERIA</small></div>
+  <div class="ftr" id="phoneBar"><div class="nums">0557 06 04 78<br>0781 66 32 01<br>0672 14 73 90</div><div class="who">@wahidautokr<br>Jijel - Algeria</div></div>
 </div>
 <script>
 // ---------- Wahid Auto "new arrival" engine ----------
@@ -118,6 +154,57 @@ function place(el, s, k, t, seed) {
   x = Math.min(0, Math.max(W - iw, x)); y = Math.min(0, Math.max(H - ih, y))
   const [hx, hy, hr] = s.type === 'video' ? [0, 0, 0] : hand(t, seed)
   el.style.transform = `translate(${x + hx}px, ${y + hy}px) rotate(${hr}deg) scale(${scale})`
+  return { x: x + hx, y: y + hy, scale }
+}
+
+// ---- El Hadj–style overlays (neon labels tracked to the footage, 3D title, ground text) ----
+const fxBox = document.getElementById('fx')
+const fxEls = new Map()
+function fxEl(key, html, cls) {
+  if (!fxEls.has(key)) { const d = document.createElement('div'); d.className = cls; d.innerHTML = html; fxBox.appendChild(d); fxEls.set(key, d) }
+  return fxEls.get(key)
+}
+// where a source pixel of the current shot is on screen at time t (follows zoom/pan and, for videos, the camera motion)
+function motionAt(s, entry, t) {
+  if (s.type !== 'video' || !s.motion) return [0, 0]
+  const i = Math.min(s.motion.length - 1, Math.max(0, Math.floor(((entry.from || 0) + (t - entry.t0)) * s.fps)))
+  return s.motion[i]
+}
+function drawFx(cur, t, xf) {
+  const live = new Set()
+  if (cur && cur.fx) cur.fx.forEach((f, n) => {
+    const key = `${tl.indexOf(cur)}-${n}`
+    const t0 = cur.t0 + (f.at ?? 0.25), t1 = cur.t1 - 0.05
+    if (t < t0 || t > t1) return
+    live.add(key)
+    const html = f.kind === 'ground' ? f.t : f.kind === 'title' ? `<span class="small">${f.s || ''}</span><span class="big">${f.t}</span>`
+      : `<span class="t">${f.t}</span>${f.s ? `<span class="s">${f.s}</span>` : ''}${f.a ? `<span class="a">${f.a}</span>` : ''}`
+    const el = fxEl(key, html, f.kind === 'ground' ? 'ground' : f.kind === 'title' ? 'title3d' : 'neon')
+    // anchor: a screen point at t0, converted to footage coordinates so it sticks to the car
+    const s = cur.shot
+    if (!f._anchor) {
+      const m0 = motionAt(s, cur, t0)
+      f._anchor = [((f.x / 100) * W - xf.x) / xf.scale + m0[0], ((f.y / 100) * H - xf.y) / xf.scale + m0[1]]
+    }
+    const m = motionAt(s, cur, t)
+    const px = xf.x + (f._anchor[0] - m[0]) * xf.scale, py = xf.y + (f._anchor[1] - m[1]) * xf.scale
+    const k = clamp((t - t0) / 0.35), out = clamp((t1 - t) / 0.2)
+    const grow = 0.6 + 0.4 * back(k)
+    el.style.opacity = Math.min(k * 2, out)
+    if (f.kind === 'ground') {
+      el.style.fontSize = `${f.size || 150}px`
+      el.style.left = `${px}px`; el.style.top = `${py}px`
+      el.style.transform = `translate(-50%, -100%) perspective(900px) rotateX(${f.rx ?? 62}deg) rotateZ(${f.rz ?? -8}deg) scale(${grow})`
+    } else if (f.kind === 'title') {
+      el.style.top = `${py}px`; el.style.left = '0'; el.style.right = '0'
+      el.style.transform = `translateY(-50%) scale(${0.85 + 0.15 * back(k)})`
+      el.style.filter = `blur(${(1 - k) * 8}px)`
+    } else {
+      el.style.left = `${px}px`; el.style.top = `${py}px`
+      el.style.transform = `translate(-50%, -50%) rotateY(${f.ry ?? -16}deg) rotateX(${f.rx ?? 6}deg) scale(${grow})`
+    }
+  })
+  for (const [key, el] of fxEls) if (!live.has(key)) el.style.opacity = 0
 }
 
 async function render(t) {
@@ -133,24 +220,28 @@ async function render(t) {
       const src = `${s.dir}/${String(idx).padStart(5, '0')}.jpg`
       if (!el.src.endsWith(src)) { el.src = src; await el.decode().catch(() => {}) }
     }
-    place(el, s, k, t, i + 1)
+    const xf = place(el, s, k, t, i + 1)
+    drawFx(cur, t, xf)
     // short cross-dissolve from the previous shot (6 frames) instead of flashy whips
     const prev = tl[tl.indexOf(cur) - 1]
     const dk = (t - cur.t0) / 0.2
     if (prev && dk < 1) { const pi = C.shots.indexOf(prev.shot); if (pi !== i) { const pe = els[pi]; pe.style.opacity = 1 - smooth(dk); el.style.opacity = smooth(dk); place(pe, prev.shot, 1, t, pi + 1) } }
-    if (cur.hook) flash = clamp(1 - t / 0.25)
+    if (cur.hook) flash = C.style === 'neon' ? (t >= 1.4 ? clamp(1 - (t - 1.4) / 0.3) : 0) : clamp(1 - t / 0.25)
   } else if (t < priceEnd) {
+    drawFx(null, t, null)
     const el = els[C.priceShot ?? 0], s = C.shots[C.priceShot ?? 0]
     el.style.opacity = 1; el.style.filter = 'blur(10px) brightness(.45)'; place(el, s, (t - bodyEnd) / (priceEnd - bodyEnd), t, 3)
     flash = clamp(0.5 - (t - bodyEnd) / 0.2)
   } else {
+    drawFx(null, t, null)
     const el = els[C.priceShot ?? 0]; el.style.opacity = 1; el.style.filter = 'blur(14px) brightness(.3)'
   }
   $('flash').style.opacity = flash
 
   // hook text, paced so it can be read
   const hk = t < T.hook
-  for (const id of ['hook', 'hookChips', 'hookPrice']) $(id).style.display = hk ? 'flex' : 'none'
+  const neon = C.style === 'neon'   // El Hadj–style: the hook is drawn by the fx layer instead
+  for (const id of ['hook', 'hookChips', 'hookPrice']) $(id).style.display = hk && !neon ? 'flex' : 'none'
   if (hk) {
     const out = T.hook - 0.05
     pop($('h1'), t, 0.3, out); pop($('h2'), t, 0.7, out)
@@ -168,7 +259,7 @@ async function render(t) {
     pop($('labelAr'), t, cur.t0 + 0.25, cur.t1 - 0.1); pop($('labelLat'), t, cur.t0 + 0.4, cur.t1 - 0.1)
   }
   const body = t >= T.hook && t < bodyEnd
-  $('ticker').style.display = body ? 'flex' : 'none'
+  $('ticker').style.display = body && C.style !== 'neon' ? 'flex' : 'none'
   if (body) pop($('tick'), t, T.hook + 0.2)
 
   // price
@@ -203,5 +294,25 @@ $('chipRow').innerHTML = car.chips.map(c => `<div class="chip">${c}</div>`).join
 $('hp').innerHTML = car.priceMillions ? `<span class="lat" style="font-weight:800">${car.priceMillions}</span> مليون` : 'راسلونا للسعر'
 $('tick').textContent = car.ticker
 $('pDa').textContent = car.priceDa
-window.render = render
+// logo animation: strokes draw themselves (intro over the first 1.4 s, outro on the end card)
+function drawLogo(sel, t0, t) {
+  document.querySelectorAll(sel).forEach((p, i) => {
+    const k = easeOut((t - t0 - i * 0.18) / 0.55)
+    p.style.strokeDasharray = '1 1'; p.style.strokeDashoffset = String(1 - clamp(k))
+  })
+}
+const _render = render
+window.render = async t => {
+  await _render(t)
+  const intro = $('intro'), INTRO = C.style === 'neon' ? 1.4 : 0
+  if (t < INTRO) {
+    intro.style.opacity = String(clamp((INTRO - t) / 0.25))
+    drawLogo('#introMono .dr', 0.05, t)
+    $('introMono').style.transform = `scale(${0.92 + 0.08 * easeOut(t / 1.2)})`
+    $('introWord').style.opacity = String(clamp((t - 0.6) / 0.35))
+    $('introWord').style.letterSpacing = `${0.6 - 0.18 * easeOut((t - 0.6) / 0.6)}em`
+    $('brand').style.opacity = 0; $('phoneBar').style.opacity = 0
+  } else intro.style.opacity = 0
+  if (t >= priceEnd) drawLogo('#mono .dr2', priceEnd + 0.05, t)
+}
 </script></body></html>
