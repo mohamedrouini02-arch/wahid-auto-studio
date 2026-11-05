@@ -236,7 +236,8 @@ def build(car):
                                    sub=GEARBOXES.get(specs.get('gearbox', ''), ('',))[0])]})
     if line_where:
         script.append({'say': line_where, 'shots': s_where[1:] or s_where, 'fx': [neon(0, chips[0] if km else '', ar=LOCATION_LABEL.get(loc, ''))]})
-    script.append({'say': line_feats or line_trust, 'shots': s_inside_all, 'fx': inside_fx})
+    line_inside = pick1(['ندخلو للداخل، كما راكم تشوفو.', 'هذا هو الداخل تاعها، شوفو معايا.', 'نشوفو الداخل مع بعض.'])
+    script.append({'say': line_feats or line_inside, 'shots': s_inside_all, 'fx': inside_fx})
     if line_cond:
         clean = not (cond.get('paint') or cond.get('replaced'))
         script.append({'say': line_cond, 'shots': s_real[:1] or s_car[:1], 'fx': [neon(0, 'ZÉRO PEINTURE' if clean else 'ÉTAT DE LA CARROSSERIE',
