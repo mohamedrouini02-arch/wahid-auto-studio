@@ -230,7 +230,7 @@ def build(job, shots, work):
                     sfx.append((e['t0'] + 0.4, 'click', 0.45))        # second line
             if kind == 'hook':
                 hook_end = t + dur
-                if job.get('style') == 'neon':   # logo sting: air while it draws, a hit when the footage appears
+                if job.get('style') in ('neon', 'clean'):   # logo sting: air while it draws, a hit when the footage appears
                     sfx += [(0.0, 'riser', 0.45), (0.15, 'whoosh', 0.35), (1.38, 'impact', 0.6)]
                 else:
                     sfx.append((0.0, 'impact', 0.55))
@@ -292,6 +292,13 @@ async def render(cfg, frames_dir):
         await pg.evaluate('document.fonts.ready')
         await pg.evaluate("Promise.all([...document.images].map(i => i.decode().catch(()=>{})))")
         n = round(cfg['total'] * FPS)
+        preview = os.environ.get('STUDIO_PREVIEW')   # "t1,t2,..." -> only stills at those seconds (quick look)
+        if preview:
+            for t in preview.split(','):
+                i = round(float(t) * FPS)
+                await pg.evaluate(f'render({i / FPS})')
+                await pg.screenshot(path=f'{frames_dir}/../preview_{float(t):06.2f}.jpg', type='jpeg', quality=85)
+            await b.close(); print('preview done', frames_dir); sys.exit(0)
         for i in range(n):
             await pg.evaluate(f'render({i / FPS})')
             await pg.screenshot(path=f'{frames_dir}/f{i:05d}.jpg', type='jpeg', quality=92)
@@ -314,9 +321,10 @@ def main():
         words = job.get('words') or talking.transcribe(src)
         json.dump(words, open(out[:-4] + '-words.json', 'w'), ensure_ascii=False)
         shots[vid]['move'] = 'none'
-        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid)
+        style = job.setdefault('style', 'clean')
+        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid, style, bool(job['car'].get('priceMillions')))
+        job['priceShot'] = vid
         vo = [(talking.INTRO, talking.speech_track(src, timing['ranges'], os.path.join(work, 'speech.wav')))]
-        job.setdefault('style', 'neon')
     else:
         timing, sfx, vo = build(job, shots, work)
     for m in shots: m.pop('_abs_dir', None)

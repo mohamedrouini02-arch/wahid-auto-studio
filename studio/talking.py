@@ -169,7 +169,7 @@ def screen_xform(src_w, src_h):
     return cover, W / 2 - iw / 2, H / 2 - ih / 2
 
 
-def plan(video, words, car, shot_index=0):
+def plan(video, words, car, shot_index=0, style='clean', price=False):
     """Timeline + labels + sound events for a talking video. `video` is the prepared media entry."""
     length = video['length']
     ranges = keep_ranges(words, length)
@@ -192,12 +192,20 @@ def plan(video, words, car, shot_index=0):
             screen = [[round(float(ox + x * cover), 1), round(float(oy + y * cover - 140), 1)] for x, y in path]
             e['fx'].append({'kind': 'neon', 't': fr, 's': sub, 'a': ar, 'at': round(float(st - a), 3), 'dur': round(float(dur), 3),
                             'track': screen, 'ry': -14 if side else 14})
-            sfx.append((e['t0'] + st - a, 'pop', 0.6))
+            if style == 'clean':   # dot lands, card wipes open
+                sfx += [(e['t0'] + st - a, 'click', 0.5), (e['t0'] + st - a + 0.22, 'whoosh', 0.3), (e['t0'] + st - a + 0.32, 'pop', 0.35)]
+            else:
+                sfx.append((e['t0'] + st - a, 'pop', 0.6))
         tl.append(e)
         t += b - a
-    sfx += [(0.0, 'riser', 0.45), (0.15, 'whoosh', 0.35), (INTRO - 0.02, 'impact', 0.6), (t - 0.25, 'whoosh', 0.45),
-            (t + 0.62, 'impact', 0.35)]
-    return {'tl': tl, 'hookEnd': INTRO, 'bodyEnd': round(t, 3), 'priceEnd': round(t, 3), 'total': round(t + 3.2, 3),
+    body_end = t
+    sfx += [(0.0, 'riser', 0.45), (0.15, 'whoosh', 0.35), (INTRO - 0.02, 'impact', 0.6)]
+    if price:   # the price screen from our classic edit: count-up, hit
+        sfx += [(t - 0.9, 'riser', 0.45), (t - 0.3, 'transition', 0.5), (t + 0.1, 'pop', 0.5), (t + 1.25, 'impact', 0.8), (t + 1.7, 'click', 0.45)]
+        t += 3.0
+    sfx += [(t - 0.25, 'whoosh', 0.45), (t + 0.62, 'impact', 0.35), (t + 0.35, 'pop', 0.5), (t + 0.75, 'click', 0.4),
+            (t + 1.1, 'click', 0.4), (t + 1.45, 'click', 0.35)]
+    return {'tl': tl, 'hookEnd': INTRO, 'bodyEnd': round(body_end, 3), 'priceEnd': round(t, 3), 'total': round(t + 3.2, 3),
             'marks': [], 'ranges': ranges}, sfx
 
 

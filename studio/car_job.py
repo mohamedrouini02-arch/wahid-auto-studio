@@ -99,10 +99,13 @@ def talking_job(car, video, words):
         'features_fr': [FEATURES[f][0] for f in (car.get('features') or []) if f in FEATURES],
     }
     millions = round(float(price) / 10000) if price else None
-    return {'mode': 'talking', 'style': 'neon', 'voice': None, 'talk': talk, 'words': words,
+    return {'mode': 'talking', 'style': STYLE, 'voice': None, 'talk': talk, 'words': words,
             'car': {'title': f"{talk['brand']} {talk['model']}".upper(), 'year': str(car.get('year') or ''), 'priceMillions': millions,
                     'priceDa': f'{int(float(price)):,} DA'.replace(',', '.') if price else '', 'ticker': '', 'chips': []},
             'media': [{'src': video, 'type': 'video'}], 'script': []}
+
+
+STYLE = os.environ.get('VIDEO_STYLE') or 'clean'   # clean (default) | neon | classic
 
 
 def fetch_car(car_id):
@@ -287,7 +290,7 @@ def build(car):
                 'chips': chips},
         # no synthetic voice: the lines below are the script Wahid reads (see script.txt)
         'voice': None,
-        'style': 'neon',
+        'style': STYLE,
         'priceShot': price_bg,
         'analysis': {'photos': a['photos'], 'video': a['video']},
         'media': media,
