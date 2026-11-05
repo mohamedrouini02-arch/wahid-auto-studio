@@ -23,4 +23,4 @@ jobs:
       - name: Save
         run: |
           git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
-          git add research/out && git commit -qm "transcripts ${{ github.run_id }}" && git push -q origin HEAD:main
+          git add research/out && git commit -qm "transcripts ${{ github.run_id }}" && git pull -q --rebase origin main && git push -q origin HEAD:main
