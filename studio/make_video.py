@@ -136,7 +136,7 @@ def prepare_media(job, work):
 
 # ---------------- timeline ----------------
 def build(job, shots, work):
-    voice = job.get('voice', {})
+    voice = job.get('voice') or {}
     vname, vrate = voice.get('name', 'ar-DZ-IsmaelNeural'), voice.get('rate', '+0%')
     pad = job.get('pad', 0.25)
     beats = job['script']
