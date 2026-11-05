@@ -164,7 +164,9 @@ def build(job, shots, work):
         if kind in ('hook', 'body'):
             ids = b['shots']
             each = dur / len(ids)
-            for j, si in enumerate(ids):
+            for j, spec in enumerate(ids):
+                # a shot is a media index, or {"m": index, "at": seconds into a video}
+                si = spec['m'] if isinstance(spec, dict) else spec
                 e = {'t0': round(t + j * each, 3), 't1': round(t + (j + 1) * each, 3), 'shot': si}
                 if kind == 'hook':
                     e['hook'] = True
@@ -172,7 +174,7 @@ def build(job, shots, work):
                     e['label'] = b['label']
                 s = shots[si]
                 if s.get('type') == 'video':
-                    c = video_cursor.get(si, s.get('start', 0))
+                    c = spec['at'] if isinstance(spec, dict) and 'at' in spec else video_cursor.get(si, s.get('start', 0))
                     if c + each > s['length']:
                         c = 0
                     e['from'] = c; video_cursor[si] = c + each
