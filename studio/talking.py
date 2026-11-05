@@ -15,6 +15,17 @@ W, H = 1080, 1920
 
 # what he may say -> label (French as in the videos, Arabic subtitle)
 KEYWORDS = [
+    (['ملتي', 'فنكشن', 'multifonction'], 'VOLANT MULTIFONCTION', 'الفولون'),
+    (['باليت', 'palettes'], 'PALETTES AU VOLANT', 'لباليت'),
+    (['ريغلاتر', 'ريغلا', 'ريقلاتر'], 'RÉGULATEUR DE VITESSE', 'ريغولاتور'),
+    (['رابطابل', 'رباطابل', 'rabattable'], 'RÉTROS RABATTABLES', 'المرايات'),
+    (['لاين', 'lane'], 'MAINTIEN DE VOIE', 'لاين أسيست'),
+    (['ابستاكل', 'لوبستاكل', 'obstacle'], 'RADARS DE STATIONNEMENT', 'رادارات'),
+    (['فرامة', 'فران', 'frein'], 'FREIN À MAIN ÉLECTRIQUE', 'فران كهربائي'),
+    (['ستوب', 'stop'], 'START & STOP', 'ستارت ستوب'),
+    (['ايكو', 'ايكون', 'ecomode'], 'MODES DE CONDUITE', 'المودات'),
+    (['مرشوش', 'رشة', 'مقاوة', 'معاود'], 'PEINTURE', 'الصبغة'),
+    (['موتر'], 'MOTEUR', 'الموتور'),
     (['كاميرا', 'كامرا', 'camera', 'caméra'], 'CAMÉRA DE RECUL', 'كاميرا'),
     (['شاشة', 'شاشه', 'ecran', 'écran', 'تاكتيل', 'tactile'], 'ÉCRAN TACTILE', 'شاشة'),
     (['جي بي اس', 'جيبياس', 'gps', 'نافيڨاسيون', 'navigation'], 'GPS', 'جي بي إس'),
@@ -27,7 +38,7 @@ KEYWORDS = [
     (['كراسي', 'سياج', 'siège', 'sieges', 'سيج'], 'SIÈGES', 'الكراسي'),
     (['تو ڨوفرون', 'toit ouvrant', 'سقف', 'بانوراميك', 'panoramique'], 'TOIT OUVRANT', 'السقف'),
     (['جونط', 'جنط', 'jante', 'jantes'], 'JANTES EN ALLIAGE', 'الجونط'),
-    (['فار', 'فارات', 'phare', 'led', 'ليد'], 'PHARES LED', 'الفارات'),
+    (['فار', 'فارات', 'phare', 'led', 'ليد', 'لاد'], 'PHARES LED', 'الفارات'),
     (['مالبقاج', 'كوفر', 'coffre', 'الصندوق'], 'COFFRE', 'المالبقاج'),
     (['أوتوماتيك', 'اوتوماتيك', 'automatique', 'اوطوماتيك', 'بوات', 'boite', 'boîte'], 'BOÎTE AUTOMATIQUE', 'أوتوماتيك'),
     (['ديماراج', 'demarrage', 'démarrage', 'ستارت', 'start'], 'DÉMARRAGE SANS CLÉ', 'ديماراج'),
@@ -83,9 +94,10 @@ def find_labels(words, car):
     for i, (t, w) in enumerate(text):
         two = w + ' ' + (text[i + 1][1] if i + 1 < len(text) else '')
         for keys, fr, ar in KEYWORDS:
-            if any(norm(k) in two for k in keys):
+            toks = [x[2:] if x.startswith('ال') else x for x in two.split()]
+            if any((norm(k) in toks) if len(norm(k)) <= 3 else (norm(k) in two) for k in keys):
                 if fr == 'MOTEUR' and car.get('engine_label'): fr = car['engine_label']
-                if fr == 'PEINTURE' and car.get('paint_label'): fr, ar = car['paint_label'], car.get('paint_ar', ar)
+                if fr == 'PEINTURE' and car.get('paint_label'): fr, ar = car['paint_label'], (car.get('paint_ar') or ar)
                 if fr == 'SIÈGES' and 'SIÈGES EN CUIR' in feats_fr: fr = 'SIÈGES EN CUIR'
                 if t - last.get(fr, -99) > 8:
                     out.append((t, fr, '', ar)); last[fr] = t
