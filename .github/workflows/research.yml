@@ -20,7 +20,9 @@ jobs:
         run: |
           mkdir -p research/out
           for f in research/audio/*.ogg; do python research/transcribe.py "$f" "research/out/$(basename "$f" .ogg).json"; done
-      - name: Save
+      - name: Show transcripts in the log
+        run: cat research/out/*.json
+      - name: Save to the research branch
         run: |
           git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
-          git add research/out && git commit -qm "transcripts ${{ github.run_id }}" && git pull -q --rebase origin main && git push -q origin HEAD:main
+          git checkout -q -B research && git add -f research/out && git commit -qm "transcripts ${{ github.run_id }}" && git push -qf origin research
