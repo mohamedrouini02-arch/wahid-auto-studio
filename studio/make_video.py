@@ -322,7 +322,7 @@ def main():
         json.dump(words, open(out[:-4] + '-words.json', 'w'), ensure_ascii=False)
         shots[vid]['move'] = 'none'
         style = job.setdefault('style', 'clean')
-        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid, style, bool(job['car'].get('priceMillions')))
+        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid, style, True)   # price screen, or 'price on WhatsApp'
         job['priceShot'] = vid
         vo = [(talking.INTRO, talking.speech_track(src, timing['ranges'], os.path.join(work, 'speech.wav')))]
     else:

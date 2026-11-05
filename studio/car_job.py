@@ -86,7 +86,7 @@ def say_name(text):
 def talking_job(car, video, words):
     specs = car.get('specs') or {}
     cond = car.get('condition') or {}
-    price = car.get('selling_price') if car.get('show_price_on_website') else None
+    price = car.get('selling_price') if not (car.get('specs') or {}).get('video_hide_price') and (car.get('selling_price') or 0) > 0 else None   # app switch: show price in the video
     km = car.get('mileage')
     paint = [PANELS[p][0] for p in (cond.get('paint') or []) if p in PANELS]
     talk = {
@@ -121,7 +121,7 @@ def build(car):
     brand, model = (car.get('brand') or '').strip(), (car.get('model') or '').strip()
     year, km, color = car.get('year'), car.get('mileage'), (car.get('color') or '').strip()
     loc = (car.get('location') or '').lower()
-    price = car.get('selling_price') if car.get('show_price_on_website') else None
+    price = car.get('selling_price') if not (car.get('specs') or {}).get('video_hide_price') and (car.get('selling_price') or 0) > 0 else None   # app switch: show price in the video
     photos = [p for p in (car.get('photos_urls') or []) if p]
     video = car.get('video_url')
 
@@ -280,8 +280,7 @@ def build(car):
                        ar='زيرو صبغة' if clean else '')]})
     else:
         script.append({'say': line_trust, 'shots': s_real, 'fx': []})
-    script.append({'kind': 'price', 'say': line_price} if line_price else
-                  {'say': 'للسعر، راسلونا على الواتساب.', 'shots': [price_bg], 'fx': [neon(0, 'PRIX', sub='SUR WHATSAPP')]})
+    script.append({'kind': 'price', 'say': line_price or 'للسعر، راسلونا على الواتساب.'})   # price hidden -> "price on WhatsApp" screen
     script.append({'kind': 'end', 'say': line_end})
     return {
         'car': {'title': title, 'year': str(year or ''), 'priceMillions': millions,

@@ -331,7 +331,7 @@ async function render(t) {
   if (pt >= 0 && t < priceEnd) {
     pop($('pLabel'), t, bodyEnd + 0.1)
     const target = C.car.priceMillions, startN = Math.round(target * 0.75)
-    $('pNum').textContent = String(Math.round(startN + (target - startN) * easeOut((pt - 0.15) / 1.1)))
+    if (target) $('pNum').textContent = String(Math.round(startN + (target - startN) * easeOut((pt - 0.15) / 1.1)))
     const s = pt > 1.25 && pt < 1.45 ? 1.1 - 0.1 * clamp((pt - 1.25) / 0.2) : 1
     $('pNum').style.transform = `scale(${s})`
     pop($('pUnit'), t, bodyEnd + 1.25); pop($('pDa'), t, bodyEnd + 1.7)
@@ -361,6 +361,12 @@ $('chipRow').innerHTML = car.chips.map(c => `<div class="chip">${c}</div>`).join
 $('hp').innerHTML = car.priceMillions ? `<span class="lat" style="font-weight:800">${car.priceMillions}</span> مليون` : 'راسلونا للسعر'
 $('tick').textContent = car.ticker
 $('pDa').textContent = car.priceDa
+if (!car.priceMillions) {   // price hidden: ask them to message us
+  $('pLabel').textContent = 'للسعر'
+  $('pNum').className = 'ar'; $('pNum').textContent = 'راسلونا'; $('pNum').style.fontSize = '190px'
+  $('pUnit').textContent = 'على الواتساب'; $('pUnit').style.fontSize = '92px'
+  $('pDa').textContent = '0557 06 04 78 · 0781 66 32 01 · 0672 14 73 90'; $('pDa').style.fontSize = '32px'
+}
 // logo animation: strokes draw themselves (intro over the first 1.4 s, outro on the end card)
 function drawLogo(sel, t0, t) {
   document.querySelectorAll(sel).forEach((p, i) => {
