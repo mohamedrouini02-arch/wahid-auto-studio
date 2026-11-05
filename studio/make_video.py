@@ -146,7 +146,7 @@ def prepare_media(job, work):
             first = Image.open(f'{d}/00001.jpg')
             # contact sheet of the clip (one frame per second) so the editor can pick the best moments
             sheet = os.path.join(os.path.dirname(os.path.abspath(sys.argv[2])), f'clip{i}-sheet.jpg')
-            subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', src, '-vf', 'fps=1,scale=180:-1,drawtext=text=%{pts\\:hms}:x=4:y=4:fontcolor=yellow:fontsize=14,tile=8x4', '-frames:v', '1', sheet])
+            subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', src, '-vf', 'fps=1,scale=180:-1,tile=8x4', '-frames:v', '1', sheet])
             m.update(dir=os.path.relpath(d, HERE), _abs_dir=d, frames=len(os.listdir(d)), fps=FPS, w=first.width, h=first.height,
                      length=len(os.listdir(d)) / FPS, motion=camera_motion(d, first.width))
         else:
@@ -287,7 +287,7 @@ async def render(cfg, frames_dir):
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
         b = await p.chromium.launch(); pg = await b.new_page(viewport={'width': 1080, 'height': 1920})
-        await pg.add_init_script(f'window.CONFIG = {json.dumps(cfg)}')
+        await pg.add_init_script(f'window.CONFIG = {json.dumps(cfg, default=float)}')
         await pg.goto('file://' + HERE + '/template.html')
         await pg.evaluate('document.fonts.ready')
         await pg.evaluate("Promise.all([...document.images].map(i => i.decode().catch(()=>{})))")

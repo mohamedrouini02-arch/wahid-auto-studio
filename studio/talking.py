@@ -117,7 +117,7 @@ def track(frames_dir, src_w, src_h, f0, f1, anchor):
     mask = np.zeros_like(prev); r = 80
     mask[max(0, int(ay - r)):int(ay + r), max(0, int(ax - r)):int(ax + r)] = 255
     pts = cv2.goodFeaturesToTrack(prev, 40, 0.01, 6, mask=mask)
-    path = [(anchor[0], anchor[1])]
+    path = [(float(anchor[0]), float(anchor[1]))]
     for i in range(f0 + 1, f1 + 1):
         cur = load(i)
         if pts is not None and len(pts) >= 4:
@@ -133,7 +133,7 @@ def track(frames_dir, src_w, src_h, f0, f1, anchor):
             mask = np.zeros_like(cur)
             mask[max(0, int(ay - r)):int(ay + r), max(0, int(ax - r)):int(ax + r)] = 255
             pts = cv2.goodFeaturesToTrack(cur, 40, 0.01, 6, mask=mask)
-        path.append((ax / small, ay / small))
+        path.append((float(ax / small), float(ay / small)))
         prev = cur
     return path
 
@@ -167,7 +167,7 @@ def plan(video, words, car, shot_index=0):
     frames_dir = video['_abs_dir']
     side = 0
     for (a, b) in ranges:
-        e = {'t0': round(t, 3), 't1': round(t + (b - a), 3), 'shot': shot_index, 'from': a, 'fx': []}
+        e = {'t0': round(float(t), 3), 't1': round(float(t + (b - a)), 3), 'shot': shot_index, 'from': float(a), 'fx': []}
         if not tl:
             e['hook'] = True
             e['fx'].append({'kind': 'title', 's': car['brand'].upper(), 't': car['model'].upper(), 'x': 50, 'y': 28, 'at': 0.2, 'dur': 2.6})
@@ -177,8 +177,8 @@ def plan(video, words, car, shot_index=0):
             f0 = int(st * FPS); f1 = int((st + dur) * FPS)
             anc = best_anchor(frames_dir, f0, side); side ^= 1
             path = track(frames_dir, video['w'], video['h'], f0, f1, anc)
-            screen = [[round(ox + x * cover, 1), round(oy + y * cover - 140, 1)] for x, y in path]
-            e['fx'].append({'kind': 'neon', 't': fr, 's': sub, 'a': ar, 'at': round(st - a, 3), 'dur': dur,
+            screen = [[round(float(ox + x * cover), 1), round(float(oy + y * cover - 140), 1)] for x, y in path]
+            e['fx'].append({'kind': 'neon', 't': fr, 's': sub, 'a': ar, 'at': round(float(st - a), 3), 'dur': round(float(dur), 3),
                             'track': screen, 'ry': -14 if side else 14})
             sfx.append((e['t0'] + st - a, 'pop', 0.6))
         tl.append(e)
