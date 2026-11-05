@@ -253,7 +253,7 @@ def build(job, shots, work):
 LEVEL = {'whoosh': 0.25, 'transition': 0.3, 'cut': 0.14, 'pop': 0.22, 'click': 0.11, 'impact': 0.5, 'riser': 0.22}
 
 
-def mix(total, sfx, vo, music, out):
+def mix(total, sfx, vo, music, out, music_volume=1.0, sfx_volume=1.0):
     n = int(total * SR) + SR
     bus = np.zeros(n, np.float32)
     # only real recorded sounds from studio/sfx/<name>.(wav|mp3); a missing one is simply silent
@@ -266,7 +266,7 @@ def mix(total, sfx, vo, music, out):
     for at, name, gain in sfx:
         if name not in lib: continue
         # every sound is levelled to its own target so no effect jumps out of the mix
-        x = lib[name] / (np.abs(lib[name]).max() + 1e-9) * LEVEL.get(name, 0.2) * (gain / 0.5)
+        x = lib[name] / (np.abs(lib[name]).max() + 1e-9) * LEVEL.get(name, 0.2) * (gain / 0.5) * sfx_volume
         i = int(max(0, at) * SR); bus[i:i + len(x)] += x[: n - i]
     voice = np.zeros(n, np.float32)
     for at, path in vo:
@@ -276,7 +276,7 @@ def mix(total, sfx, vo, music, out):
         m = np.tile(m, int(np.ceil(n / len(m))))[:n]
         # duck the music under the voice
         env = np.convolve(np.abs(voice) > 0.02, np.ones(SR // 5) / (SR // 5), 'same')
-        bus += m * (0.22 - 0.14 * np.clip(env * 3, 0, 1))
+        bus += m * music_volume * (0.22 - 0.14 * np.clip(env * 3, 0, 1))
     y = bus + voice
     y = y[: int(total * SR)]
     y = y / max(1.0, np.abs(y).max() / 0.95)
@@ -322,7 +322,7 @@ def main():
         json.dump(words, open(out[:-4] + '-words.json', 'w'), ensure_ascii=False)
         shots[vid]['move'] = 'none'
         style = job.setdefault('style', 'clean')
-        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid, style, True)   # price screen, or 'price on WhatsApp'
+        timing, sfx = talking.plan(shots[vid], words, job['talk'], vid, style, job.get('price_screen', True), job)   # price screen, or 'price on WhatsApp'
         job['priceShot'] = vid
         vo = [(talking.INTRO, talking.speech_track(src, timing['ranges'], os.path.join(work, 'speech.wav')))]
     else:
@@ -331,7 +331,7 @@ def main():
     cfg = {'car': car, 'shots': shots, 'priceShot': job.get('priceShot', 0), 'style': job.get('style', 'classic'), **timing}
     asyncio.run(render(cfg, frames))
     wav = os.path.join(work, 'mix.wav')
-    mix(timing['total'], sfx, vo, job.get('music'), wav)
+    mix(timing['total'], sfx, vo, job.get('music'), wav, job.get('music_volume', 1.0), job.get('sfx_volume', 1.0))
     run('ffmpeg', '-loglevel', 'error', '-y', '-framerate', str(FPS), '-i', f'{frames}/f%05d.jpg', '-i', wav,
         # stay under Supabase's 50 MB upload limit whatever the length (~44 MB budget)
         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', '-maxrate', f"{min(9000, int(44 * 8000 / max(timing['total'], 1)) - 200)}k",

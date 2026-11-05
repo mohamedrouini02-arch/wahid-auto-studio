@@ -1,3 +1,4 @@
-studio/work/
-out/
 __pycache__/
+out/
+studio/work/
+work/

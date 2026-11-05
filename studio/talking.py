@@ -169,11 +169,36 @@ def screen_xform(src_w, src_h):
     return cover, W / 2 - iw / 2, H / 2 - ih / 2
 
 
-def plan(video, words, car, shot_index=0, style='clean', price=False):
-    """Timeline + labels + sound events for a talking video. `video` is the prepared media entry."""
+def plan(video, words, car, shot_index=0, style='clean', price=False, opts=None):
+    """Timeline + labels + sound events for a talking video. `video` is the prepared media entry.
+
+    opts (all optional, the editor agent sets them in the job):
+      max_gap / pad      silence longer than max_gap s is cut (default 1.1 / 0.3); bigger = calmer pace
+      trim: [a, b]       only use this part of the source clip (seconds)
+      cut: [[a, b], ...] remove these parts of the source clip
+      labels: [{at, t, a, s}]   replace the automatic labels (at = second in the SOURCE clip)
+      extra_labels / drop_labels (titles)   add to / remove from the automatic ones
+      label_dur          seconds a label stays up (default 2.8)
+      title: {s, t} | false   the opening brand/model title
+    """
+    o = opts or {}
     length = video['length']
-    ranges = keep_ranges(words, length)
+    ranges = keep_ranges(words, length, o.get('max_gap', 1.1), o.get('pad', 0.3))
+    if o.get('trim'):
+        a0, b0 = o['trim']; ranges = [(max(a, a0), min(b, b0)) for a, b in ranges if b > a0 and a < b0]
+    for ca, cb in o.get('cut') or []:
+        out = []
+        for a, b in ranges:
+            if cb <= a or ca >= b: out.append((a, b)); continue
+            if a < ca: out.append((a, ca))
+            if cb < b: out.append((cb, b))
+        ranges = out
+    ranges = [(a, b) for a, b in ranges if b - a > 0.25]
     labels = find_labels(words, car)
+    if o.get('labels') is not None:
+        labels = [(float(l['at']), l['t'], l.get('s', ''), l.get('a', '')) for l in o['labels']]
+    labels = [l for l in labels if l[1] not in set(o.get('drop_labels') or [])]
+    labels = sorted(labels + [(float(l['at']), l['t'], l.get('s', ''), l.get('a', '')) for l in o.get('extra_labels') or []])
     cover, ox, oy = screen_xform(video['w'], video['h'])
     tl, sfx, t = [], [], INTRO
     frames_dir = video['_abs_dir']
@@ -182,10 +207,12 @@ def plan(video, words, car, shot_index=0, style='clean', price=False):
         e = {'t0': round(float(t), 3), 't1': round(float(t + (b - a)), 3), 'shot': shot_index, 'from': float(a), 'fx': []}
         if not tl:
             e['hook'] = True
-            e['fx'].append({'kind': 'title', 's': car['brand'].upper(), 't': car['model'].upper(), 'x': 50, 'y': 28, 'at': 0.2, 'dur': 2.6})
+            ti = o.get('title', {})
+            if ti is not False:
+                e['fx'].append({'kind': 'title', 's': (ti.get('s') or car['brand']).upper(), 't': (ti.get('t') or car['model']).upper(), 'x': 50, 'y': 28, 'at': 0.2, 'dur': 2.6})
         for (st, fr, sub, ar) in labels:
             if not (a <= st < b - 0.8): continue
-            dur = min(2.8, b - st - 0.1)
+            dur = min(o.get('label_dur', 2.8), b - st - 0.1)
             f0 = int(st * FPS); f1 = int((st + dur) * FPS)
             anc = best_anchor(frames_dir, f0, side); side ^= 1
             path = track(frames_dir, video['w'], video['h'], f0, f1, anc)
