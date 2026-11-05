@@ -214,6 +214,9 @@ def build(job, shots, work):
     return {'tl': tl, 'hookEnd': hook_end, 'bodyEnd': body_end, 'priceEnd': price_end, 'total': round(t, 3), 'marks': marks}, sfx, vo
 
 
+LEVEL = {'whoosh': 0.25, 'transition': 0.3, 'cut': 0.14, 'pop': 0.22, 'click': 0.11, 'impact': 0.5, 'riser': 0.22}
+
+
 def mix(total, sfx, vo, music, out):
     n = int(total * SR) + SR
     bus = np.zeros(n, np.float32)
@@ -226,7 +229,8 @@ def mix(total, sfx, vo, music, out):
                 lib[name] = read_audio(f); break
     for at, name, gain in sfx:
         if name not in lib: continue
-        x = lib[name] * gain * 0.6
+        # every sound is levelled to its own target so no effect jumps out of the mix
+        x = lib[name] / (np.abs(lib[name]).max() + 1e-9) * LEVEL.get(name, 0.2) * (gain / 0.5)
         i = int(max(0, at) * SR); bus[i:i + len(x)] += x[: n - i]
     voice = np.zeros(n, np.float32)
     for at, path in vo:
