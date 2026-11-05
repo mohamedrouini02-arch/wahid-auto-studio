@@ -200,7 +200,7 @@ async function render(t) {
 const car = C.car
 $('h1').textContent = car.title; $('h2').textContent = car.year
 $('chipRow').innerHTML = car.chips.map(c => `<div class="chip">${c}</div>`).join('')
-$('hp').textContent = `${car.priceMillions} مليون`
+$('hp').innerHTML = `<span class="lat" style="font-weight:800">${car.priceMillions}</span> مليون`
 $('tick').textContent = car.ticker
 $('pDa').textContent = car.priceDa
 window.render = render

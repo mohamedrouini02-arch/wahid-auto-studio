@@ -120,6 +120,9 @@ def prepare_media(job, work):
             run('ffmpeg', '-loglevel', 'error', '-y', '-i', src, '-vf',
                 f'fps={FPS},scale=1500:1500:force_original_aspect_ratio=decrease', '-q:v', '3', f'{d}/%05d.jpg')
             first = Image.open(f'{d}/00001.jpg')
+            # contact sheet of the clip (one frame per second) so the editor can pick the best moments
+            sheet = os.path.join(os.path.dirname(os.path.abspath(sys.argv[2])), f'clip{i}-sheet.jpg')
+            subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', src, '-vf', 'fps=1,scale=180:-1,drawtext=text=%{pts\\:hms}:x=4:y=4:fontcolor=yellow:fontsize=14,tile=8x4', '-frames:v', '1', sheet])
             m.update(dir=os.path.relpath(d, HERE), frames=len(os.listdir(d)), fps=FPS, w=first.width, h=first.height,
                      length=len(os.listdir(d)) / FPS)
         else:
