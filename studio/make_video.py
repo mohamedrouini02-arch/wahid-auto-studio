@@ -100,7 +100,12 @@ def read_audio(path):
 
 # ---------------- voice-over ----------------
 def tts(text, out, voice, rate):
-    run('edge-tts', '--voice', voice, f'--rate={rate}', '--text', text, '--write-media', out)
+    raw = out + '.raw.mp3'
+    run('edge-tts', '--voice', voice, f'--rate={rate}', '--text', text, '--write-media', raw)
+    # trim the silence the engine leaves at both ends so lines follow each other like real speech
+    run('ffmpeg', '-loglevel', 'error', '-y', '-i', raw, '-af',
+        'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse',
+        out)
 
 
 # ---------------- media ----------------
@@ -129,7 +134,7 @@ def prepare_media(job, work):
 def build(job, shots, work):
     voice = job.get('voice', {})
     vname, vrate = voice.get('name', 'ar-DZ-IsmaelNeural'), voice.get('rate', '+0%')
-    pad = job.get('pad', 0.35)
+    pad = job.get('pad', 0.25)
     beats = job['script']
     clips = []
     for k, b in enumerate(beats):
@@ -146,11 +151,11 @@ def build(job, shots, work):
         kind = b.get('kind', 'body')
         dur = max(b.get('min', 0), b['_len'] + pad)
         if kind == 'hook':
-            dur = max(dur, 3.2)
+            dur = max(dur, 3.0)
         if kind == 'price':
             dur = max(dur, 3.4)
         if kind == 'end':
-            dur = max(dur, 3.0)
+            dur = max(dur, 2.8)
         if b.get('_vo'):
             vo.append((t + b.get('delay', 0.15), b['_vo']))
         if kind in ('hook', 'body'):
