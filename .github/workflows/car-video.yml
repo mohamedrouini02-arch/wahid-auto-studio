@@ -56,6 +56,7 @@ jobs:
           MODE=$(python -c "import json;print(json.load(open('jobs/auto/$CAR_ID.json')).get('mode',''))")
           if [ "$MODE" = "talking" ]; then python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4" --voiced; else python studio/publish.py "$CAR_ID" "out/$CAR_ID.mp4"; fi
       - name: Keep a copy on the renders branch
+        if: always()
         run: |
           mkdir -p out
           mkdir -p /tmp/pub && cp out/* /tmp/pub/ && (cp jobs/auto/$CAR_ID* /tmp/pub/ 2>/dev/null || true)

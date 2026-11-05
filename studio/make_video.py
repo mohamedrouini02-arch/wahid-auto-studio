@@ -325,7 +325,9 @@ def main():
     wav = os.path.join(work, 'mix.wav')
     mix(timing['total'], sfx, vo, job.get('music'), wav)
     run('ffmpeg', '-loglevel', 'error', '-y', '-framerate', str(FPS), '-i', f'{frames}/f%05d.jpg', '-i', wav,
-        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k',
+        # stay under Supabase's 50 MB upload limit whatever the length (~44 MB budget)
+        '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', '-maxrate', f"{min(9000, int(44 * 8000 / max(timing['total'], 1)) - 200)}k",
+        '-bufsize', '8000k', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k',
         '-shortest', '-movflags', '+faststart', out)
     json.dump({'total': timing['total'], 'lines': timing['marks']}, open(out[:-4] + '-script.json', 'w'), ensure_ascii=False, indent=1)
     print(out, timing['total'], 's')
