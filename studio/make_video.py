@@ -14,6 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FPS = 30
 SR = 44100
 KR = '<svg width="52" height="36" viewBox="0 0 30 20" style="border-radius:4px"><rect width="30" height="20" fill="#fff"/><g transform="translate(15 10) rotate(33.7)"><circle r="5" fill="#0047A0"/><path d="M-5 0A5 5 0 0 1 5 0A2.5 2.5 0 0 0 0 0A2.5 2.5 0 0 1 -5 0Z" fill="#CD2E3A"/></g><g fill="#111"><rect x="4" y="3" width="1" height="4" transform="rotate(-56 4.5 5)"/><rect x="25" y="13" width="1" height="4" transform="rotate(-56 25.5 15)"/><rect x="25" y="3" width="1" height="4" transform="rotate(56 25.5 5)"/><rect x="4" y="13" width="1" height="4" transform="rotate(56 4.5 15)"/></g></svg>'
+CN = '<svg width="52" height="36" viewBox="0 0 30 20" style="border-radius:4px"><rect width="30" height="20" fill="#DE2910"/><path fill="#FFDE00" d="M5 3l1.2 3.6H10L7 8.8l1.1 3.6L5 10.2 1.9 12.4 3 8.8 0 6.6h3.8z"/></svg>'
 DZ = '<svg width="52" height="36" viewBox="0 0 30 20" style="border-radius:4px"><rect width="15" height="20" fill="#006233"/><rect x="15" width="15" height="20" fill="#fff"/><path fill="#D21034" fill-rule="evenodd" d="M15.7 4.8a5.2 5.2 0 1 0 0 10.4a5.2 5.2 0 1 0 0-10.4M17 5.9a4.1 4.1 0 1 0 0 8.2a4.1 4.1 0 1 0 0-8.2"/></svg>'
 
 
@@ -174,7 +175,12 @@ def build(job, shots, work):
                     e['label'] = b['label']
                 s = shots[si]
                 if s.get('type') == 'video':
-                    c = spec['at'] if isinstance(spec, dict) and 'at' in spec else video_cursor.get(si, s.get('start', 0))
+                    if isinstance(spec, dict) and 'frac' in spec:
+                        c = max(0.0, spec['frac'] * s['length'] - each / 2)
+                    elif isinstance(spec, dict) and 'at' in spec:
+                        c = spec['at']
+                    else:
+                        c = video_cursor.get(si, s.get('start', 0))
                     if c + each > s['length']:
                         c = 0
                     e['from'] = c; video_cursor[si] = c + each
@@ -242,7 +248,7 @@ def main():
     frames = os.path.join(work, 'frames'); os.makedirs(frames)
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     car = job['car']
-    car['chips'] = [c.replace('{KR}', KR).replace('{DZ}', DZ) for c in car['chips']]
+    car['chips'] = [c.replace('{KR}', KR).replace('{CN}', CN).replace('{DZ}', DZ) for c in car['chips']]
     shots = prepare_media(job, work)
     timing, sfx, vo = build(job, shots, work)
     cfg = {'car': car, 'shots': shots, 'priceShot': job.get('priceShot', 0), **timing}
