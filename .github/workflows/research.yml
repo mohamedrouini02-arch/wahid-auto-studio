@@ -28,4 +28,6 @@ jobs:
       - name: Save to the research branch
         run: |
           git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
-          git checkout -q -B research && git add -f research/out && git commit -qm "transcripts ${{ github.run_id }}" && git push -qf origin research
+          # orphan branch with only the transcripts (the bot token may not push workflow files)
+          mkdir -p /tmp/t && cp research/out/*.json /tmp/t/
+          git checkout -q --orphan research && git rm -rqf . && cp /tmp/t/*.json . && git add *.json && git commit -qm "transcripts ${{ github.run_id }}" && git push -qf origin research

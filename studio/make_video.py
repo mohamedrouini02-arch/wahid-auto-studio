@@ -157,6 +157,8 @@ def build(job, shots, work):
             dur = max(b.get('min', 0), b['_len'] + pad)
         else:  # no voice-over: give every shot time to be seen
             dur = b.get('dur') or (len(b.get('shots', [])) * job.get('shot', 2.4) if kind == 'body' else 0)
+            if b.get('say'):  # leave Wahid time to say the line at his natural pace (~2.2 words/s)
+                dur = max(dur, len(b['say'].split()) / 2.2 + 0.6)
         if kind == 'hook':
             dur = max(dur, 3.4)
         if kind == 'price':

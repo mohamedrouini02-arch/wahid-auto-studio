@@ -119,26 +119,28 @@ def build(car):
     if km: chips.append(f'{int(km):,} KM'.replace(',', '.'))
     chips.append('{KR} → {DZ}' if loc != 'china' else '{CN} → {DZ}')
 
-    line_car = f'{say_name(brand)} {say_name(model)}'
+    # lines in Wahid's own way of talking (learned from his videos: research/wahid-style.md)
+    name = f'{say_name(brand)} {say_name(model)}'.strip()
+    line_car = f'اليوم خاوتنا جبنالكم {name}'
     if year: line_car += f'، موديل {words(year)}'
-    if color: line_car += f'، لونها {color}'
-    line_where = (LOCATION.get(loc, '') and f'راهي {LOCATION[loc]}') or 'السيارة جاهزة'
-    if km: line_where += f'، العداد تاعها {words(round(int(km) / 1000) * 1000)} كيلو'
-
+    if color: line_car += f'، اللون تاعها {color}'
+    line_car += '، ربي بارك ما شاء الله'
+    line_where = f'السيارة راهي {LOCATION[loc]}' if loc in LOCATION else 'السيارة جاهزة'
+    if km: line_where += f'، فيها {words(round(int(km) / 1000) * 1000)} كيلومتر برك'
     script = [
-        {'kind': 'hook', 'say': 'السلام عليكم خوتنا. وحيد أوتو، كالعادة مع الجديد.',
+        {'kind': 'hook', 'say': 'السلام عليكم ورحمة الله وبركاته. وحيد أوتو، كالعادة مع الخدمة ومع الجديد.',
          'shots': hook},
         {'say': line_car + '.', 'shots': s_car,
          'label': [say_name(model) or say_name(brand), str(year or '')]},
         {'say': line_where + '.', 'shots': s_where,
          'label': [LOCATION_LABEL.get(loc, ''), chips[0] if km else '']},
-        {'say': 'كيما راكم تشوفوا، الداخل والخارج، كلشي واضح.',
+        {'say': 'كما راكم تشوفو خاوتنا، الداخل والخارج، كلشي من أرض الواقع مباشرة.',
          'shots': s_inside, 'label': ['من الداخل', '']},
-        {'say': 'الصور والفيديو من أرض الواقع. كلشي بالشفافية.', 'shots': s_real,
-         'label': ['من أرض الواقع', '']},
-        ({'kind': 'price', 'say': f'السعر: {words(millions)} مليون.'} if millions else
+        {'say': 'وحيد أوتو، الصدق والمصداقية، كلشي بالشفافية.', 'shots': s_real,
+         'label': ['الصدق والمصداقية', '']},
+        ({'kind': 'price', 'say': f'السعر خاوتنا: {words(millions)} مليون.'} if millions else
          {'say': 'للسعر، راسلونا على الواتساب.', 'shots': [price_bg], 'label': ['السعر', 'WHATSAPP']}),
-        {'kind': 'end', 'say': 'المهتم، تواصل معانا عبر الواتساب. مع السلامة.'},
+        {'kind': 'end', 'say': 'للمهتم، يتواصل معانا عبر الواتساب، الأرقام موجودين في أسفل الفيديو. والسلام عليكم ورحمة الله وبركاته، مع السلامة.'},
     ]
     return {
         'car': {'title': title, 'year': str(year or ''), 'priceMillions': millions,
