@@ -1,28 +1,25 @@
 name: editor
-# Jarvis, the video editor agent. Open an issue in this repo with the footage + notes
-# (or comment on an open one) and it edits, renders and answers with the video.
+# Jarvis, the video editor agent. Woken up by the Editor chat in the Wahid Auto app
+# (Supabase function make-video -> repository_dispatch "editor" with the thread id).
+# It reads the conversation, edits, and answers in the same chat.
 on:
-  issues:
-    types: [opened]
-  issue_comment:
-    types: [created]
+  repository_dispatch:
+    types: [editor]
+  workflow_dispatch:
+    inputs:
+      thread_id: { description: "editor_threads id", required: true }
 permissions:
   contents: write
-  issues: write
   id-token: write
 concurrency:
-  group: editor-${{ github.event.issue.number }}
+  group: editor-${{ github.event.client_payload.thread_id || inputs.thread_id }}
   cancel-in-progress: false
 jobs:
   edit:
-    # only Mohamed's own words start a job (the agent's replies come from the bot and never loop)
-    if: >-
-      !github.event.issue.pull_request &&
-      (github.event_name == 'issues' && github.event.issue.user.login == github.repository_owner ||
-       github.event_name == 'issue_comment' && github.event.comment.user.login == github.repository_owner)
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      THREAD: ${{ github.event.client_payload.thread_id || inputs.thread_id }}
       SUPABASE_URL: https://qtgvmqdvghvijfbacnza.supabase.co
       SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       GH_TOKEN: ${{ github.token }}
@@ -31,8 +28,13 @@ jobs:
         with: { fetch-depth: 0 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip, cache-dependency-path: studio/requirements.txt }
-      - name: Tell him it started
-        run: gh issue comment ${{ github.event.issue.number }} --body "👀 Jarvis is on it…" || true
+      - name: Make sure the agent has a key
+        env: { A: "${{ secrets.ANTHROPIC_API_KEY }}", B: "${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}" }
+        run: |
+          if [ -z "$A$B" ]; then
+            python studio/thread.py say "$THREAD" "⚠️ I can't start yet: the Claude key is missing. Add CLAUDE_CODE_OAUTH_TOKEN (or ANTHROPIC_API_KEY) in GitHub → wahid-auto-studio → Settings → Secrets → Actions."
+            python studio/thread.py status "$THREAD" idle; touch /tmp/nokey; exit 1
+          fi
       - name: ffmpeg (static build)
         timeout-minutes: 6
         run: |
@@ -54,14 +56,19 @@ jobs:
           github_token: ${{ github.token }}
           prompt: |
             You are Jarvis, the Wahid Auto video editor. Follow CLAUDE.md in this repo (read it first, and agent/notes.md).
-            Repository: ${{ github.repository }}. Job = issue #${{ github.event.issue.number }}.
-            ${{ github.event_name == 'issue_comment' && 'He just added a new comment on this issue: treat it as notes/changes on the current job.' || 'This is a new job.' }}
-            Read the whole conversation with: gh issue view ${{ github.event.issue.number }} --comments
-            Do the work, then answer him ONLY by posting comments with: gh issue comment ${{ github.event.issue.number }} --body-file <file>
-            Commit the job file (and notes if any) to main: git add jobs/agent agent && git commit -m "..." && git pull --rebase && git push
+            Mohamed is talking to you in the Editor chat of the Wahid Auto app. Conversation id: ${{ env.THREAD }}
+            Read it:   python studio/thread.py show ${{ env.THREAD }}
+            Answer:    python studio/thread.py say ${{ env.THREAD }} "text" [--video URL]   (or --file reply.txt for longer text)
+            His newest message(s) at the end are what to do now; earlier messages are the history of this job.
+            Do the work, answer in the chat, then commit the job file (and notes if any) to main:
+            git add jobs/agent agent && git commit -m "..." && git pull --rebase && git push
           claude_args: >-
             --allowedTools "Bash,Read,Write,Edit,Glob,Grep,WebFetch"
             --max-turns 120
-      - name: If it crashed, say so
-        if: failure()
-        run: gh issue comment ${{ github.event.issue.number }} --body "⚠️ The editor stopped with an error. Open the Actions tab for details, or just comment again to retry." || true
+      - name: Done (or say it crashed)
+        if: always()
+        run: |
+          if [ "${{ job.status }}" != "success" ] && [ ! -f /tmp/nokey ]; then
+            python studio/thread.py say "$THREAD" "⚠️ I stopped with an error before finishing. Send your message again to retry." || true
+          fi
+          python studio/thread.py status "$THREAD" idle || true
