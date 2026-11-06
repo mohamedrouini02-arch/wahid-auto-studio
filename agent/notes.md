@@ -7,3 +7,4 @@
 - Talking videos: keep his voice and the full flow, only cut long silences; labels when he names a feature.
 - Price is optional (app switch). Hidden → end on "للسعر راسلونا على الواتساب".
 - Always the 3 numbers: 0557 06 04 78 · 0781 66 32 01 · 0672 14 73 90.
+- Editor jobs: he wants a label on EVERY feature named, music bed always, and visible 'real edit' work (zooms/captions are not in the tools yet).

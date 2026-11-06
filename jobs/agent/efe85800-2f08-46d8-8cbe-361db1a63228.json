@@ -2,4 +2,21 @@
   "media":[{"src":"work/in/raw.mp4","type":"video"}],
   "talk":{"brand":"Renault","model":"ARKANA","km_label":null,"price_label":null,"engine_label":null,"paint_label":null,"features_fr":[]},
   "car":{"title":"RENAULT ARKANA","year":"2024","priceMillions":null,"priceDa":"","ticker":"","chips":[]},
-  "max_gap":1.1,"pad":0.3,"title":{"s":"RENAULT","t":"ARKANA"},"price_screen":true }
+  "max_gap":0.9,"pad":0.25,"title":{"s":"RENAULT","t":"ARKANA"},"price_screen":true,
+  "labels":[
+   {"at":7.3,"t":"MODÈLE 2024","a":"موديل 2024"},
+   {"at":8.3,"t":"FEUX AVANT LED","a":"لاد أمامي"},
+   {"at":9.3,"t":"DÉTECTION D'OBSTACLES","a":"كشف العوائق"},
+   {"at":10.0,"t":"LANE ASSIST","a":"مساعد المسار"},
+   {"at":17.1,"t":"CAPTEURS ARRIÈRE","a":"حساسات خلفية"},
+   {"at":27.0,"t":"FEUX ARRIÈRE LED","a":"لاد خلفي"},
+   {"at":28.5,"t":"CAMÉRA DE RECUL","a":"كاميرا خلفية"},
+   {"at":43.2,"t":"GPS NAVIGATION","a":"نافيغاسيون"},
+   {"at":45.8,"t":"VOLANT MULTIFONCTION","a":"مقود متعدد الوظائف"},
+   {"at":47.2,"t":"RÉGULATEUR DE VITESSE","a":"ريغلاتور"},
+   {"at":50.6,"t":"ÉCRAN TACTILE","a":"شاشة لمسية"},
+   {"at":53.3,"t":"RÉTROS REPLIABLES AUTO","a":"مرايا أوتوماتيك"},
+   {"at":56.6,"t":"START & STOP","a":"ستارت ستوب"},
+   {"at":61.3,"t":"FREIN À MAIN ÉLECTRIQUE","a":"فرامة إلكترونية"},
+   {"at":62.8,"t":"AUTO HOLD","a":"أوتو هولد"}],
+  "label_dur":2.6,"music":"work/in/music.wav","music_volume":0.8 }
