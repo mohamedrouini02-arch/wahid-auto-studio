@@ -31,8 +31,18 @@ jobs:
       - name: Make sure the agent has a key
         env: { A: "${{ secrets.ANTHROPIC_API_KEY }}", B: "${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}" }
         run: |
-          if [ -z "$A$B" ]; then
-            python studio/thread.py say "$THREAD" "⚠️ I can't start yet: the Claude key is missing. Add CLAUDE_CODE_OAUTH_TOKEN (or ANTHROPIC_API_KEY) in GitHub → wahid-auto-studio → Settings → Secrets → Actions."
+          # tokens copied from a terminal often carry line breaks/spaces: strip all whitespace
+          A=$(printf '%s' "$A" | tr -d '[:space:]'); B=$(printf '%s' "$B" | tr -d '[:space:]')
+          echo "::add-mask::$A"; echo "::add-mask::$B"
+          echo "CLEAN_API_KEY=$A" >> "$GITHUB_ENV"; echo "CLEAN_OAUTH=$B" >> "$GITHUB_ENV"
+          # shape check (prints only the public prefix and the length, never the token)
+          echo "oauth token: prefix ${B:0:13}… length ${#B}"; echo "api key: prefix ${A:0:11}… length ${#A}"
+          bad=""
+          if [ -n "$B" ] && [[ "$B" != sk-ant-oat* ]]; then bad="CLAUDE_CODE_OAUTH_TOKEN does not start with sk-ant-oat (it starts with ${B:0:7}…). It must be the line printed by 'claude setup-token'."; fi
+          if [ -n "$A" ] && [[ "$A" != sk-ant-api* ]]; then bad="ANTHROPIC_API_KEY does not start with sk-ant-api (it starts with ${A:0:7}…)."; fi
+          if [ -z "$A$B" ]; then bad="the Claude key is missing. Add CLAUDE_CODE_OAUTH_TOKEN (or ANTHROPIC_API_KEY) in GitHub → wahid-auto-studio → Settings → Secrets → Actions."; fi
+          if [ -n "$bad" ]; then
+            python studio/thread.py say "$THREAD" "⚠️ I can't start yet: $bad"
             python studio/thread.py status "$THREAD" idle; touch /tmp/nokey; exit 1
           fi
       - name: ffmpeg (static build)
@@ -51,8 +61,8 @@ jobs:
           git config user.name "Jarvis (Wahid Auto editor)" && git config user.email "studio@wahid-auto.com"
       - uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ env.CLEAN_OAUTH }}
+          anthropic_api_key: ${{ env.CLEAN_API_KEY }}
           github_token: ${{ github.token }}
           show_full_output: true
           prompt: |
@@ -70,6 +80,10 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" != "success" ] && [ ! -f /tmp/nokey ]; then
-            python studio/thread.py say "$THREAD" "⚠️ I stopped with an error before finishing. Send your message again to retry." || true
+            if grep -qs authentication_failed /home/runner/work/_temp/claude-execution-output.json; then
+              python studio/thread.py say "$THREAD" "⚠️ Claude refused the key (authentication failed). The token in GitHub is expired or wrong: run 'claude setup-token' again and replace CLAUDE_CODE_OAUTH_TOKEN." || true
+            else
+              python studio/thread.py say "$THREAD" "⚠️ I stopped with an error before finishing. Send your message again to retry." || true
+            fi
           fi
           python studio/thread.py status "$THREAD" idle || true
