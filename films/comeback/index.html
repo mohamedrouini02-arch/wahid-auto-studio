@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Wahid Auto — Comeback</title>
+<style>
+@font-face { font-family: Jost; src: url(assets/jost.woff2) format('woff2'); font-weight: 100 900; }
+@font-face { font-family: PlexAr; src: url(assets/IBMPlexSansArabic-Light.woff2) format('woff2'); font-weight: 300; }
+@font-face { font-family: PlexAr; src: url(assets/IBMPlexSansArabic-Regular.woff2) format('woff2'); font-weight: 400; }
+@font-face { font-family: PlexAr; src: url(assets/IBMPlexSansArabic-Medium.woff2) format('woff2'); font-weight: 500; }
+@font-face { font-family: PlexAr; src: url(assets/IBMPlexSansArabic-SemiBold.woff2) format('woff2'); font-weight: 600; }
+:root { --night: #0B0D0C; --deep: #060d0a; --paper: #F2F2EE; --green: #5FB89B; --mint: #A8E6CF; --muted: #8FA39A; --line: rgba(168, 230, 207, .16); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--deep); }
+body { font-family: PlexAr, Jost, sans-serif; color: var(--paper); -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--deep); }
+.layer { position: absolute; inset: 0; }
+.lat { font-family: Jost, sans-serif; direction: ltr; }
+.ar { font-family: PlexAr, sans-serif; direction: rtl; }
+.mono { font-family: Jost, sans-serif; font-weight: 400; font-size: 22px; letter-spacing: .32em; text-transform: uppercase; color: var(--muted); direction: ltr; }
+.mask { display: inline-block; overflow: hidden; vertical-align: top; padding: .18em .12em .3em; margin: -.18em -.12em -.3em; }
+.w { display: inline-block; will-change: transform; }
+.center { position: absolute; left: 0; right: 0; text-align: center; }
+canvas.route-scene { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+#grain { position: absolute; inset: -64px; pointer-events: none; opacity: .07; mix-blend-mode: overlay; z-index: 50; }
+#vignette { position: absolute; inset: 0; pointer-events: none; z-index: 49; background: radial-gradient(120% 80% at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%); }
+#paper { position: absolute; inset: 0; background: var(--paper); z-index: 5; }
+/* S1/S2 */
+#mono1 { position: absolute; left: 50%; top: 50%; width: 360px; height: 360px; margin: -180px 0 0 -180px; z-index: 10; }
+.road-tag { position: absolute; z-index: 11; text-align: center; }
+.road-tag b { display: block; font: 400 22px Jost; letter-spacing: .4em; color: var(--paper); direction: ltr; }
+.road-tag small { display: block; font: 300 20px Jost; color: var(--muted); margin-top: 6px; }
+#t-quiet { top: 1330px; z-index: 12; font-weight: 300; font-size: 104px; }
+#t-quiet-fr { top: 1490px; z-index: 12; }
+#t-back { top: 760px; z-index: 12; font-weight: 300; font-size: 230px; line-height: 1.1; }
+#t-new { top: 1080px; z-index: 12; font-weight: 300; font-size: 128px; color: var(--green); }
+/* S3 identity */
+#id { z-index: 20; color: var(--night); }
+#lock { position: absolute; top: 330px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 34px; direction: ltr; }
+#lock .word { display: flex; flex-direction: column; line-height: 1; }
+#lock .word .n { font: 500 112px Jost; letter-spacing: .14em; }
+#lock .word .s { font: 400 40px Jost; letter-spacing: 1.02em; color: #4d5c55; margin-top: 18px; }
+#roads { top: 620px; font-weight: 300; font-size: 96px; color: var(--night); }
+#roads-sub { top: 780px; font-weight: 400; font-size: 40px; color: #52665d; }
+.chip-card { position: absolute; border-radius: 34px; overflow: hidden; }
+.sw { width: 300px; height: 360px; top: 960px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid rgba(10,23,18,.12); }
+.sw b { font: 500 30px Jost; letter-spacing: .12em; direction: ltr; }
+.sw small { font: 400 24px Jost; opacity: .7; margin-top: 6px; direction: ltr; letter-spacing: .08em; }
+.type { top: 1360px; height: 330px; padding: 34px 40px; background: #fff; border: 1px solid rgba(10,23,18,.1); display: flex; flex-direction: column; justify-content: space-between; }
+.type .big { font-size: 150px; line-height: 1; font-weight: 300; }
+.type .lab { font: 400 22px Jost; letter-spacing: .26em; color: #52665d; text-transform: uppercase; direction: ltr; }
+#id-tag { top: 1760px; }
+/* S4 website */
+#web { z-index: 25; }
+#web-title { top: 190px; font-weight: 300; font-size: 112px; }
+#url { position: absolute; top: 360px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 16px; padding: 16px 30px; border-radius: 999px; border: 1px solid var(--line); background: rgba(11,26,20,.9); font: 400 34px Jost; letter-spacing: .06em; direction: ltr; }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 8px rgba(95,184,155,.18); }
+#phone { position: absolute; left: 50%; top: 520px; width: 600px; height: 1240px; margin-left: -300px; border-radius: 76px; background: #10201a; padding: 14px; box-shadow: 0 60px 140px rgba(0,0,0,.6), inset 0 0 0 2px rgba(168,230,207,.18); transform-origin: 50% 40%; }
+#screen { position: relative; width: 100%; height: 100%; border-radius: 62px; overflow: hidden; background: var(--deep); }
+#phoneCanvas { position: absolute; left: 0; top: 0; width: 572px; height: 1212px; }
+#notch { position: absolute; top: 18px; left: 50%; width: 150px; height: 38px; margin-left: -75px; border-radius: 20px; background: #000; z-index: 5; }
+#page { position: absolute; left: 0; top: 0; width: 572px; z-index: 3; }
+.p-head { position: absolute; top: 76px; left: 24px; right: 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; direction: ltr; }
+.p-logo { display: flex; align-items: center; gap: 10px; font: 500 22px Jost; letter-spacing: .2em; }
+.p-cta { padding: 10px 10px 10px 20px; border-radius: 999px; background: var(--paper); color: #06110d; font: 500 18px PlexAr; display: flex; align-items: center; gap: 12px; }
+.p-cta i { width: 30px; height: 30px; border-radius: 50%; background: var(--green); display: grid; place-items: center; color: #fff; font-style: normal; font-size: 16px; }
+.p-hero { position: absolute; top: 640px; right: 34px; left: 34px; text-align: right; }
+.p-hero h1 { font-weight: 300; font-size: 76px; line-height: 1.12; }
+.p-hero h1 .g { color: var(--mint); }
+.p-hero p { font-size: 21px; color: var(--muted); margin-top: 18px; line-height: 1.6; }
+.p-btn { display: inline-flex; margin-top: 24px; align-items: center; gap: 16px; padding: 10px 10px 10px 26px; border-radius: 999px; background: var(--paper); color: #06110d; font: 500 22px PlexAr; direction: ltr; }
+.p-btn i { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-style: normal; }
+.p-card { position: absolute; left: 24px; right: 24px; border-radius: 30px; background: rgba(246,249,246,.97); color: #0a1712; padding: 30px; text-align: right; }
+.p-card .num { font: 500 20px Jost; color: #1e8a66; letter-spacing: .14em; direction: ltr; text-align: right; }
+.p-card h3 { font-weight: 300; font-size: 50px; line-height: 1.2; margin-top: 10px; }
+.p-card h3 .g { color: #0e5a47; }
+.p-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; justify-content: flex-start; }
+.p-chips span { border: 1px solid rgba(10,23,18,.14); border-radius: 999px; padding: 8px 16px; font-size: 19px; }
+.p-file { position: absolute; left: 24px; right: 24px; border-radius: 30px; background: rgba(10,22,17,.97); border: 1px solid var(--line); padding: 24px 28px; }
+.p-file .row { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--line); font-size: 22px; }
+.p-file .row:last-child { border: 0; }
+.p-file .row i { width: 30px; height: 30px; border-radius: 50%; background: var(--green); display: grid; place-items: center; font-style: normal; font-size: 16px; color: #fff; }
+.float { position: absolute; z-index: 30; padding: 18px 28px; border-radius: 24px; background: rgba(10,22,17,.95); border: 1px solid var(--line); font-size: 32px; display: flex; align-items: center; gap: 14px; }
+.float .tick { width: 40px; height: 40px; border-radius: 50%; background: var(--green); display: grid; place-items: center; font-size: 20px; color: #fff; }
+/* S5 process */
+#proc { z-index: 30; }
+#proc-head { top: 150px; font-weight: 300; font-size: 56px; }
+#proc-head .g { color: var(--mint); }
+#bar { position: absolute; top: 270px; left: 90px; right: 90px; display: flex; gap: 12px; direction: rtl; }
+#bar i { flex: 1; height: 6px; border-radius: 3px; background: rgba(168,230,207,.18); overflow: hidden; position: relative; }
+#bar i b { position: absolute; inset: 0; background: var(--green); transform-origin: right; transform: scaleX(0); }
+#stepcard { position: absolute; left: 60px; right: 60px; top: 1360px; height: 440px; border-radius: 44px; background: rgba(8,18,14,.95); border: 1px solid var(--line); overflow: hidden; }
+.step { position: absolute; inset: 0; padding: 50px 56px; text-align: right; }
+.step .top { display: flex; justify-content: space-between; align-items: baseline; direction: ltr; }
+.step .num { font: 300 120px/1 Jost; color: var(--green); letter-spacing: -.02em; }
+.step .of { font: 400 30px Jost; color: var(--muted); letter-spacing: .2em; }
+.step .name { font-size: 96px; font-weight: 300; line-height: 1.1; margin-top: 10px; }
+.step .doc { display: inline-flex; align-items: center; gap: 14px; margin-top: 26px; padding: 12px 24px 12px 14px; border-radius: 999px; background: rgba(95,184,155,.14); border: 1px solid rgba(95,184,155,.4); font-size: 34px; color: var(--mint); }
+.step .doc i { width: 38px; height: 38px; border-radius: 50%; background: var(--green); color: #fff; font-style: normal; display: grid; place-items: center; font-size: 20px; }
+/* S6 next */
+#next { z-index: 35; }
+#strip { position: absolute; top: 210px; left: 0; height: 420px; display: flex; gap: 28px; direction: ltr; }
+#strip img { width: 640px; height: 400px; object-fit: cover; border-radius: 36px; }
+#next-title { top: 700px; font-weight: 300; font-size: 150px; }
+#next-fr { top: 900px; }
+.row6 { position: absolute; left: 90px; right: 90px; height: 150px; display: flex; align-items: center; gap: 36px; border-top: 1px solid var(--line); direction: rtl; }
+.row6 .k { font: 300 52px Jost; color: var(--green); width: 90px; direction: ltr; text-align: right; }
+.row6 .t { display: flex; flex-direction: column; }
+.row6 .t b { font-weight: 400; font-size: 54px; }
+.row6 .t small { font: 400 26px Jost; color: var(--muted); letter-spacing: .06em; direction: ltr; text-align: right; margin-top: 4px; }
+.row6 .soon { margin-inline-start: auto; font: 400 22px Jost; letter-spacing: .24em; color: var(--mint); border: 1px solid rgba(168,230,207,.35); border-radius: 999px; padding: 8px 18px; direction: ltr; }
+/* S7 outro */
+#out { z-index: 40; }
+#pos1 { top: 420px; font-weight: 300; font-size: 92px; line-height: 1.25; }
+#pos2 { top: 680px; font-weight: 300; font-size: 64px; color: var(--mint); line-height: 1.35; }
+#mono2 { position: absolute; left: 50%; top: 1000px; width: 230px; height: 230px; margin-left: -115px; }
+#out-word { top: 1270px; font: 500 72px Jost; letter-spacing: .3em; }
+#out-sub { top: 1370px; }
+#out-url { top: 1490px; font: 400 52px Jost; letter-spacing: .04em; }
+#out-nums { top: 1600px; font: 400 36px Jost; color: var(--muted); letter-spacing: .1em; }
+#out-handle { top: 1680px; font: 400 32px Jost; color: var(--muted); letter-spacing: .14em; }
+#flash { position: absolute; inset: 0; background: var(--paper); z-index: 60; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas class="route-scene" id="scene"></canvas>
+  <div id="paper"></div>
+
+  <!-- S1 + S2 -->
+  <svg id="mono1" viewBox="0 0 120 120">
+    <circle id="m1c" cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="1.6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" transform="rotate(-90 60 60)"/>
+    <polyline id="m1a" points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+    <polyline id="m1b" points="90,40 76,82 60,50" fill="none" stroke="#5FB89B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+  </svg>
+  <div class="road-tag" id="tagK" style="left:150px;top:720px"><b>KOREA</b><small>한국</small></div>
+  <div class="road-tag" id="tagC" style="right:150px;top:720px"><b>CHINA</b><small>中国</small></div>
+  <div class="center ar" id="t-quiet" data-split>سكتنا شوية.</div>
+  <div class="center mono" id="t-quiet-fr">On a fait une pause</div>
+  <div class="center ar" id="t-back" data-split>ورجعنا.</div>
+  <div class="center ar" id="t-new" data-split>بهوية جديدة.</div>
+
+  <!-- S3 identity -->
+  <div class="layer" id="id">
+    <div id="lock">
+      <svg id="lockMono" viewBox="0 0 120 120" width="190" height="190">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#0B0D0C" stroke-width="2.4"/>
+        <polyline points="30,40 44,82 60,50" fill="none" stroke="#0B0D0C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="60,50 76,82 90,40" fill="none" stroke="#2E9674" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="word"><span class="n" data-letters>WAHID</span><span class="s" data-letters>AUTO</span></div>
+    </div>
+    <div class="center ar" id="roads" data-split>طريقين، نقطة وحدة.</div>
+    <div class="center ar" id="roads-sub" data-split>كوريا والصين، يلتقيو عندك في الجزائر.</div>
+    <div class="chip-card sw" id="sw1" style="right:60px;background:#0B0D0C;color:#F2F2EE"><b>NIGHT</b><small>#0B0D0C</small></div>
+    <div class="chip-card sw" id="sw2" style="right:390px;background:#F2F2EE;color:#0B0D0C"><b>PAPER</b><small>#F2F2EE</small></div>
+    <div class="chip-card sw" id="sw3" style="right:720px;background:#5FB89B;color:#06110d"><b>ROAD GREEN</b><small>#5FB89B</small></div>
+    <div class="chip-card type" id="ty1" style="right:60px;width:465px"><span class="big ar">أب</span><span class="lab">IBM Plex Sans Arabic</span></div>
+    <div class="chip-card type" id="ty2" style="right:555px;width:465px"><span class="big lat" style="font-weight:300">Aa</span><span class="lab">Jost</span></div>
+    <div class="center mono" id="id-tag" style="color:#52665d">Wahid Auto · Identité 2026</div>
+  </div>
+
+  <!-- S4 website -->
+  <div class="layer" id="web">
+    <div class="center ar" id="web-title" data-split>موقع جديد.</div>
+    <div id="url"><span class="dot"></span>wahid-auto.com</div>
+    <div id="phone"><div id="screen">
+      <canvas id="phoneCanvas" width="572" height="1212"></canvas>
+      <div id="notch"></div>
+      <div id="page">
+        <div class="p-head"><div class="p-logo"><svg viewBox="0 0 120 120" width="44" height="44"><circle cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="4"/><polyline points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#5FB89B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>WAHID</div><div class="p-cta"><i>↖</i>اطلب سيارتك</div></div>
+        <div class="p-hero"><h1>من طلبك<br>حتى المفاتيح<br><span class="g">في يدك.</span></h1><p>نختارو السيارة معاك، نفحصوها، نشحنوها ونتكفلو بالأوراق.</p><div class="p-btn"><i>↖</i>اطلب سيارتك</div></div>
+        <div class="p-card" style="top:1300px"><div class="num">02 — 06</div><h3>نفحصوها<br><span class="g">بعينينا.</span></h3><div class="p-chips"><span>✓ تقرير الفحص</span><span>✓ صور وفيديو</span></div></div>
+        <div class="p-file" style="top:1700px">
+          <div class="row"><span>الطلب</span><i>✓</i></div><div class="row"><span>الفحص</span><i>✓</i></div><div class="row"><span>الشراء</span><i>✓</i></div>
+          <div class="row"><span>الشحن</span><i>✓</i></div><div class="row"><span>الجمارك</span><i>✓</i></div><div class="row"><span>المفاتيح</span><i>✓</i></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="float ar" id="f1" style="right:40px;top:760px"><span class="tick">✓</span>عربي · Français</div>
+    <div class="float ar" id="f2" style="left:40px;top:1120px"><span class="tick">✓</span>السيارات المتوفرة مباشرة</div>
+    <div class="float ar" id="f3" style="right:50px;top:1480px"><span class="tick">✓</span>كل خطوة موثّقة</div>
+  </div>
+
+  <!-- S5 process -->
+  <div class="layer" id="proc">
+    <div class="center ar" id="proc-head">من طلبك حتى المفاتيح <span class="g">في يدك.</span></div>
+    <div id="bar"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    <div id="stepcard"></div>
+  </div>
+
+  <!-- S6 what's next -->
+  <div class="layer" id="next">
+    <div id="strip"><img src="cars/tucson.jpg"><img src="cars/k5.jpg"><img src="cars/sportage.jpg"><img src="cars/seltos.jpg"><img src="cars/sorento.jpg"></div>
+    <div class="center ar" id="next-title" data-split>والجاي؟</div>
+    <div class="center mono" id="next-fr">Ce qui arrive</div>
+    <div id="rows"></div>
+  </div>
+
+  <!-- S7 outro -->
+  <div class="layer" id="out">
+    <div class="center ar" id="pos1" data-split>سيارتك من كوريا ولا الصين،</div>
+    <div class="center ar" id="pos2" data-split>بسعر واضح، أوراق مضبوطة، حتى الجزائر.</div>
+    <svg id="mono2" viewBox="0 0 120 120">
+      <circle id="m2c" cx="60" cy="60" r="56" fill="none" stroke="#F2F2EE" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" transform="rotate(-90 60 60)"/>
+      <polyline id="m2a" points="30,40 44,82 60,50" fill="none" stroke="#F2F2EE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <polyline id="m2b" points="90,40 76,82 60,50" fill="none" stroke="#5FB89B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+    </svg>
+    <div class="center lat" id="out-word">WAHID AUTO</div>
+    <div class="center mono" id="out-sub">Korea · China → Algeria</div>
+    <div class="center lat" id="out-url">wahid-auto.com</div>
+    <div class="center lat" id="out-nums">0557 06 04 78 · 0781 66 32 01 · 0672 14 73 90</div>
+    <div class="center lat" id="out-handle">@wahidautokr · Jijel</div>
+  </div>
+
+  <div id="vignette"></div>
+  <canvas id="grain" width="1208" height="2048"></canvas>
+  <div id="flash"></div>
+</div>
+
+<script type="module">
+// ---------- virtual clock: the website scene runs on film time, frame-accurate ----------
+let NOW = 0, queue = []
+performance.now = () => NOW
+window.requestAnimationFrame = cb => { queue.push(cb); return queue.length }
+window.cancelAnimationFrame = () => {}
+const { startScene } = await import('./scene/RouteScene.js')
+const sceneCanvas = document.getElementById('scene')
+startScene(sceneCanvas)
+document.body.dataset.tone = 'dark'; document.body.dataset.scene = 'hero'
+
+// ---------- helpers ----------
+const $ = id => document.getElementById(id)
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v))
+const p = (t, a, b) => clamp((t - a) / (b - a))
+const E = {
+  out: x => 1 - Math.pow(1 - x, 4),
+  expo: x => (x >= 1 ? 1 : 1 - Math.pow(2, -11 * x)),
+  io: x => (x < 0.5 ? 8 * x ** 4 : 1 - Math.pow(-2 * x + 2, 4) / 2),
+  sine: x => -(Math.cos(Math.PI * x) - 1) / 2,
+  back: x => { const c = 1.25; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2) },
+}
+const show = (el, o) => { el.style.opacity = o; el.style.visibility = o <= 0.001 ? 'hidden' : 'visible' }
+
+// split headlines into masked words (Arabic keeps its letters joined: whole words only)
+for (const el of document.querySelectorAll('[data-split]')) {
+  el.innerHTML = el.textContent.split(' ').map(w => `<span class="mask"><span class="w">${w}</span></span>`).join(' ')
+}
+for (const el of document.querySelectorAll('[data-letters]')) {
+  el.innerHTML = [...el.textContent].map(c => `<span class="mask"><span class="w">${c}</span></span>`).join('')
+}
+// words rise in (reading order: right-to-left for Arabic, DOM order already is), and leave upward
+function words(el, t, tin, tout = 1e9, stag = 0.07, dur = 0.9) {
+  const ws = el.querySelectorAll('.w'); let any = 0
+  ws.forEach((w, i) => {
+    const a = E.expo(p(t, tin + i * stag, tin + i * stag + dur))
+    const b = E.io(p(t, tout + i * stag * 0.6, tout + i * stag * 0.6 + 0.6))
+    w.style.transform = `translateY(${(1 - a) * 115 - b * 115}%) rotate(${(1 - a) * 3}deg)`
+    any = Math.max(any, a * (1 - b))
+  })
+  show(el, any > 0.001 ? 1 : 0)
+}
+function fade(el, t, tin, tout = 1e9, d = 0.6, dy = 30) {
+  const a = E.out(p(t, tin, tin + d)), b = E.io(p(t, tout, tout + d * 0.8))
+  el.style.transform = `translateY(${(1 - a) * dy - b * dy}px)`; show(el, a * (1 - b))
+}
+function draw(el, t, a, b) { el.style.strokeDashoffset = 1 - E.io(p(t, a, b)) }
+
+// grain: one noise texture, jittered every frame (film feel, no flicker)
+{ const g = $('grain').getContext('2d'), d = g.createImageData(1208, 2048)
+  for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255 }
+  g.putImageData(d, 0, 0) }
+
+// process steps (S5)
+const STEPS = [
+  ['order', 'الطلب', 'عرض سعر مكتوب'], ['inspect', 'الفحص', 'تقرير الفحص · صور وفيديو'], ['buy', 'الشراء', 'فاتورة · وصولات الدفع'],
+  ['ship', 'الشحن', 'بوليصة الشحن · رقم التتبع'], ['customs', 'الجمارك', 'التصريح الجمركي'], ['keys', 'المفاتيح', 'ملف السيارة الكامل'],
+]
+$('stepcard').innerHTML = STEPS.map(([k, n, d], i) => `<div class="step" id="st${i}"><div class="top"><span class="of">0${i + 1} / 06</span><span class="num">0${i + 1}</span></div><div class="name ar">${n}</div><div class="doc ar"><i>✓</i>${d}</div></div>`).join('')
+const NEXT = [
+  ['كتالوج حي، بالسعر بالدينار', 'Catalogue en direct · prix en DZD', 'LIVE'],
+  ['حاسبة السعر حتى باب دارك', 'Calculateur du prix livré', 'SOON'],
+  ['تتبّع سيارتك خطوة بخطوة', 'Suivi de commande', 'LIVE'],
+  ['فيديو لكل سيارة توصل', 'Une vidéo par arrivage', 'SOON'],
+  ['هيبريد وكهربائية', 'Hybride & électrique', 'SOON'],
+]
+$('rows').innerHTML = NEXT.map(([a, f, s], i) => `<div class="row6" id="r${i}" style="top:${1060 + i * 150}px"><span class="k">0${i + 1}</span><span class="t"><b class="ar">${a}</b><small>${f}</small></span><span class="soon">${s}</span></div>`).join('')
+
+// ---------- timeline (seconds; 100 BPM, a bar = 2.4 s) ----------
+const S2 = 4.8, S3 = 9.6, S4 = 16.8, S5 = 24.0, S6 = 36.0, S7 = 43.2, END = 48.0
+const pc = $('phoneCanvas').getContext('2d')
+
+window.render = function (t) {
+  // advance the scene's clock and run its frame
+  NOW = t * 1000
+  const q = queue; queue = []; q.forEach(cb => cb(NOW))
+
+  $('grain').style.transform = `translate(${(Math.sin(t * 91) * 32) | 0}px, ${(Math.cos(t * 57) * 32) | 0}px)`
+
+  // ===== S1: the two roads draw the monogram =====
+  const m1 = $('mono1')
+  draw($('m1c'), t, 0.25, 1.7); draw($('m1a'), t, 0.55, 1.45); draw($('m1b'), t, 0.85, 1.75)
+  fade($('tagK'), t, 1.1, 2.9, 0.7, 18); fade($('tagC'), t, 1.3, 3.0, 0.7, 18)
+  words($('t-quiet'), t, 2.0, 4.15)
+  fade($('t-quiet-fr'), t, 2.6, 4.2, 0.6, 16)
+  // monogram: centred and big, then rises for S2, then its circle opens the identity
+  const up = E.io(p(t, 4.2, 5.2))
+  const open = E.io(p(t, 8.7, 9.75))
+  m1.style.transform = `translateY(${-up * 520}px) scale(${1 - up * 0.42 + open * 2.2})`
+  show(m1, t < 10.2 ? 1 - E.out(p(t, 8.7, 9.2)) : 0)
+  words($('t-back'), t, 5.0, 8.4, 0.08, 1.0)
+  words($('t-new'), t, 6.6, 8.5)
+
+  // paper wipe: a circle from the monogram's centre
+  const pr = E.io(p(t, 8.75, 9.7)) * 2300 * (1 - E.io(p(t, S4 - 0.5, S4 + 0.3)))
+  $('paper').style.clipPath = `circle(${pr}px at 50% ${960 - up * 520}px)`
+  show($('paper'), pr > 1 ? 1 : 0)
+
+  // ===== S3: identity =====
+  const idOn = t > S3 - 0.3 && t < S4 + 0.4
+  show($('id'), idOn ? 1 : 0)
+  if (idOn) {
+    const lm = $('lockMono'), li = E.expo(p(t, S3, S3 + 1.0))
+    lm.style.transform = `rotate(${(1 - li) * -60}deg) scale(${0.6 + 0.4 * li})`; lm.style.opacity = li
+    document.querySelectorAll('#lock [data-letters] .w').forEach((w, i) => {
+      const a = E.expo(p(t, S3 + 0.25 + i * 0.05, S3 + 1.15 + i * 0.05)); w.style.transform = `translateY(${(1 - a) * 115}%)`
+    })
+    words($('roads'), t, S3 + 1.2, S4 - 0.55); words($('roads-sub'), t, S3 + 1.7, S4 - 0.5, 0.05)
+    const cards = ['sw1', 'sw2', 'sw3', 'ty1', 'ty2']
+    cards.forEach((id, i) => {
+      const a = E.expo(p(t, S3 + 2.6 + i * 0.16, S3 + 3.7 + i * 0.16)), b = E.io(p(t, S4 - 0.75 + i * 0.04, S4 - 0.05 + i * 0.04))
+      const el = $(id); el.style.transform = `translateY(${(1 - a) * 220 - b * 260}px) scale(${0.94 + 0.06 * a})`; el.style.opacity = a * (1 - b)
+    })
+    fade($('id-tag'), t, S3 + 3.6, S4 - 0.6, 0.6, 14)
+    $('lock').style.transform = `translateY(${-E.io(p(t, S4 - 0.7, S4 - 0.05)) * 200}px)`; $('lock').style.opacity = 1 - p(t, S4 - 0.6, S4 - 0.1)
+  }
+
+  // ===== scene: camera + visibility per section =====
+  let sceneA = 0
+  const body = document.body
+  if (t < S4) { body.dataset.scene = 'hero'; window.__zoomK = 1.6; window.__ax = 0.5; window.__ay = 0.5 }
+  else if (t < S5) { body.dataset.scene = 'hero'; window.__zoomK = 2.0; window.__ax = 0.5; window.__ay = 0.47 }
+  else if (t < S6) {
+    const i = Math.min(5, Math.floor((t - S5) / 2)); body.dataset.scene = STEPS[i][0]
+    window.__zoomK = 1.45; window.__ax = 0.5; window.__ay = 0.4
+    sceneA = Math.min(1, p(t, S5 - 0.4, S5 + 0.5)) * (1 - p(t, S6 - 0.5, S6 + 0.1))
+  } else { body.dataset.scene = 'all'; window.__zoomK = 1.6 }
+  sceneCanvas.style.opacity = sceneA
+
+  // ===== S4: the website in a phone =====
+  const webOn = t > S4 - 0.2 && t < S5 + 0.2
+  show($('web'), webOn ? 1 : 0)
+  if (webOn) {
+    words($('web-title'), t, S4 + 0.1, S5 - 0.55)
+    fade($('url'), t, S4 + 0.5, S5 - 0.5, 0.7, 20)
+    const ph = $('phone'), r = E.expo(p(t, S4 + 0.25, S4 + 1.55)), z = E.io(p(t, S5 - 0.85, S5 + 0.05))
+    ph.style.transform = `translateY(${(1 - r) * 1100 - z * 40}px) perspective(1800px) rotateX(${(1 - r) * 24}deg) scale(${1 + z * 1.9})`
+    ph.style.opacity = 1 - p(t, S5 - 0.25, S5 + 0.1)
+    // the live website scene inside the phone
+    pc.clearRect(0, 0, 572, 1212); pc.fillStyle = '#060d0a'; pc.fillRect(0, 0, 572, 1212)
+    pc.drawImage(sceneCanvas, 0, 260, 1080, 1080 * 1212 / 572, 0, 0, 572, 1212)
+    // the page scrolls: hero → a step → the file
+    const s1 = E.io(p(t, S4 + 2.6, S4 + 4.1)), s2 = E.io(p(t, S4 + 4.6, S4 + 6.0))
+    $('page').style.transform = `translateY(${-s1 * 760 - s2 * 420}px)`
+    document.querySelectorAll('.p-file .row i').forEach((el, i) => { const a = E.back(p(t, S4 + 5.0 + i * 0.12, S4 + 5.4 + i * 0.12)); el.style.transform = `scale(${a})` })
+    ;['f1', 'f2', 'f3'].forEach((id, i) => {
+      const a = E.expo(p(t, S4 + 1.6 + i * 0.9, S4 + 2.5 + i * 0.9)), b = p(t, S5 - 0.9, S5 - 0.5)
+      const el = $(id); el.style.transform = `translateX(${(1 - a) * (i % 2 ? -80 : 80)}px) translateY(${Math.sin(t * 1.3 + i) * 6}px)`; el.style.opacity = a * (1 - b)
+    })
+  }
+
+  // ===== S5: the process, step by step =====
+  const procOn = t > S5 - 0.1 && t < S6 + 0.1
+  show($('proc'), procOn ? 1 : 0)
+  if (procOn) {
+    words($('proc-head'), t, S5 + 0.2, S6 - 0.6, 0.05)
+    const card = $('stepcard'), ci = E.expo(p(t, S5 + 0.3, S5 + 1.2)), co = E.io(p(t, S6 - 0.6, S6 - 0.05))
+    card.style.transform = `translateY(${(1 - ci) * 520 + co * 520}px)`
+    document.querySelectorAll('#bar b').forEach((b, i) => { b.style.transform = `scaleX(${E.io(p(t, S5 + i * 2, S5 + i * 2 + 1.9))})` })
+    $('bar').style.opacity = ci * (1 - co)
+    STEPS.forEach((_, i) => {
+      const a = S5 + i * 2, el = $('st' + i)
+      const inn = i === 0 ? 1 : E.expo(p(t, a, a + 0.75)), out = i === 5 ? 0 : E.io(p(t, a + 1.75, a + 2.05))
+      el.style.transform = `translateY(${(1 - inn) * 110 - out * 110}%)`; el.style.opacity = (t >= a - 0.05 && t < a + 2.1) || i === 5 && t >= a ? 1 : 0
+      const doc = el.querySelector('.doc'), d = E.back(p(t, a + 0.45, a + 0.95)); doc.style.transform = `scale(${0.6 + 0.4 * d})`; doc.style.opacity = clamp(d * 1.4)
+    })
+  }
+
+  // ===== S6: what is coming =====
+  const nextOn = t > S6 - 0.2 && t < S7 + 0.3
+  show($('next'), nextOn ? 1 : 0)
+  if (nextOn) {
+    const sIn = E.expo(p(t, S6, S6 + 1.2)), sOut = E.io(p(t, S7 - 0.5, S7 + 0.1))
+    $('strip').style.transform = `translateX(${-80 - (t - S6) * 120}px) translateY(${(1 - sIn) * -300}px)`; $('strip').style.opacity = sIn * (1 - sOut)
+    words($('next-title'), t, S6 + 0.3, S7 - 0.45, 0.1)
+    fade($('next-fr'), t, S6 + 0.7, S7 - 0.45, 0.6, 14)
+    NEXT.forEach((_, i) => {
+      const el = $('r' + i), a = E.expo(p(t, S6 + 1.3 + i * 0.32, S6 + 2.3 + i * 0.32)), b = E.io(p(t, S7 - 0.6 + i * 0.03, S7 - 0.1 + i * 0.03))
+      el.style.transform = `translateY(${(1 - a) * 60 - b * 40}px)`; el.style.opacity = a * (1 - b)
+      el.style.borderTopColor = `rgba(168,230,207,${0.16 * a})`
+    })
+  }
+
+  // ===== S7: outro =====
+  const outOn = t > S7 - 0.2
+  show($('out'), outOn ? 1 : 0)
+  if (outOn) {
+    words($('pos1'), t, S7 + 0.1, 1e9, 0.07)
+    words($('pos2'), t, S7 + 0.7, 1e9, 0.06)
+    draw($('m2c'), t, S7 + 1.3, S7 + 2.5); draw($('m2a'), t, S7 + 1.5, S7 + 2.2); draw($('m2b'), t, S7 + 1.75, S7 + 2.45)
+    fade($('out-word'), t, S7 + 2.2, 1e9, 0.8, 24); fade($('out-sub'), t, S7 + 2.45, 1e9, 0.7, 14)
+    fade($('out-url'), t, S7 + 2.8, 1e9, 0.7, 18); fade($('out-nums'), t, S7 + 3.05, 1e9, 0.7, 14); fade($('out-handle'), t, S7 + 3.25, 1e9, 0.7, 14)
+  }
+  $("vignette").style.opacity = 1 - 0.85 * Math.min(1, pr / 900)
+  // a breath of light on the big cuts
+  const fl = Math.max(0, 1 - Math.abs(t - S5) / 0.12) * 0.0
+  $('flash').style.opacity = fl
+  // global fade from black / to black
+  $('stage').style.filter = `brightness(${Math.min(E.sine(p(t, 0, 0.35)), 1 - E.sine(p(t, END - 0.6, END)))})`
+}
+await document.fonts.ready
+await Promise.all([...document.images].map(i => i.decode().catch(() => {})))
+window.ready = true
+</script>
+</body>
+</html>
