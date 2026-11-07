@@ -8,7 +8,7 @@ Each scene is its own phone-size video (OUT_DIR/<scene>.webm) and OUT_DIR/steps.
 the moments (seconds from the start of that video) where something happens, for the captions.
 Never prints the password; it only lives in /tmp/demo.json on the runner.
 """
-import asyncio, json, os, secrets, sys, time
+import asyncio, json, os, secrets, sys, time, uuid
 import urllib.request, urllib.error
 
 URL = os.environ.get('SUPABASE_URL', 'https://qtgvmqdvghvijfbacnza.supabase.co').rstrip('/')
@@ -67,7 +67,7 @@ def setup():
     common = {'office': 'tebessa', 'added_by': uid}
     api('POST', '/rest/v1/orders', {**common, 'reference_number': 'DEMO-TB-001', 'status': 'confirmed', 'customer_name': 'زبون تجريبي 1',
                                     'customer_phone': '0550 00 00 01', 'customer_wilaya': 'Tébessa', 'car_brand': 'Kia', 'car_model': 'Sportage', 'source': 'manual'})
-    api('POST', '/rest/v1/financial_transactions', {**common, 'type': 'Income', 'category': 'Car Sale', 'amount': 5_200_000, 'paid_amount': 5_200_000,
+    api('POST', '/rest/v1/financial_transactions', {**common, 'id': str(uuid.uuid4()), 'type': 'Income', 'category': 'Car Sale', 'amount': 5_200_000, 'paid_amount': 5_200_000,
         'payment_status': 'Paid', 'currency': 'DZD', 'transaction_date': time.strftime('%Y-%m-%d'), 'customer_name': 'زبون تجريبي 1',
         'customer_phone': '0550 00 00 01', 'car_brand': 'Kia', 'car_model': 'Sportage', 'car_year': '2022', 'car_color': 'Gris',
         'car_milage': 61000, 'car_vin': 'DEMO0SPORTAGE0001', 'description': 'Kia Sportage 2022 — زبون تجريبي 1'})
