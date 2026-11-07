@@ -1,0 +1,48 @@
+name: app-tour
+# Record the Wahid Auto app (phone size, Arabic) as a temporary Tebessa demo account, for a tutorial.
+# The demo account and everything it adds are deleted at the end, even if the recording fails.
+on:
+  workflow_dispatch:
+    inputs:
+      ref: { description: "wahid-auto branch", required: true, default: main }
+permissions:
+  contents: write
+concurrency: { group: app-tour }
+jobs:
+  tour:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: https://qtgvmqdvghvijfbacnza.supabase.co
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { repository: mohamedrouini02-arch/wahid-auto, ref: "${{ inputs.ref }}", path: app }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Build the app
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://qtgvmqdvghvijfbacnza.supabase.co
+          # public anon key (the same one shipped in the app's JavaScript)
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0Z3ZtcWR2Z2h2aWpmYmFjbnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4NTc1NjIsImV4cCI6MjA3NTQzMzU2Mn0.fM3nJs1L3ZnaRV2YRDNPDraGPsrgfQ2jEeIyUBtMR3Y
+        run: cd app/web && npm ci --no-audit --no-fund && npm run build
+      - run: pip install -q playwright && python -m playwright install --with-deps chromium >/dev/null
+      - name: Demo account
+        run: python tools/app_tour.py setup
+      - name: Record
+        run: |
+          (npx -y serve@14.2.4 app/web/out -l 3000 >/dev/null 2>&1 &) && sleep 5
+          python tools/app_tour.py record http://localhost:3000 tour
+      - name: Delete the demo account and its entries
+        if: always()
+        run: python tools/app_tour.py cleanup
+      - name: Save recordings on the "tour" branch
+        if: always()
+        run: |
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          [ -d tour ] || exit 0
+          rm -rf tour/raw_*; mv tour /tmp/tour
+          git fetch origin tour && git checkout tour || git checkout --orphan tour
+          git rm -rq --cached . 2>/dev/null || true; rm -rf tour && mv /tmp/tour tour
+          git add tour && git commit -qm "tour ${{ github.run_id }}" && git push -q -f origin HEAD:tour
