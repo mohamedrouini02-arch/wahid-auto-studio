@@ -1,0 +1,206 @@
+{
+ "login": [
+  {
+   "t": 2.21,
+   "k": "login"
+  },
+  {
+   "t": 3.01,
+   "k": "email"
+  },
+  {
+   "t": 5.54,
+   "k": "password"
+  },
+  {
+   "t": 7.57,
+   "k": "submit"
+  },
+  {
+   "t": 10.11,
+   "k": "home"
+  },
+  {
+   "t": 12.61,
+   "k": "home_scroll"
+  },
+  {
+   "t": 16.32,
+   "k": "menu"
+  },
+  {
+   "t": 17.84,
+   "k": "menu_open"
+  }
+ ],
+ "orders": [
+  {
+   "t": 3.1,
+   "k": "orders_list"
+  },
+  {
+   "t": 6.38,
+   "k": "order_new"
+  },
+  {
+   "t": 8.65,
+   "k": "order_client"
+  },
+  {
+   "t": 13.02,
+   "k": "order_wilaya"
+  },
+  {
+   "t": 14.82,
+   "k": "order_car"
+  },
+  {
+   "t": 20.1,
+   "k": "order_save"
+  },
+  {
+   "t": 21.04,
+   "k": "order_details"
+  },
+  {
+   "t": 27.93,
+   "k": "orders_badge"
+  }
+ ],
+ "stock": [
+  {
+   "t": 5.74,
+   "k": "stock_list"
+  },
+  {
+   "t": 7.95,
+   "k": "stock_scroll"
+  },
+  {
+   "t": 11.58,
+   "k": "stock_open"
+  },
+  {
+   "t": 13.4,
+   "k": "stock_details"
+  }
+ ],
+ "sale": [
+  {
+   "t": 3.85,
+   "k": "sales_list"
+  },
+  {
+   "t": 7.12,
+   "k": "sale_new"
+  },
+  {
+   "t": 9.38,
+   "k": "sale_client"
+  },
+  {
+   "t": 17.45,
+   "k": "sale_docs"
+  },
+  {
+   "t": 20.63,
+   "k": "sale_car"
+  },
+  {
+   "t": 25.95,
+   "k": "sale_color"
+  },
+  {
+   "t": 27.78,
+   "k": "sale_km"
+  },
+  {
+   "t": 29.6,
+   "k": "sale_vin"
+  },
+  {
+   "t": 32.11,
+   "k": "sale_price"
+  },
+  {
+   "t": 34.05,
+   "k": "sale_deposit"
+  },
+  {
+   "t": 35.63,
+   "k": "sale_paid"
+  },
+  {
+   "t": 39.66,
+   "k": "sale_save"
+  },
+  {
+   "t": 41.45,
+   "k": "sale_details"
+  },
+  {
+   "t": 45.2,
+   "k": "invoice"
+  },
+  {
+   "t": 48.52,
+   "k": "invoice_view"
+  },
+  {
+   "t": 52.25,
+   "k": "stamp_toggle"
+  },
+  {
+   "t": 59.08,
+   "k": "print"
+  },
+  {
+   "t": 63.86,
+   "k": "sales_list_after"
+  },
+  {
+   "t": 66.63,
+   "k": "batch_select"
+  }
+ ],
+ "shipping": [
+  {
+   "t": 2.83,
+   "k": "ship_list"
+  },
+  {
+   "t": 5.79,
+   "k": "ship_new"
+  },
+  {
+   "t": 8.06,
+   "k": "ship_client"
+  },
+  {
+   "t": 16.86,
+   "k": "ship_car"
+  },
+  {
+   "t": 21.97,
+   "k": "ship_provider"
+  },
+  {
+   "t": 23.76,
+   "k": "ship_save"
+  },
+  {
+   "t": 25.72,
+   "k": "ship_details"
+  },
+  {
+   "t": 30.77,
+   "k": "ship_whatsapp"
+  }
+ ],
+ "contract": [
+  {
+   "t": 2.7,
+   "k": "contract_view"
+  }
+ ]
+}
