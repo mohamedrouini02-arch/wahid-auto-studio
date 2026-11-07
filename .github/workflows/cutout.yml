@@ -1,0 +1,39 @@
+name: cutout
+# Cut cars out of their photos (transparent PNG) for the website. Input: one image URL per line.
+on:
+  workflow_dispatch:
+    inputs:
+      urls: { description: "image URLs, one per line or comma-separated", required: true }
+permissions:
+  contents: write
+jobs:
+  cut:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -q "rembg[cpu]==2.0.59" pillow
+      - name: Cut out
+        env: { URLS: "${{ inputs.urls }}" }
+        run: |
+          mkdir -p cutouts && cd cutouts
+          python - <<'PY'
+          import os, re, io, urllib.request
+          from rembg import remove, new_session
+          from PIL import Image
+          s = new_session('isnet-general-use')
+          for i, u in enumerate([x.strip() for x in re.split(r'[\n,]', os.environ['URLS']) if x.strip()]):
+              im = Image.open(io.BytesIO(urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'wahid-auto-studio'})).read())).convert('RGB')
+              out = remove(im, session=s, alpha_matting=True, alpha_matting_foreground_threshold=240, alpha_matting_background_threshold=12, alpha_matting_erode_size=8)
+              out = out.crop(out.getbbox())
+              name = re.sub(r'[^a-z0-9]+', '-', u.lower().split('/cars/')[-1].rsplit('.', 1)[0]).strip('-') or f'car{i}'
+              out.save(f'{name}.png', optimize=True); print('cut', name, out.size)
+          PY
+      - name: Save on the cutouts branch
+        run: |
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          git fetch origin cutouts && git checkout cutouts || git checkout --orphan cutouts
+          git rm -rq --cached . 2>/dev/null || true
+          git add cutouts/*.png && git commit -qm "cutouts ${{ github.run_id }}" && git push -q origin HEAD:cutouts
