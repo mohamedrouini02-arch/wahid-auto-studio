@@ -1,0 +1,136 @@
+{
+ "login": [
+  {
+   "t": 2.38,
+   "k": "login"
+  },
+  {
+   "t": 2.99,
+   "k": "email"
+  },
+  {
+   "t": 5.31,
+   "k": "password"
+  },
+  {
+   "t": 7.14,
+   "k": "submit"
+  },
+  {
+   "t": 9.56,
+   "k": "home"
+  },
+  {
+   "t": 12.06,
+   "k": "home_scroll"
+  },
+  {
+   "t": 15.59,
+   "k": "menu"
+  },
+  {
+   "t": 17.11,
+   "k": "menu_open"
+  }
+ ],
+ "orders": [
+  {
+   "t": 2.69,
+   "k": "orders_list"
+  },
+  {
+   "t": 5.77,
+   "k": "order_new"
+  },
+  {
+   "t": 7.84,
+   "k": "order_client"
+  },
+  {
+   "t": 11.79,
+   "k": "order_wilaya"
+  },
+  {
+   "t": 13.37,
+   "k": "order_car"
+  },
+  {
+   "t": 18.02,
+   "k": "order_save"
+  },
+  {
+   "t": 18.64,
+   "k": "order_details"
+  },
+  {
+   "t": 25.74,
+   "k": "orders_badge"
+  }
+ ],
+ "stock": [
+  {
+   "t": 4.25,
+   "k": "stock_list"
+  },
+  {
+   "t": 6.45,
+   "k": "stock_scroll"
+  },
+  {
+   "t": 9.88,
+   "k": "stock_open"
+  },
+  {
+   "t": 11.7,
+   "k": "stock_details"
+  }
+ ],
+ "sale": [
+  {
+   "t": 3.76,
+   "k": "sales_list"
+  },
+  {
+   "t": 6.84,
+   "k": "sale_new"
+  },
+  {
+   "t": 8.91,
+   "k": "sale_client"
+  }
+ ],
+ "shipping": [
+  {
+   "t": 2.86,
+   "k": "ship_list"
+  },
+  {
+   "t": 5.64,
+   "k": "ship_new"
+  },
+  {
+   "t": 7.7,
+   "k": "ship_client"
+  },
+  {
+   "t": 15.65,
+   "k": "ship_car"
+  },
+  {
+   "t": 20.34,
+   "k": "ship_provider"
+  },
+  {
+   "t": 21.92,
+   "k": "ship_save"
+  },
+  {
+   "t": 23.39,
+   "k": "ship_details"
+  },
+  {
+   "t": 28.26,
+   "k": "ship_whatsapp"
+  }
+ ]
+}
