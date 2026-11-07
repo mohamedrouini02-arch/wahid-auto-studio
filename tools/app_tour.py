@@ -115,7 +115,9 @@ class Scene:
     async def tap(self, sel, key=None, settle=500):
         el = self.page.locator(sel).first
         await el.scroll_into_view_if_needed(timeout=10000)
-        await self.wait(250)
+        # keep the target in the middle of the screen, clear of the header and the bottom tab bar
+        await el.evaluate("e => { const r = e.getBoundingClientRect(); if (r.top < 90 || r.bottom > innerHeight - 110) e.scrollIntoView({block: 'center', behavior: 'smooth'}) }")
+        await self.wait(450)
         b = await el.bounding_box()
         x, y = b['x'] + b['width'] / 2, b['y'] + min(b['height'] / 2, 22)
         await self.move(x, y)
