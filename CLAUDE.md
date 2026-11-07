@@ -68,6 +68,16 @@ See `jobs/kia-morning-2022-205.json` and `car_job.py build()`: `script` beats (`
 `shots` = media indexes or `{"m": i, "at": sec}`, `label: [ar, lat]`, `fx`), then `price`, `end`. Without a
 voice the video is silent for Wahid to record over in the app (or add `music`).
 
+## Editing skills (in `.claude/skills/`, use them)
+- `yt-edit` — edit decision list from a transcript: dead air (trimmed from the middle), filler, retakes.
+  `python3 .claude/skills/yt-edit/deadair.py words.srt` (srt / vtt / whisper json). Use it before cutting talking footage.
+- `yt-shorts` — find the moments that stand alone (20–55 s, complete thought, a turn, ends on a line).
+- `yt-script` — hooks off 21 formulas, scored with `hookscore.py` (English/French only; for Darija judge by the rules).
+- `yt-retention` — read a retention export and name the single biggest leak.
+- `short-form-video` — hooks in the first 3 s, topic words in the first 10 s, formats, publish checklist.
+- `video-caption-creation` — on-screen text that ADDS to what is said (never repeats it), first-3-words test, captions + hashtags.
+Third-party skills (MIT/open licences in the folder). Their "ship it, or change it?" gate = answer in the chat and wait.
+
 ## Working loop
 1. Read the chat. Find the footage (attached car, uploaded files, drive links) and the notes.
 2. Fetch it, make a contact sheet, transcribe if someone talks. Read the transcript.
