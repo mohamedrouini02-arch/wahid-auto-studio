@@ -4,7 +4,7 @@ name: app-tour
 on:
   workflow_dispatch:
     inputs:
-      ref: { description: "wahid-auto branch", required: true, default: main }
+      url: { description: "app address", required: true, default: "https://wahid-auto.vercel.app" }
 permissions:
   contents: write
 concurrency: { group: app-tour }
@@ -17,23 +17,11 @@ jobs:
       SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with: { repository: mohamedrouini02-arch/wahid-auto, ref: "${{ inputs.ref }}", path: app }
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - name: Build the app
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: https://qtgvmqdvghvijfbacnza.supabase.co
-          # public anon key (the same one shipped in the app's JavaScript)
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0Z3ZtcWR2Z2h2aWpmYmFjbnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk4NTc1NjIsImV4cCI6MjA3NTQzMzU2Mn0.fM3nJs1L3ZnaRV2YRDNPDraGPsrgfQ2jEeIyUBtMR3Y
-        run: cd app/web && npm ci --no-audit --no-fund && npm run build
       - run: pip install -q playwright && python -m playwright install --with-deps chromium >/dev/null
       - name: Demo account
         run: python tools/app_tour.py setup
       - name: Record
-        run: |
-          (npx -y serve@14.2.4 app/web/out -l 3000 >/dev/null 2>&1 &) && sleep 5
-          python tools/app_tour.py record http://localhost:3000 tour
+        run: python tools/app_tour.py record "${{ inputs.url }}" tour
       - name: Delete the demo account and its entries
         if: always()
         run: python tools/app_tour.py cleanup
