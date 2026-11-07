@@ -148,7 +148,7 @@ async def record(base, out):
     from playwright.async_api import async_playwright
     st = json.load(open(STATE))
     os.makedirs(out, exist_ok=True)
-    log = {}
+    log, ids = {}, {}
     async with async_playwright() as p:
         b = await p.chromium.launch()
         storage = None
@@ -171,12 +171,17 @@ async def record(base, out):
                 await fn(s)
             except Exception as e:
                 print(f'!! scene {name} stopped: {e}', flush=True)
-                await page.screenshot(path=f'{out}/error_{name}.png')
-            await page.wait_for_timeout(900)
-            storage = await ctx.storage_state()
+                try: await page.screenshot(path=f'{out}/error_{name}.png')
+                except Exception: pass
+            try:
+                await page.wait_for_timeout(900)
+                storage = await ctx.storage_state()
+            except Exception: pass
             vid = page.video
-            await ctx.close()
-            os.replace(await vid.path(), f'{out}/{name}.webm')
+            try: await ctx.close()
+            except Exception: pass
+            try: os.replace(await vid.path(), f'{out}/{name}.webm')
+            except Exception as e: print('!! no video for', name, e)
             log[name] = s.steps
 
         async def login(s):
@@ -247,11 +252,14 @@ async def record(base, out):
             await s.scroll(900); await s.wait(1600); await s.scroll(-900)
             await s.tap('label:has(input[type=checkbox])', None, settle=600)
             await s.move(330, 70); s.mark('print'); await s.wait(1800)
-            await s.page.goto(base + f'/finance/contract?id={sid}', wait_until='networkidle'); await s.wait(1000)
-            s.mark('contract_view'); await s.scroll(900); await s.wait(1600)
+            ids['sale'] = sid
             await s.page.goto(base + '/finance', wait_until='networkidle'); await s.wait(1000)
             s.mark('sales_list_after'); await s.wait(2000)
             await s.tap('td select', 'batch_select', settle=300); await s.page.keyboard.press('Escape'); await s.wait(2000)
+
+        async def contract(s):
+            s.mark('contract_view'); await s.wait(1500)
+            await s.scroll(900); await s.wait(1500); await s.scroll(900); await s.wait(1500)
 
         async def shipping(s):
             s.mark('ship_list'); await s.wait(2200)
@@ -276,6 +284,8 @@ async def record(base, out):
         await scene('stock', stock, '/inventory')
         await scene('sale', sale, '/finance')
         await scene('shipping', shipping, '/shipping')
+        if ids.get('sale'):
+            await scene('contract', contract, f"/finance/contract?id={ids['sale']}")
         await b.close()
     json.dump(log, open(f'{out}/steps.json', 'w'), ensure_ascii=False, indent=1)
 
