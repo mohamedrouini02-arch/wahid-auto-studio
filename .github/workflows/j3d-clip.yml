@@ -35,7 +35,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { path: fr, pattern: "frames-*", merge-multiple: true }
       - run: |
-          ls fr | wc -l
+          ls fr | wc -l; sudo apt-get -qq update && sudo apt-get -qq install -y ffmpeg >/dev/null
           ffmpeg -loglevel error -framerate 24 -i fr/f%04d.jpg -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart /tmp/clip.mp4
           cp fr/f0000.jpg /tmp/first.jpg; cp fr/f0060.jpg /tmp/orbit.jpg; cp fr/f0180.jpg /tmp/pull.jpg; cp fr/f0239.jpg /tmp/last.jpg
           git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
