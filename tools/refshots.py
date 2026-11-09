@@ -10,7 +10,7 @@ async def main():
             ctx = await b.new_context(viewport=vp, device_scale_factor=1, is_mobile=mob, has_touch=mob,
                                       record_video_dir=f'{out}/vid-{name}', record_video_size=vp)
             pg = await ctx.new_page()
-            await pg.goto(url, wait_until='networkidle', timeout=90000); await pg.wait_for_timeout(4000)
+            await pg.goto(url, wait_until='load', timeout=90000); await pg.wait_for_timeout(7000)
             for sel in ['text=Reject all', 'text=Alle ablehnen', 'text=Accept all', '#onetrust-reject-all-handler', 'button:has-text("Reject")']:
                 try: await pg.click(sel, timeout=1500); break
                 except Exception: pass
