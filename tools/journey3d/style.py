@@ -203,19 +203,27 @@ def paint_sorento(colour='#575C60', objs=None):
             if n in ('template_carpaint',): sl.material = paint
             elif n == 'template_blackpaint': sl.material = trim
             elif n in ('template_tyres', 'template_rubber'): sl.material = rubber
-    # rims: the metal parts around the wheel centres become gloss black
+    # rims: every part sitting inside a tyre (same centre, smaller) becomes gloss black, except the brakes
     from mathutils import Vector
-    for o in (objs if objs is not None else []):
-        if o.type != 'MESH' or not o.parent: continue
-        root = o.parent
-        while root.parent: root = root.parent
-        inv = root.matrix_world.inverted()
-        pts = [inv @ (o.matrix_world @ Vector(c)) for c in o.bound_box]
-        c = sum(pts, Vector()) / 8; size = max((max(p[i] for p in pts) - min(p[i] for p in pts)) for i in range(3))
-        if c.z < .75 and abs(c.y) > .5 and abs(abs(c.x) - 1.42) < .6 and size < .9:
-            for sl in o.material_slots:
-                if sl.material and sl.material.name.split('.')[0] not in ('sorento_rubber', 'template_tyres', 'template_rubber') and 'disc' not in sl.material.name:
-                    print('RIM', o.name, sl.material.name, flush=True); sl.material = gloss_black
+    def bbox(o):
+        pts = [o.matrix_world @ Vector(c) for c in o.bound_box]
+        lo = Vector([min(p[i] for p in pts) for i in range(3)]); hi = Vector([max(p[i] for p in pts) for i in range(3)])
+        return (lo + hi) / 2, hi - lo
+    meshes = [o for o in (objs if objs is not None else []) if o.type == 'MESH']
+    bpy.context.view_layer.update()
+    wheels = [bbox(o) for o in meshes if any(sl.material and sl.material.name == 'sorento_rubber' for sl in o.material_slots)
+              and bbox(o)[0].z < .8]
+    wheels = [w for w in wheels if max(w[1]) < 1.0]
+    print('WHEELS', [(tuple(round(v, 2) for v in c), round(max(d), 2)) for c, d in wheels], flush=True)
+    for o in meshes:
+        c, d = bbox(o)
+        for wc, wd in wheels:
+            if (c - wc).length < .22 and max(d) <= max(wd) * 1.02:
+                for sl in o.material_slots:
+                    n = sl.material.name if sl.material else ''
+                    if n and n != 'sorento_rubber' and not any(k in n for k in ('disc', 'brake', 'caliper', 'red')):
+                        print('RIM', o.name, n, flush=True); sl.material = gloss_black
+                break
 
 
 def on_white():
