@@ -13,7 +13,7 @@ async def main():
                 await pg.add_init_script(f"sessionStorage.setItem('wa-loaded','1');localStorage.setItem('wahid-auto-lang','{lang}')")
                 await pg.goto(url, wait_until='networkidle'); await pg.wait_for_timeout(5000)
                 for y in pos:
-                    await pg.evaluate(f"window.scrollTo(0, {y} * innerHeight)"); await pg.wait_for_timeout(1800)
+                    await pg.evaluate(f"window.scrollTo(0, {y} * innerHeight)"); await pg.wait_for_timeout(int(__import__("os").environ.get("SHOT_WAIT", "4000")))
                     await pg.screenshot(path=f"{out}/{name}-{lang}-{y}.jpg", quality=70, type='jpeg')
                 await ctx.close()
         await b.close()
