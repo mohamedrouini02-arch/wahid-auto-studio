@@ -192,6 +192,7 @@ def paint_sorento(colour='#575C60', objs=None):
         if coat: b.inputs['Coat Weight'].default_value = coat; b.inputs['Coat Roughness'].default_value = .03
         return m
     paint = new('sorento_paint', colour, .32, .7, 1.)
+    gloss_black = new('sorento_rims', '#101112', .22, .3, 1.)
     trim = new('sorento_trim', '#0E0F10', .25, 0, .6)
     rubber = new('sorento_rubber', '#141516', .85)
     for o in (objs if objs is not None else bpy.data.objects):
@@ -202,6 +203,19 @@ def paint_sorento(colour='#575C60', objs=None):
             if n in ('template_carpaint',): sl.material = paint
             elif n == 'template_blackpaint': sl.material = trim
             elif n in ('template_tyres', 'template_rubber'): sl.material = rubber
+    # rims: the metal parts around the wheel centres become gloss black
+    from mathutils import Vector
+    for o in (objs if objs is not None else []):
+        if o.type != 'MESH' or not o.parent: continue
+        root = o.parent
+        while root.parent: root = root.parent
+        inv = root.matrix_world.inverted()
+        pts = [inv @ (o.matrix_world @ Vector(c)) for c in o.bound_box]
+        c = sum(pts, Vector()) / 8; size = max((max(p[i] for p in pts) - min(p[i] for p in pts)) for i in range(3))
+        if c.z < .75 and abs(c.y) > .5 and abs(abs(c.x) - 1.42) < .6 and size < .9:
+            for sl in o.material_slots:
+                if sl.material and sl.material.name.split('.')[0] not in ('sorento_rubber', 'template_tyres', 'template_rubber') and 'disc' not in sl.material.name:
+                    print('RIM', o.name, sl.material.name, flush=True); sl.material = gloss_black
 
 
 def on_white():
@@ -216,7 +230,7 @@ def hero():
     # floor: white, catches the shadow; the background is pure white for the camera
     floor = W.plane('floor', -60, -60, 60, 60, 0, W.mat('floor', '#FFFFFF', .9)); floor.is_shadow_catcher = True
     car = W.real('sorento', (0, 0, 0), heading=math.radians(-12))
-    paint_sorento()
+    paint_sorento(objs=list(car.children_recursive))
     w = bpy.data.worlds.new('studio'); sc.world = w; w.use_nodes = True; nt = w.node_tree
     env = nt.nodes.new('ShaderNodeTexEnvironment'); env.image = bpy.data.images.load(os.path.join(W.PH, 'studio.exr'))
     tc = nt.nodes.new('ShaderNodeTexCoord'); mp = nt.nodes.new('ShaderNodeMapping'); mp.inputs['Rotation'].default_value = (0, 0, math.radians(200))
@@ -284,23 +298,96 @@ def faceted_water(x0, y0, x1, y1, z=-1.0, step=7.):
     return o
 
 
+def ribbon(name, pts, width, z, m):
+    """A flat strip (road) along a polyline."""
+    import bmesh
+    from mathutils import Vector
+    bm = bmesh.new(); left = []; right = []
+    P = [Vector((x, y, 0)) for x, y in pts]
+    for i, p in enumerate(P):
+        d = (P[min(i + 1, len(P) - 1)] - P[max(i - 1, 0)]).normalized()
+        n = Vector((-d.y, d.x, 0)) * width / 2
+        left.append(bm.verts.new((p + n).to_tuple())); right.append(bm.verts.new((p - n).to_tuple()))
+        left[-1].co.z = right[-1].co.z = z
+    for i in range(len(P) - 1): bm.faces.new((left[i], right[i], right[i + 1], left[i + 1]))
+    me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+    o = bpy.data.objects.new(name, me); bpy.context.scene.collection.objects.link(o); me.materials.append(m)
+    return o
+
+
+def arc(cx, cy, r, a0, a1, n=24):
+    return [(cx + r * math.cos(a0 + (a1 - a0) * i / n), cy + r * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)]
+
+
+def person(x, y, m):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=10, radius=.22, depth=1.25, location=(x, y, .63)); bpy.context.object.data.materials.append(m)
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=10, ring_count=6, radius=.17, location=(x, y, 1.45)); bpy.context.object.data.materials.append(m)
+
+
+def annulus(name, cx, cy, r0, r1, z, m, n=64):
+    import bmesh
+    bm = bmesh.new()
+    a = [bm.verts.new((cx + r0 * math.cos(i / n * 6.2832), cy + r0 * math.sin(i / n * 6.2832), z)) for i in range(n)]
+    b = [bm.verts.new((cx + r1 * math.cos(i / n * 6.2832), cy + r1 * math.sin(i / n * 6.2832), z)) for i in range(n)]
+    for i in range(n): bm.faces.new((a[i], a[(i + 1) % n], b[(i + 1) % n], b[i]))
+    me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+    o = bpy.data.objects.new(name, me); bpy.context.scene.collection.objects.link(o); me.materials.append(m)
+
+
 def clay_port():
     global TREEMATS
     random.seed(11)
     TREEMATS = [W.mat('t1', '#5FB89B', .8), W.mat('t2', '#71C3A8', .8), W.mat('t3', '#4FA98B', .8)]
     W.sky(.9, math.radians(140))
-    ground = clay_mat(); road = clay_mat('road', '#E3E4E1', .7); line = clay_mat('line', '#FFFFFF', .5)
+    ground = clay_mat(); road = clay_mat('road', '#E2E3E0', .7); line = clay_mat('line', '#FFFFFF', .5)
+    pave = clay_mat('pave', '#EAEBE8', .75)
     accent = W.mat('accent', '#3F9C7F', .45); accent2 = W.mat('accent2', '#2E7A62', .45)
-    glass = W.mat('cglass', '#9FB2B0', .15)
-    W.plane('land', -320, 0, 320, 300, -.02, ground, thick=4)
-    W.box('quaywall', (640, 1.5, 3.0), (0, -.75, -3.0), clay_mat('wall', '#E6E7E4', .7))
-    W.plane('road', -320, 92, 320, 104, .03, road)
-    for x in range(-316, 320, 10): W.box('dash', (5, .25, .02), (x, 98, .04), line)
-    W.plane('lot', -230, 10, -60, 80, .025, road)
-    for r in range(4):
-        W.box('bay', (166, .18, .02), (-145, 22 + r * 16, .035), line)
-    faceted_water(-400, -320, 400, -1, z=-1.0)
-    # the ship, white with the brand green below
+    glass = W.mat('cglass', '#A9BAB7', .15); dark = W.mat('cdark', '#5B615E', .6)
+    # ground: top exactly at 0
+    W.plane('land', -420, 0, 420, 420, -2.02, ground, thick=4)
+    W.box('quaywall', (840, 1.5, 3.0), (0, -.75, -3.0), clay_mat('wall', '#E6E7E4', .7))
+    W.plane('quayedge', -420, 0, 420, 14, .01, pave)
+    faceted_water(-500, -400, 500, -1, z=-1.0)
+    # roads: the port ring road, the lane to the ramp, the main road with a roundabout, the curve in from the gate
+    ribbon('ring', [(-420, 92), (420, 92)], 10, .02, road)
+    ribbon('lane', [(-96, 14), (-96, 92)], 12, .021, road)
+    ribbon('main', [(-420, 128), (-78, 128)], 12, .02, road); ribbon('main2', [(-42, 128), (420, 128)], 12, .02, road)
+    annulus('rab', -60, 128, 11, 20, .022, road); annulus('rab_kerb', -60, 128, 10.4, 11, .05, line)
+    ribbon('gate_rd', [(-60, 108), (-60, 92)], 10, .023, road)
+    ribbon('curve', arc(-60, 160, 30, -math.pi / 2, 0) + [(-30, 200), (-30, 260)], 10, .021, road)
+    for x in range(-416, -80, 9): W.box('dash', (4.5, .22, .02), (x, 128, .03), line)
+    for x in range(-38, 420, 9): W.box('dash', (4.5, .22, .02), (x, 128, .03), line)
+    for x in range(-416, 420, 9): W.box('dash', (4.5, .2, .02), (x, 92, .03), line)
+    # fence along the port boundary with the gate
+    for x in range(-418, 420, 4):
+        if abs(x + 60) < 7: continue
+        W.box('fpost', (.12, .12, 2.2), (x, 108, 0), line)
+    W.box('frail', (836, .08, .08), (0, 108, 2.1), line)
+    W.box('booth', (3.4, 3, 3), (-52, 106, 0), ground); W.box('booth_roof', (4.2, 3.8, .35), (-52, 106, 3), accent)
+    W.box('canopy', (16, 12, .5), (-60, 106, 5.5), ground)
+    for cx in (-67.5, -52.5):
+        W.box('cpost', (.4, .4, 5.5), (cx, 101, 0), ground); W.box('cpost', (.4, .4, 5.5), (cx, 111, 0), ground)
+    bar = W.box('barrier', (7, .18, .18), (-63.5, 103, 1.0), accent)
+    # export lot: rows of new cars (white clay) between trees
+    W.plane('lot', -250, 18, -112, 84, .02, pave)
+    for r in range(5):
+        W.box('bay', (136, .16, .02), (-181, 24 + r * 13, .03), line)
+    # our grey Sorento keeps its real materials (own copy of the meshes), then the other cars turn to clay
+    hero = W.real('sorento', (-96, 61.4, 1.5), heading=-math.pi / 2, name='hero')
+    for o in hero.children_recursive:
+        if o.data is not None: o.data = o.data.copy()
+    paint_sorento(objs=list(hero.children_recursive))
+    clay_template('sorento', {'glass': glass, 'tyre': W.mat('ctyre', '#4A4E50', .8), 'rubber': W.mat('ctyre', '#4A4E50', .8)})
+    for r in range(5):
+        for i in range(18):
+            if random.random() < .12: continue
+            W.place('sorento', (-244 + i * 7.4, 24 + r * 13 + 4.2 * (1 if r % 2 else -1) + 4.2, .02), heading=math.pi / 2 if r % 2 else -math.pi / 2)
+    # cars queuing down the lane to the stern ramp
+    for i in range(7):
+        for lx in (-98.4, -93.6):
+            if lx < -96 and i > 4: continue
+            W.place('sorento', (lx + 18.5, 16 + i * 6.0, .02), heading=-math.pi / 2)
+    # the ship alongside, white with the brand green below, stern ramp down on the quay
     ship = pctc(10, -19, 0)
     for o in ship.children:
         n = o.name
@@ -309,50 +396,67 @@ def clay_port():
         elif n.startswith('bridge_win'): o.data.materials[0] = glass
         elif n.startswith('lifeboat') or n.startswith('vent'): o.data.materials[0] = clay_mat('clay2', '#E2E3E0')
         else: o.data.materials[0] = clay_mat()
-    # our grey Sorento keeps its real materials (own copy of the meshes), then the other cars turn to clay
-    hero = W.real('sorento', (-46.5, 30, 1.5), heading=0, name='hero')
-    for o in hero.children_recursive:
-        if o.data is not None: o.data = o.data.copy()
-    paint_sorento(objs=list(hero.children_recursive))
-    # white cars waiting in the export lot and at the ramp
-    clay_template('sorento', {'glass': glass, 'tyre': W.mat('ctyre', '#4A4E50', .8), 'rubber': W.mat('ctyre', '#4A4E50', .8)})
-    for r in range(4):
-        for i in range(22):
-            if random.random() < .15: continue
-            W.place('sorento', (-224 + i * 7.4, 15 + r * 16 + (8 if r % 2 else 0) * 0, .03), heading=math.pi / 2 if r % 2 else -math.pi / 2)
-    for i in range(10):
-        W.place('sorento', (-58 + (i % 5) * 6.0, 8 + (i // 5) * 3.6, .03), heading=0)
+    for x in range(-200, 200, 12):
+        bpy.ops.mesh.primitive_cylinder_add(vertices=12, radius=.3, depth=.7, location=(x, 1.2, .35)); bpy.context.object.data.materials.append(line)
     # containers: white blocks, a few in green
     clay_template('crate0'); clay_template('crate1'); clay_template('crate2', {'': accent}); clay_template('crate3')
     for bx in range(3):
         for by in range(2):
-            x0, y0 = 30 + bx * 58, 18 + by * 34
+            x0, y0 = 10 + bx * 64, 20 + by * 34
             for i in range(8):
                 for j in range(9):
-                    for k in range(random.choice((1, 2, 2, 3))):
+                    for k in range(random.choice((1, 2, 2, 3, 3))):
                         W.place('crate%d' % random.choice((0, 1, 3, 0, 1, 3, 2)), (x0 + i * 6.6, y0 + j * 2.75, k * 2.6))
-    # the terminal building
-    W.box('terminal', (60, 24, 14), (-150, 130, 0), clay_mat())
-    for z in (4, 9): W.box('band', (60.2, 24.2, 2.2), (-150, 130, z), glass)
-    W.box('shed', (80, 30, 11), (120, 140, 0), clay_mat())
-    W.box('shedroof', (80.4, 30.4, .8), (120, 140, 11), clay_mat('clay2', '#E2E3E0'))
-    # our car on its way: green truck, grey Sorento on the flatbed
+    # buildings: terminal offices, warehouse, workshop
+    def building(x, y, w, d, h, bands=2):
+        W.box('bld', (w, d, h), (x, y, 0), ground)
+        for k in range(bands): W.box('win', (w + .2, d + .2, 1.6), (x, y, 2.5 + k * (h - 3) / max(bands, 1)), glass)
+        W.box('roof', (w - 4, d - 4, .6), (x, y, h), clay_mat('clay2', '#E2E3E0'))
+        W.box('unit', (4, 3, 1.6), (x + w / 4, y, h), ground); W.box('unit', (3, 3, 1.4), (x - w / 4, y + 2, h), ground)
+    building(-175, 150, 54, 24, 13, 3); building(-110, 170, 30, 20, 9, 2)
+    W.box('shed', (90, 34, 12), (130, 160, 0), ground)
+    for k in range(8): W.box('saw', (10, 34.4, 2.2), (95 + k * 10, 160, 12), clay_mat('clay2', '#E2E3E0'))
+    building(260, 150, 40, 22, 10, 2)
+    # green trucks carrying white cars on the roads
     clay_template('truck', {'material': accent, 'glass': glass, 'tyre': W.mat('ctyre', '#4A4E50', .8)})
-    W.real('truck', (-38, 30, .03), heading=0, name='truck')
-    W.box('deck', (13.4, 2.55, .35), (-48.5, 30, 1.15), clay_mat())
-    # trees in soft clusters
-    for (cx, cy, n) in [(-280, 50, 22), (-30, 150, 26), (70, 205, 30), (235, 120, 22), (290, 30, 16), (-250, 190, 30), (180, 250, 34), (-120, 230, 30)]:
+    def carrier(x, y, heading, our=False):
+        t = W.real('truck', (x, y, .02), heading=heading, name='truck')
+        dx, dy = math.cos(heading), math.sin(heading)
+        d = W.box('deck', (13.4, 2.55, .35), (x - dx * 10.5, y - dy * 10.5, 1.15), clay_mat('clay2', '#E2E3E0')); d.rotation_euler = (0, 0, heading)
+        if not our:
+            for k in (0, 1): W.place('sorento', (x - dx * (8.5 + k * 5.6), y - dy * (8.5 + k * 5.6), 1.5), heading=heading)
+    carrier(-96, 50, -math.pi / 2, our=True)                    # ours, on its way to the ramp
+    carrier(-230, 125, 0); carrier(140, 131, math.pi); carrier(-30, 230, math.pi / 2)
+    # a few cars on the main road
+    for (x, y, h) in [(-300, 125.5, 0), (-150, 130.5, math.pi), (60, 125.5, 0), (250, 130.5, math.pi), (330, 125.5, 0)]:
+        W.place('sorento', (x, y, .02), heading=h)
+    # people: at the gate, at the ramp, in the lot
+    for (x, y) in [(-50, 103), (-49, 104.5), (-84, 10), (-82, 12.5), (-86, 8.5), (-120, 40), (-160, 60), (-60, 20)]:
+        person(x, y, dark)
+    # lamps
+    for x in range(-400, 420, 32):
+        W.box('pole', (.22, .22, 13), (x, 12, 0), ground); W.box('lamp', (1.6, .5, .25), (x, 12.6, 13), ground)
+    for x in range(-400, 420, 40):
+        W.box('pole', (.2, .2, 9), (x, 121, 0), ground); W.box('lamp', (1.2, .4, .2), (x, 121.5, 9), ground)
+    # trees: clusters, rows along the roads, a garden in the roundabout
+    for (cx, cy, n) in [(-300, 40, 26), (-20, 175, 22), (60, 220, 34), (235, 110, 14), (330, 60, 18), (-280, 200, 34), (190, 250, 38), (-140, 250, 34), (-370, 120, 12)]:
         for i in range(n):
             lowpoly_tree(cx + random.gauss(0, 16), cy + random.gauss(0, 12), random.uniform(1.6, 2.5))
-    for x in range(-300, 320, 16):
-        lowpoly_tree(x + random.uniform(-3, 3), 112 + random.uniform(-2, 2), random.uniform(1.2, 1.6))
-    for y in range(12, 84, 14):
-        lowpoly_tree(-245 + random.uniform(-2, 2), y, random.uniform(1.1, 1.4))
-    for x in range(-300, 320, 30):
-        W.box('pole', (.25, .25, 14), (x, 4, 0), clay_mat()); W.box('lamp', (1.8, .6, .3), (x, 4, 14), clay_mat())
-    tgt = (-45, 40, 0)
-    W.camera((-300, -290, 290), tgt, lens=50, dof=(-46, 30, 0), fstop=.8)
+    for x in list(range(-410, -80, 14)) + list(range(-40, 420, 14)):
+        lowpoly_tree(x + random.uniform(-2, 2), 116 + random.uniform(-1, 1), random.uniform(1.1, 1.4))
+        lowpoly_tree(x + random.uniform(-2, 2), 140 + random.uniform(-1, 1), random.uniform(1.1, 1.4))
+    for y in range(22, 84, 11):
+        lowpoly_tree(-256 + random.uniform(-1, 1), y, random.uniform(1.0, 1.3)); lowpoly_tree(-106 + random.uniform(-1, 1), y, random.uniform(.9, 1.1))
+    for i in range(7):
+        lowpoly_tree(-60 + random.gauss(0, 3.5), 128 + random.gauss(0, 3.5), random.uniform(1.0, 1.5))
     W.render_settings(RW, RH, SAMPLES, exposure=.45)
+
+
+CLAY_VIEWS = {
+    'wide': ((-330, -260, 270), (-70, 70, 0), 42, (-96, 50, 0), 1.2),
+    'ramp': ((-205, -120, 92), (-86, 18, 2), 50, (-86, 18, 2), .9),
+    'truck': ((-160, -10, 48), (-96, 52, 2), 62, (-96, 52, 2), 1.0),
+}
 
 
 def debug():
@@ -377,7 +481,15 @@ def debug():
     W.render_settings(RW, RH, SAMPLES)
 
 
-{'studio': studio, 'port': port, 'debug': debug, 'hero': hero, 'clay': clay_port}[FRAME]()
-bpy.context.scene.render.filepath = os.path.join(OUT, FRAME + ('.png' if FRAME == 'hero' else '.jpg'))
-bpy.ops.render.render(write_still=True)
-print('rendered', FRAME, flush=True)
+if FRAME == 'clay':
+    clay_port()
+    for name, (loc, tgt, lens, focus, fstop) in CLAY_VIEWS.items():
+        W.camera(loc, tgt, lens=lens, dof=focus, fstop=fstop)
+        bpy.context.scene.render.filepath = os.path.join(OUT, 'clay-%s.jpg' % name)
+        bpy.ops.render.render(write_still=True)
+        print('rendered', name, flush=True)
+else:
+    {'studio': studio, 'port': port, 'debug': debug, 'hero': hero}[FRAME]()
+    bpy.context.scene.render.filepath = os.path.join(OUT, FRAME + ('.png' if FRAME == 'hero' else '.jpg'))
+    bpy.ops.render.render(write_still=True)
+    print('rendered', FRAME, flush=True)
