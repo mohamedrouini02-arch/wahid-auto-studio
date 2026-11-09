@@ -192,7 +192,7 @@ def paint_sorento(colour='#575C60', objs=None):
         if coat: b.inputs['Coat Weight'].default_value = coat; b.inputs['Coat Roughness'].default_value = .03
         return m
     paint = new('sorento_paint', colour, .32, .7, 1.)
-    gloss_black = new('sorento_rims', '#101112', .22, .3, 1.)
+    gloss_black = new('sorento_rims', '#060607', .18, 0., 1.)
     trim = new('sorento_trim', '#0E0F10', .25, 0, .6)
     rubber = new('sorento_rubber', '#141516', .85)
     for o in (objs if objs is not None else bpy.data.objects):
@@ -273,9 +273,14 @@ def clay_template(key, special=None):
 
 def lowpoly_tree(x, y, s=1.):
     import bmesh
-    bm = bmesh.new(); bmesh.ops.create_icosphere(bm, subdivisions=1, radius=2.6 * s)
-    for v in bm.verts:
-        v.co.z *= 1.25; v.co += v.co.normalized() * random.uniform(-.25, .25) * s
+    bm = bmesh.new()
+    if random.random() < .35:       # a tall pointed tree among the round ones
+        bmesh.ops.create_cone(bm, cap_ends=True, segments=7, radius1=2.2 * s, radius2=0, depth=7.5 * s)
+        for v in bm.verts: v.co += v.co.normalized() * random.uniform(-.15, .15) * s
+    else:
+        bmesh.ops.create_icosphere(bm, subdivisions=1, radius=2.6 * s)
+        for v in bm.verts:
+            v.co.z *= random.uniform(1.0, 1.35); v.co += v.co.normalized() * random.uniform(-.35, .35) * s
     me = bpy.data.meshes.new('tree'); bm.to_mesh(me); bm.free()
     o = bpy.data.objects.new('tree', me); bpy.context.scene.collection.objects.link(o)
     me.materials.append(random.choice(TREEMATS)); o.location = (x, y, 3.4 * s); o.rotation_euler = (0, 0, random.uniform(0, 6.3))
@@ -339,6 +344,11 @@ def clay_port():
     random.seed(11)
     TREEMATS = [W.mat('t1', '#5FB89B', .8), W.mat('t2', '#71C3A8', .8), W.mat('t3', '#4FA98B', .8)]
     W.sky(.9, math.radians(140))
+    nt = bpy.context.scene.world.node_tree; out = nt.nodes['World Output']; src = out.inputs['Surface'].links[0].from_socket
+    white = nt.nodes.new('ShaderNodeBackground'); white.inputs['Color'].default_value = W.hexc('#F3F4F2'); white.inputs['Strength'].default_value = 1
+    lp = nt.nodes.new('ShaderNodeLightPath'); mix = nt.nodes.new('ShaderNodeMixShader')
+    nt.links.new(lp.outputs['Is Camera Ray'], mix.inputs['Fac']); nt.links.new(src, mix.inputs[1]); nt.links.new(white.outputs['Background'], mix.inputs[2])
+    nt.links.new(mix.outputs['Shader'], out.inputs['Surface'])
     ground = clay_mat(); road = clay_mat('road', '#E2E3E0', .7); line = clay_mat('line', '#FFFFFF', .5)
     pave = clay_mat('pave', '#EAEBE8', .75)
     accent = W.mat('accent', '#3F9C7F', .45); accent2 = W.mat('accent2', '#2E7A62', .45)
@@ -373,7 +383,7 @@ def clay_port():
     for r in range(5):
         W.box('bay', (136, .16, .02), (-181, 24 + r * 13, .03), line)
     # our grey Sorento keeps its real materials (own copy of the meshes), then the other cars turn to clay
-    hero = W.real('sorento', (-96, 61.4, 1.5), heading=-math.pi / 2, name='hero')
+    hero = W.real('sorento', (-96, 61.2, 1.5), heading=-math.pi / 2, name='hero')
     for o in hero.children_recursive:
         if o.data is not None: o.data = o.data.copy()
     paint_sorento(objs=list(hero.children_recursive))
@@ -418,13 +428,28 @@ def clay_port():
     for k in range(8): W.box('saw', (10, 34.4, 2.2), (95 + k * 10, 160, 12), clay_mat('clay2', '#E2E3E0'))
     building(260, 150, 40, 22, 10, 2)
     # green trucks carrying white cars on the roads
-    clay_template('truck', {'material': accent, 'glass': glass, 'tyre': W.mat('ctyre', '#4A4E50', .8)})
+    tyre = W.mat('ctyre', '#4A4E50', .8)
+    for o in W.template('truck')['col'].all_objects:
+        for sl in getattr(o, 'material_slots', []):
+            m = sl.material
+            if not m or m.name in ('accent', 'cglass', 'ctyre'): continue
+            b = m.node_tree.nodes.get('Principled BSDF') if m.use_nodes else None
+            n = m.name.lower(); alpha = b.inputs['Alpha'].default_value if b else 1; tr = b.inputs['Transmission Weight'].default_value if b else 0
+            col = b.inputs['Base Color'].default_value if b else (1, 1, 1, 1); lum = .2126 * col[0] + .7152 * col[1] + .0722 * col[2]
+            if alpha < .9 or tr > .4 or any(k in n for k in ('glass', 'window', 'wind', 'lens')): sl.material = glass
+            elif any(k in n for k in ('tyre', 'tire', 'rubber', 'wheel')) or (lum < .03 and not (b and b.inputs['Base Color'].is_linked)): sl.material = tyre
+            else: sl.material = accent
+            print('TRUCKMAT', o.name, n, round(alpha, 2), round(tr, 2), round(lum, 3), '->', sl.material.name, flush=True)
     def carrier(x, y, heading, our=False):
         t = W.real('truck', (x, y, .02), heading=heading, name='truck')
         dx, dy = math.cos(heading), math.sin(heading)
-        d = W.box('deck', (13.4, 2.55, .35), (x - dx * 10.5, y - dy * 10.5, 1.15), clay_mat('clay2', '#E2E3E0')); d.rotation_euler = (0, 0, heading)
+        d = W.box('deck', (13.4, 2.55, .35), (x - dx * 8.45, y - dy * 8.45, 1.15), clay_mat('clay2', '#E2E3E0')); d.rotation_euler = (0, 0, heading)
+        for off in (11.6, 13.0):
+            for side in (-1, 1):
+                bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=.5, depth=.4, location=(x - dx * off + side * dy * 1.05, y - dy * off - side * dx * 1.05, .5), rotation=(math.pi / 2, 0, heading))
+                bpy.context.object.data.materials.append(tyre)
         if not our:
-            for k in (0, 1): W.place('sorento', (x - dx * (8.5 + k * 5.6), y - dy * (8.5 + k * 5.6), 1.5), heading=heading)
+            for k in (0, 1): W.place('sorento', (x - dx * (5.5 + k * 5.7), y - dy * (5.5 + k * 5.7), 1.5), heading=heading)
     carrier(-96, 50, -math.pi / 2, our=True)                    # ours, on its way to the ramp
     carrier(-230, 125, 0); carrier(140, 131, math.pi); carrier(-30, 230, math.pi / 2)
     # a few cars on the main road
@@ -442,9 +467,10 @@ def clay_port():
     for (cx, cy, n) in [(-300, 40, 26), (-20, 175, 22), (60, 220, 34), (235, 110, 14), (330, 60, 18), (-280, 200, 34), (190, 250, 38), (-140, 250, 34), (-370, 120, 12)]:
         for i in range(n):
             lowpoly_tree(cx + random.gauss(0, 16), cy + random.gauss(0, 12), random.uniform(1.6, 2.5))
-    for x in list(range(-410, -80, 14)) + list(range(-40, 420, 14)):
-        lowpoly_tree(x + random.uniform(-2, 2), 116 + random.uniform(-1, 1), random.uniform(1.1, 1.4))
-        lowpoly_tree(x + random.uniform(-2, 2), 140 + random.uniform(-1, 1), random.uniform(1.1, 1.4))
+    for x in list(range(-410, -80, 9)) + list(range(-40, 420, 9)):
+        for yy in (116, 140):
+            if random.random() < .45: continue
+            lowpoly_tree(x + random.uniform(-3, 3), yy + random.uniform(-2, 2), random.uniform(.8, 1.5))
     for y in range(22, 84, 11):
         lowpoly_tree(-256 + random.uniform(-1, 1), y, random.uniform(1.0, 1.3)); lowpoly_tree(-106 + random.uniform(-1, 1), y, random.uniform(.9, 1.1))
     for i in range(7):
