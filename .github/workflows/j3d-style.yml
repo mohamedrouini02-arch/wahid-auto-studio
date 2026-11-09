@@ -29,7 +29,7 @@ jobs:
             if [ "$f" = debug ]; then
               for k in $(echo "${{ inputs.keys }}" | tr ',' ' '); do
                 J3D_KEY=$k J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out debug ${{ inputs.size }} > /tmp/log-$k.txt 2>&1 || true
-                grep -E "template|PART|MAT|Error|Traceback" /tmp/log-$k.txt > out/debug-$k.txt || true
+                grep -E "template|PART|MAT|BLEND|Error|Traceback" /tmp/log-$k.txt > out/debug-$k.txt || true
                 mv out/debug.jpg out/debug-$k.jpg || true
               done
             else
