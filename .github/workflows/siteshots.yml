@@ -5,6 +5,7 @@ on:
     inputs:
       ref: { description: "wahid-auto.com branch", required: true, default: master }
       pos: { description: "scroll positions in screen heights", required: true, default: "0,0.5,1.2,2,3" }
+      anchor: { description: "CSS selector the positions start from (optional)", required: false, default: "" }
 permissions:
   contents: write
 jobs:
@@ -21,7 +22,7 @@ jobs:
       - run: pip install -q playwright && python -m playwright install --with-deps chromium >/dev/null
       - run: |
           cd site && (npx vite preview --port 4173 >/dev/null 2>&1 &) && sleep 4
-          mkdir -p ../shots && python ../tools/siteshots.py http://localhost:4173 ../shots "${{ inputs.pos }}"
+          mkdir -p ../shots && SHOT_ANCHOR="${{ inputs.anchor }}" python ../tools/siteshots.py http://localhost:4173 ../shots "${{ inputs.pos }}"
       - run: |
           git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
           mv shots /tmp/shots && git fetch origin shots && git checkout shots || git checkout --orphan shots

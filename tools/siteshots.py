@@ -1,6 +1,6 @@
 """Screenshots of the website build at given scroll positions: desktop + phone, Arabic + French.
 python tools/siteshots.py http://localhost:4173 out_dir "0,0.5,1,1.6,2.4"   (positions in screen heights)"""
-import sys, asyncio
+import sys, asyncio, os
 from playwright.async_api import async_playwright
 url, out, pos = sys.argv[1], sys.argv[2], [float(x) for x in sys.argv[3].split(',')]
 async def main():
@@ -13,7 +13,7 @@ async def main():
                 await pg.add_init_script(f"sessionStorage.setItem('wa-loaded','1');localStorage.setItem('wahid-auto-lang','{lang}')")
                 await pg.goto(url, wait_until='networkidle'); await pg.wait_for_timeout(5000)
                 for y in pos:
-                    await pg.evaluate(f"window.scrollTo(0, {y} * innerHeight)"); await pg.wait_for_timeout(int(__import__("os").environ.get("SHOT_WAIT", "4000")))
+                    await pg.evaluate(f"(() => {{ const a = document.querySelector('{os.environ.get('SHOT_ANCHOR', '')}' || 'html'); const top = a ? a.getBoundingClientRect().top + scrollY : 0; window.scrollTo(0, top + {y} * innerHeight) }})()"); await pg.wait_for_timeout(int(__import__("os").environ.get("SHOT_WAIT", "4000")))
                     await pg.screenshot(path=f"{out}/{name}-{lang}-{y}.jpg", quality=70, type='jpeg')
                 await ctx.close()
         await b.close()
