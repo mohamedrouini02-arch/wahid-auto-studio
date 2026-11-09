@@ -23,7 +23,7 @@ def studio():
     prof.append((7, 20))
     rows = []
     for x in (-40, 40):
-        rows.append([bm.verts.new((x, y, z)) for (y, z) in [(-p[0], p[1]) for p in prof]])
+        rows.append([bm.verts.new((x, y, z)) for (y, z) in prof])
     for i in range(len(prof) - 1):
         bm.faces.new((rows[0][i], rows[1][i], rows[1][i + 1], rows[0][i + 1]))
     me = bpy.data.meshes.new('cyc'); bm.to_mesh(me); bm.free()
@@ -117,7 +117,29 @@ def port():
     W.render_settings(RW, RH, SAMPLES, exposure=.15)
 
 
-{'studio': studio, 'port': port}[FRAME]()
+def debug():
+    # each tricky model alone, with a list of its parts (to spot strays and broken materials)
+    import bpy
+    from mathutils import Vector
+    key = os.environ.get('J3D_KEY', 'ship')
+    t = W.template(key)
+    for o in t['col'].objects:
+        if o.type != 'MESH': continue
+        lo = Vector((1e9,) * 3); hi = -lo
+        for c in o.bound_box:
+            w = o.matrix_world @ Vector(c); lo = Vector(map(min, lo, w)); hi = Vector(map(max, hi, w))
+        ms = [s.material.name for s in o.material_slots if s.material]
+        print('PART', o.name, 'size', tuple(round(v, 1) for v in hi - lo), 'at', tuple(round(v, 1) for v in (hi + lo) / 2), ms[:4])
+    for m in {s.material for o in t['col'].objects for s in getattr(o, 'material_slots', []) if s.material}:
+        b = m.node_tree.nodes.get('Principled BSDF') if m.use_nodes else None
+        if b: print('MAT', m.name, tuple(round(c, 2) for c in b.inputs['Base Color'].default_value)[:3], 'linked' if b.inputs['Base Color'].is_linked else '', 'alpha', round(b.inputs['Alpha'].default_value, 2), 'blend', m.blend_method)
+    W.place(key, (0, 0, 0)); W.sky(1.0, 1.0)
+    d = t['dims']; r = max(d) * .9
+    W.camera((r * .9, -r * 1.3, r * .7), (0, 0, d.z * .35), lens=40)
+    W.render_settings(RW, RH, SAMPLES)
+
+
+{'studio': studio, 'port': port, 'debug': debug}[FRAME]()
 bpy.context.scene.render.filepath = os.path.join(OUT, FRAME + '.jpg')
 bpy.ops.render.render(write_still=True)
 print('rendered', FRAME, flush=True)

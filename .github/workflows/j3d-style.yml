@@ -5,6 +5,7 @@ on:
     inputs:
       frames: { description: "studio,port", required: false, default: "studio,port" }
       size: { description: "W H SAMPLES", required: false, default: "1600 900 64" }
+      keys: { description: "models for the debug frame", required: false, default: "ship" }
 permissions:
   contents: write
 jobs:
@@ -25,7 +26,14 @@ jobs:
       - run: |
           mkdir -p out
           for f in $(echo "${{ inputs.frames }}" | tr ',' ' '); do
-            J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out $f ${{ inputs.size }} 2>&1 | grep -E "template|rendered|Error|Traceback|line [0-9]|Warning: (Cannot|Unable)" | head -60
+            if [ "$f" = debug ]; then
+              for k in $(echo "${{ inputs.keys }}" | tr ',' ' '); do
+                J3D_KEY=$k J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out debug ${{ inputs.size }} 2>&1 | grep -E "template|PART|MAT|Error|Traceback" | head -150 > out/debug-$k.txt
+                mv out/debug.jpg out/debug-$k.jpg
+              done
+            else
+              J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out $f ${{ inputs.size }} 2>&1 | grep -E "template|rendered|Error|Traceback|line [0-9]|Warning: (Cannot|Unable)" | head -60
+            fi
           done
           ls out
       - run: |
