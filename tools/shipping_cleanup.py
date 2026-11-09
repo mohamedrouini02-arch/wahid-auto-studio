@@ -84,7 +84,7 @@ def delete(out):
         for i in range(0, len(paths), 100):
             res = api('DELETE', f'/storage/v1/object/{bucket}', {'prefixes': paths[i:i + 100]}) or []
             gone += len(res)
-    ids = [f['id'] for f in forms]
+    ids = [str(f['id']) for f in forms]
     for i in range(0, len(ids), 100):
         api('DELETE', '/rest/v1/shipping_forms?id=in.(' + ','.join(ids[i:i + 100]) + ')')
     left = len(rows('shipping_forms', 'id'))
