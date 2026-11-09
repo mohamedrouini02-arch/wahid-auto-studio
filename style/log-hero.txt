@@ -1,0 +1,574 @@
+FBX version: 7400
+template sorento scale 0.91386 size (4.81, 2.29, 1.7)
+WHEELS [((-1.11, 1.07, 0.36), 0.76), ((-1.45, -0.5, 0.36), 0.76), ((1.27, -1.11, 0.36), 0.76), ((1.61, 0.49, 0.36), 0.76)]
+RIM PolySurface0.845 template_chromebright.018
+RIM PolySurface0.852 template_plasticrough.016
+RIM PolySurface0.854 template_plasticrough.017
+RIM PolySurface0.855 template_metalgraphite.009
+RIM PolySurface0.856 template_aluminiumbrushed.064
+RIM PolySurface0.857 template_plasticrough.018
+RIM PolySurface0.858 template_plasticshiny__wheellogo_MY22.007
+RIM PolySurface0.859 template_metalgraphite.010
+RIM PolySurface0.860 template_metalgraphite.011
+RIM PolySurface0.861 template_plasticrough.019
+RIM PolySurface0.862 template_chromebright.019
+RIM PolySurface0.863 template_plasticrough.020
+RIM PolySurface0.865 template_plasticrough.021
+RIM PolySurface0.866 template_metalgraphite.012
+RIM PolySurface0.867 template_aluminiumbrushed.065
+RIM PolySurface0.868 template_plasticrough.022
+RIM PolySurface0.869 template_plasticshiny__wheellogo_MY22.008
+RIM PolySurface0.870 template_metalgraphite.013
+RIM PolySurface0.871 template_metalgraphite.014
+RIM PolySurface0.872 template_plasticrough.023
+RIM PolySurface0.873 template_plasticrough.024
+RIM PolySurface0.874 template_metalgraphite.015
+RIM PolySurface0.875 template_metalgraphite.016
+RIM PolySurface0.876 template_plasticshiny__wheellogo_MY22.009
+RIM PolySurface0.877 template_plasticrough.025
+RIM PolySurface0.878 template_aluminiumbrushed.066
+RIM PolySurface0.879 template_metalgraphite.017
+RIM PolySurface0.880 template_plasticrough.026
+RIM PolySurface0.882 template_plasticrough.027
+RIM PolySurface0.883 template_chromebright.020
+RIM PolySurface0.886 template_plasticrough.008
+RIM PolySurface0.887 template_metalgraphite.002
+RIM PolySurface0.888 template_metalgraphite.003
+RIM PolySurface0.889 template_plasticshiny__wheellogo_MY22.001
+RIM PolySurface0.890 template_plasticrough.009
+RIM PolySurface0.891 template_aluminiumbrushed.060
+RIM PolySurface0.892 template_metalgraphite.005
+RIM PolySurface0.893 template_plasticrough.010
+RIM PolySurface0.895 template_chromebright.013
+RIM PolySurface0.896 template_plasticrough.011
+RIM PolySurface0.897 template_chromebright.014
+RIM PolySurface0.898 template_chromebright.015
+RIM PolySurface0.899 template_chromebright.016
+Blender 4.2.3 LTS (hash 0e22e4fcea03 built 2024-10-14 23:31:34)
+Fra:1 Mem:183.08M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | floor
+Fra:1 Mem:183.08M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.400
+Fra:1 Mem:184.09M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.402
+Fra:1 Mem:184.09M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.403
+Fra:1 Mem:186.14M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.405
+Fra:1 Mem:186.87M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.438
+Fra:1 Mem:187.15M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.439
+Fra:1 Mem:187.42M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.899
+Fra:1 Mem:187.97M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.440
+Fra:1 Mem:187.98M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.441
+Fra:1 Mem:188.03M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.898
+Fra:1 Mem:188.21M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.442
+Fra:1 Mem:188.75M (Peak 826.59M) | Time:00:00.05 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.897
+Fra:1 Mem:189.10M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.896
+Fra:1 Mem:189.25M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.895
+Fra:1 Mem:189.44M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.443
+Fra:1 Mem:189.81M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.444
+Fra:1 Mem:189.75M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.445
+Fra:1 Mem:190.03M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.894
+Fra:1 Mem:190.22M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.446
+Fra:1 Mem:190.28M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.447
+Fra:1 Mem:190.45M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.893
+Fra:1 Mem:190.86M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.892
+Fra:1 Mem:191.10M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.891
+Fra:1 Mem:191.23M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.890
+Fra:1 Mem:191.34M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.889
+Fra:1 Mem:191.39M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.888
+Fra:1 Mem:191.41M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.887
+Fra:1 Mem:192.83M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.448
+Fra:1 Mem:192.97M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.449
+Fra:1 Mem:192.99M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.450
+Fra:1 Mem:193.05M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.451
+Fra:1 Mem:192.92M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.452
+Fra:1 Mem:193.25M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.886
+Fra:1 Mem:193.39M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.885
+Fra:1 Mem:193.77M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.884
+Fra:1 Mem:193.58M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.453
+Fra:1 Mem:193.63M (Peak 826.59M) | Time:00:00.06 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.454
+Fra:1 Mem:194.23M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.883
+Fra:1 Mem:194.45M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.455
+Fra:1 Mem:194.77M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.456
+Fra:1 Mem:194.92M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.882
+Fra:1 Mem:195.02M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.881
+Fra:1 Mem:195.21M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.880
+Fra:1 Mem:195.36M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.879
+Fra:1 Mem:195.37M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.457
+Fra:1 Mem:195.44M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.878
+Fra:1 Mem:195.60M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.458
+Fra:1 Mem:195.61M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.877
+Fra:1 Mem:195.97M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.876
+Fra:1 Mem:196.01M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.459
+Fra:1 Mem:196.02M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.875
+Fra:1 Mem:196.34M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.874
+Fra:1 Mem:197.13M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.460
+Fra:1 Mem:197.01M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.461
+Fra:1 Mem:197.05M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.462
+Fra:1 Mem:198.30M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.873
+Fra:1 Mem:198.52M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.872
+Fra:1 Mem:198.46M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.463
+Fra:1 Mem:198.69M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.871
+Fra:1 Mem:199.39M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.464
+Fra:1 Mem:199.51M (Peak 826.59M) | Time:00:00.07 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.465
+Fra:1 Mem:200.16M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.466
+Fra:1 Mem:200.10M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.467
+Fra:1 Mem:200.76M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.468
+Fra:1 Mem:200.76M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.469
+Fra:1 Mem:200.76M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.870
+Fra:1 Mem:200.77M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.470
+Fra:1 Mem:200.83M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.471
+Fra:1 Mem:200.92M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.869
+Fra:1 Mem:200.97M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.472
+Fra:1 Mem:201.05M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.868
+Fra:1 Mem:201.22M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.867
+Fra:1 Mem:201.44M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.866
+Fra:1 Mem:201.48M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.865
+Fra:1 Mem:201.58M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.473
+Fra:1 Mem:201.61M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.864
+Fra:1 Mem:201.62M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.474
+Fra:1 Mem:201.75M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.475
+Fra:1 Mem:201.91M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.476
+Fra:1 Mem:202.03M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.863
+Fra:1 Mem:202.14M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.862
+Fra:1 Mem:202.28M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.477
+Fra:1 Mem:202.34M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.478
+Fra:1 Mem:202.76M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.479
+Fra:1 Mem:202.81M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.480
+Fra:1 Mem:202.86M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.481
+Fra:1 Mem:202.87M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.482
+Fra:1 Mem:202.90M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.483
+Fra:1 Mem:202.94M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.861
+Fra:1 Mem:203.45M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.860
+Fra:1 Mem:204.11M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.484
+Fra:1 Mem:204.11M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.485
+Fra:1 Mem:204.92M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.486
+Fra:1 Mem:204.92M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.487
+Fra:1 Mem:204.92M (Peak 826.59M) | Time:00:00.08 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.488
+Fra:1 Mem:205.22M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.489
+Fra:1 Mem:206.52M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.859
+Fra:1 Mem:207.26M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.858
+Fra:1 Mem:207.30M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.857
+Fra:1 Mem:207.51M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.856
+Fra:1 Mem:207.48M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.490
+Fra:1 Mem:207.74M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.491
+Fra:1 Mem:208.07M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.855
+Fra:1 Mem:208.13M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.854
+Fra:1 Mem:208.42M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.853
+Fra:1 Mem:208.64M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.852
+Fra:1 Mem:209.85M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.851
+Fra:1 Mem:210.26M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.850
+Fra:1 Mem:210.42M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.849
+Fra:1 Mem:210.56M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.848
+Fra:1 Mem:210.82M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.847
+Fra:1 Mem:210.84M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.846
+Fra:1 Mem:211.16M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.492
+Fra:1 Mem:211.38M (Peak 826.59M) | Time:00:00.09 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.845
+Fra:1 Mem:211.73M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.844
+Fra:1 Mem:211.78M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.843
+Fra:1 Mem:211.79M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.842
+Fra:1 Mem:214.47M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.841
+Fra:1 Mem:215.82M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.493
+Fra:1 Mem:215.86M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.494
+Fra:1 Mem:215.90M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.495
+Fra:1 Mem:216.33M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.496
+Fra:1 Mem:216.39M (Peak 826.59M) | Time:00:00.10 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.497
+Fra:1 Mem:216.71M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.498
+Fra:1 Mem:217.00M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.840
+Fra:1 Mem:217.59M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.839
+Fra:1 Mem:217.61M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.838
+Fra:1 Mem:217.65M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.837
+Fra:1 Mem:217.85M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.499
+Fra:1 Mem:217.85M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.500
+Fra:1 Mem:218.30M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.501
+Fra:1 Mem:220.64M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.836
+Fra:1 Mem:220.64M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.502
+Fra:1 Mem:220.92M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.835
+Fra:1 Mem:221.23M (Peak 826.59M) | Time:00:00.11 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.834
+Fra:1 Mem:223.26M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.833
+Fra:1 Mem:223.57M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.503
+Fra:1 Mem:223.81M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.832
+Fra:1 Mem:224.45M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.504
+Fra:1 Mem:223.00M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.505
+Fra:1 Mem:223.85M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.507
+Fra:1 Mem:224.33M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.508
+Fra:1 Mem:224.77M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.510
+Fra:1 Mem:224.83M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.511
+Fra:1 Mem:224.92M (Peak 826.59M) | Time:00:00.12 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.512
+Fra:1 Mem:226.06M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.513
+Fra:1 Mem:226.10M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.515
+Fra:1 Mem:226.11M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.516
+Fra:1 Mem:226.11M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.517
+Fra:1 Mem:226.14M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.518
+Fra:1 Mem:226.66M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.831
+Fra:1 Mem:227.32M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.519
+Fra:1 Mem:227.40M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.520
+Fra:1 Mem:228.09M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.521
+Fra:1 Mem:228.09M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.522
+Fra:1 Mem:228.10M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.523
+Fra:1 Mem:228.41M (Peak 826.59M) | Time:00:00.13 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.524
+Fra:1 Mem:228.51M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.830
+Fra:1 Mem:228.59M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.525
+Fra:1 Mem:231.49M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.526
+Fra:1 Mem:231.08M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.528
+Fra:1 Mem:231.08M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.530
+Fra:1 Mem:231.09M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.534
+Fra:1 Mem:231.15M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.535
+Fra:1 Mem:231.37M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.537
+Fra:1 Mem:231.68M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.539
+Fra:1 Mem:231.74M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.541
+Fra:1 Mem:231.81M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.542
+Fra:1 Mem:232.23M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.543
+Fra:1 Mem:232.54M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.829
+Fra:1 Mem:232.69M (Peak 826.59M) | Time:00:00.14 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.547
+Fra:1 Mem:233.13M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.548
+Fra:1 Mem:233.25M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.550
+Fra:1 Mem:233.57M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.551
+Fra:1 Mem:233.59M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.828
+Fra:1 Mem:234.13M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.552
+Fra:1 Mem:234.80M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.553
+Fra:1 Mem:234.83M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.555
+Fra:1 Mem:235.21M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.556
+Fra:1 Mem:235.34M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.827
+Fra:1 Mem:235.90M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.557
+Fra:1 Mem:236.05M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.558
+Fra:1 Mem:236.32M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.826
+Fra:1 Mem:236.89M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.825
+Fra:1 Mem:236.95M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.559
+Fra:1 Mem:237.03M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.824
+Fra:1 Mem:237.50M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.561
+Fra:1 Mem:237.48M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.562
+Fra:1 Mem:237.53M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.563
+Fra:1 Mem:237.65M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.823
+Fra:1 Mem:237.71M (Peak 826.59M) | Time:00:00.15 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.822
+Fra:1 Mem:238.02M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.564
+Fra:1 Mem:238.28M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.821
+Fra:1 Mem:238.22M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.565
+Fra:1 Mem:239.59M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.566
+Fra:1 Mem:239.57M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.567
+Fra:1 Mem:239.64M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.568
+Fra:1 Mem:240.06M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.569
+Fra:1 Mem:240.06M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.570
+Fra:1 Mem:240.41M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.571
+Fra:1 Mem:240.54M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.572
+Fra:1 Mem:240.62M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.573
+Fra:1 Mem:240.69M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.574
+Fra:1 Mem:240.68M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.575
+Fra:1 Mem:240.66M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.576
+Fra:1 Mem:240.66M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.577
+Fra:1 Mem:240.71M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.578
+Fra:1 Mem:240.88M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.579
+Fra:1 Mem:241.01M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.580
+Fra:1 Mem:241.49M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.581
+Fra:1 Mem:241.72M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.820
+Fra:1 Mem:243.31M (Peak 826.59M) | Time:00:00.16 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.582
+Fra:1 Mem:243.92M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.583
+Fra:1 Mem:245.39M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.584
+Fra:1 Mem:245.77M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.585
+Fra:1 Mem:246.31M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.586
+Fra:1 Mem:246.70M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.587
+Fra:1 Mem:246.63M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.819
+Fra:1 Mem:247.01M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.818
+Fra:1 Mem:247.39M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.817
+Fra:1 Mem:247.39M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.588
+Fra:1 Mem:247.46M (Peak 826.59M) | Time:00:00.17 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.816
+Fra:1 Mem:247.82M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.815
+Fra:1 Mem:247.85M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.814
+Fra:1 Mem:247.89M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.813
+Fra:1 Mem:248.28M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.812
+Fra:1 Mem:248.64M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.811
+Fra:1 Mem:248.66M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.589
+Fra:1 Mem:248.69M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.810
+Fra:1 Mem:248.70M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.590
+Fra:1 Mem:248.76M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.809
+Fra:1 Mem:249.02M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.591
+Fra:1 Mem:249.02M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.592
+Fra:1 Mem:249.92M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.593
+Fra:1 Mem:250.66M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.594
+Fra:1 Mem:250.71M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.595
+Fra:1 Mem:250.71M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.596
+Fra:1 Mem:250.81M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.597
+Fra:1 Mem:251.05M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.808
+Fra:1 Mem:251.62M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.598
+Fra:1 Mem:252.00M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.599
+Fra:1 Mem:252.01M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.600
+Fra:1 Mem:251.99M (Peak 826.59M) | Time:00:00.18 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.601
+Fra:1 Mem:252.46M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.602
+Fra:1 Mem:252.52M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.807
+Fra:1 Mem:252.50M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.603
+Fra:1 Mem:252.69M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.604
+Fra:1 Mem:252.90M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.806
+Fra:1 Mem:253.04M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.605
+Fra:1 Mem:254.46M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.805
+Fra:1 Mem:255.04M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.606
+Fra:1 Mem:255.29M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.607
+Fra:1 Mem:254.83M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.608
+Fra:1 Mem:255.49M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.609
+Fra:1 Mem:255.67M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.610
+Fra:1 Mem:256.30M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.804
+Fra:1 Mem:256.46M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.611
+Fra:1 Mem:256.49M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.612
+Fra:1 Mem:256.59M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.613
+Fra:1 Mem:256.62M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.614
+Fra:1 Mem:256.59M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.615
+Fra:1 Mem:256.66M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.803
+Fra:1 Mem:257.09M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.616
+Fra:1 Mem:257.32M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.617
+Fra:1 Mem:258.34M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.618
+Fra:1 Mem:258.61M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.619
+Fra:1 Mem:258.52M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.620
+Fra:1 Mem:258.78M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.621
+Fra:1 Mem:258.78M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.622
+Fra:1 Mem:258.94M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.623
+Fra:1 Mem:259.08M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.624
+Fra:1 Mem:258.82M (Peak 826.59M) | Time:00:00.19 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.625
+Fra:1 Mem:259.45M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.802
+Fra:1 Mem:259.65M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.626
+Fra:1 Mem:260.73M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.627
+Fra:1 Mem:260.81M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.628
+Fra:1 Mem:261.01M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.629
+Fra:1 Mem:261.05M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.630
+Fra:1 Mem:261.10M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.631
+Fra:1 Mem:261.08M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.632
+Fra:1 Mem:261.11M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.633
+Fra:1 Mem:261.16M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.634
+Fra:1 Mem:261.22M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.635
+Fra:1 Mem:261.24M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.636
+Fra:1 Mem:261.26M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.637
+Fra:1 Mem:261.26M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.638
+Fra:1 Mem:261.29M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.639
+Fra:1 Mem:261.31M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.640
+Fra:1 Mem:261.36M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.801
+Fra:1 Mem:262.15M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.641
+Fra:1 Mem:264.79M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.642
+Fra:1 Mem:265.05M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.643
+Fra:1 Mem:265.14M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.644
+Fra:1 Mem:265.19M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.645
+Fra:1 Mem:265.43M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.646
+Fra:1 Mem:266.01M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.647
+Fra:1 Mem:266.03M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.648
+Fra:1 Mem:266.33M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.649
+Fra:1 Mem:266.33M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.650
+Fra:1 Mem:266.34M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.651
+Fra:1 Mem:266.34M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.652
+Fra:1 Mem:266.11M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.653
+Fra:1 Mem:266.86M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.654
+Fra:1 Mem:266.91M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.655
+Fra:1 Mem:266.95M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.656
+Fra:1 Mem:266.97M (Peak 826.59M) | Time:00:00.20 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.657
+Fra:1 Mem:268.01M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.658
+Fra:1 Mem:268.52M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.659
+Fra:1 Mem:268.63M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.660
+Fra:1 Mem:268.64M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.661
+Fra:1 Mem:268.64M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.662
+Fra:1 Mem:269.04M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.663
+Fra:1 Mem:269.38M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.664
+Fra:1 Mem:270.00M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.665
+Fra:1 Mem:270.01M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.666
+Fra:1 Mem:270.21M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.667
+Fra:1 Mem:270.28M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.668
+Fra:1 Mem:270.29M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.669
+Fra:1 Mem:270.33M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.670
+Fra:1 Mem:270.51M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.671
+Fra:1 Mem:271.25M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.672
+Fra:1 Mem:271.36M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.800
+Fra:1 Mem:271.76M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.673
+Fra:1 Mem:272.19M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.674
+Fra:1 Mem:272.40M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.675
+Fra:1 Mem:272.41M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.676
+Fra:1 Mem:272.44M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.677
+Fra:1 Mem:272.48M (Peak 826.59M) | Time:00:00.21 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.678
+Fra:1 Mem:273.13M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.679
+Fra:1 Mem:273.14M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.680
+Fra:1 Mem:273.15M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.681
+Fra:1 Mem:273.83M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.682
+Fra:1 Mem:274.10M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.683
+Fra:1 Mem:275.55M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.684
+Fra:1 Mem:275.41M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.799
+Fra:1 Mem:275.26M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.798
+Fra:1 Mem:276.19M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.685
+Fra:1 Mem:276.25M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.797
+Fra:1 Mem:276.30M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.686
+Fra:1 Mem:276.73M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.796
+Fra:1 Mem:276.60M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.795
+Fra:1 Mem:276.59M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.687
+Fra:1 Mem:276.63M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.688
+Fra:1 Mem:276.97M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.794
+Fra:1 Mem:277.01M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.689
+Fra:1 Mem:277.15M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.793
+Fra:1 Mem:277.18M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.690
+Fra:1 Mem:277.24M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.792
+Fra:1 Mem:277.42M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.691
+Fra:1 Mem:277.42M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.692
+Fra:1 Mem:277.80M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.693
+Fra:1 Mem:277.82M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.694
+Fra:1 Mem:277.83M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.695
+Fra:1 Mem:278.13M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.791
+Fra:1 Mem:278.84M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.696
+Fra:1 Mem:278.80M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.697
+Fra:1 Mem:278.95M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.698
+Fra:1 Mem:279.35M (Peak 826.59M) | Time:00:00.22 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.699
+Fra:1 Mem:279.93M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.700
+Fra:1 Mem:280.35M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.701
+Fra:1 Mem:280.44M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.790
+Fra:1 Mem:280.49M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.702
+Fra:1 Mem:280.69M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.789
+Fra:1 Mem:280.78M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.788
+Fra:1 Mem:281.06M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.703
+Fra:1 Mem:281.19M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.787
+Fra:1 Mem:281.22M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.704
+Fra:1 Mem:281.28M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.705
+Fra:1 Mem:281.29M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.786
+Fra:1 Mem:281.46M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.706
+Fra:1 Mem:281.84M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.707
+Fra:1 Mem:282.05M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.708
+Fra:1 Mem:282.38M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.709
+Fra:1 Mem:282.40M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.710
+Fra:1 Mem:282.42M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.711
+Fra:1 Mem:282.66M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.785
+Fra:1 Mem:282.66M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.784
+Fra:1 Mem:282.68M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.712
+Fra:1 Mem:282.92M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.713
+Fra:1 Mem:283.07M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.714
+Fra:1 Mem:283.37M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.715
+Fra:1 Mem:283.83M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.716
+Fra:1 Mem:284.22M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.717
+Fra:1 Mem:284.22M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.718
+Fra:1 Mem:284.75M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.719
+Fra:1 Mem:284.93M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.720
+Fra:1 Mem:284.88M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.783
+Fra:1 Mem:284.92M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.782
+Fra:1 Mem:284.93M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.721
+Fra:1 Mem:284.93M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.781
+Fra:1 Mem:284.96M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.722
+Fra:1 Mem:285.20M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.780
+Fra:1 Mem:285.23M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.723
+Fra:1 Mem:285.64M (Peak 826.59M) | Time:00:00.23 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.779
+Fra:1 Mem:285.75M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.778
+Fra:1 Mem:285.98M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.724
+Fra:1 Mem:285.95M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.725
+Fra:1 Mem:286.30M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.726
+Fra:1 Mem:286.50M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.777
+Fra:1 Mem:286.44M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.727
+Fra:1 Mem:287.20M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.728
+Fra:1 Mem:287.82M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.776
+Fra:1 Mem:288.49M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.775
+Fra:1 Mem:288.49M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.774
+Fra:1 Mem:288.50M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.773
+Fra:1 Mem:288.70M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.729
+Fra:1 Mem:288.86M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.772
+Fra:1 Mem:289.03M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.730
+Fra:1 Mem:289.35M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.731
+Fra:1 Mem:290.35M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.732
+Fra:1 Mem:290.39M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.733
+Fra:1 Mem:290.43M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.734
+Fra:1 Mem:290.61M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.771
+Fra:1 Mem:290.60M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.735
+Fra:1 Mem:290.63M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.736
+Fra:1 Mem:290.69M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.770
+Fra:1 Mem:290.73M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.737
+Fra:1 Mem:290.73M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.769
+Fra:1 Mem:290.75M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.738
+Fra:1 Mem:290.97M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.739
+Fra:1 Mem:291.23M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.768
+Fra:1 Mem:291.39M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.740
+Fra:1 Mem:291.60M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.741
+Fra:1 Mem:291.62M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.742
+Fra:1 Mem:291.62M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.743
+Fra:1 Mem:291.65M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.744
+Fra:1 Mem:291.68M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.745
+Fra:1 Mem:292.08M (Peak 826.59M) | Time:00:00.24 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.746
+Fra:1 Mem:292.46M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.747
+Fra:1 Mem:292.46M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.748
+Fra:1 Mem:292.47M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.749
+Fra:1 Mem:292.42M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.750
+Fra:1 Mem:292.43M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.751
+Fra:1 Mem:292.44M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.752
+Fra:1 Mem:292.58M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.753
+Fra:1 Mem:292.71M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.767
+Fra:1 Mem:292.92M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.766
+Fra:1 Mem:292.91M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.754
+Fra:1 Mem:292.99M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.765
+Fra:1 Mem:293.27M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.755
+Fra:1 Mem:293.72M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.764
+Fra:1 Mem:293.74M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.756
+Fra:1 Mem:294.21M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.763
+Fra:1 Mem:294.51M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.762
+Fra:1 Mem:294.72M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.757
+Fra:1 Mem:294.73M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.758
+Fra:1 Mem:294.83M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.761
+Fra:1 Mem:294.89M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.759
+Fra:1 Mem:294.86M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | PolySurface0.760
+Fra:1 Mem:294.86M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:294.85M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:294.86M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:294.86M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:294.86M (Peak 826.59M) | Time:00:00.25 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:295.17M (Peak 826.59M) | Time:00:00.28 | Mem:0.23M, Peak:0.23M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:295.17M (Peak 826.59M) | Time:00:00.28 | Mem:0.23M, Peak:0.23M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:295.17M (Peak 826.59M) | Time:00:00.28 | Mem:0.23M, Peak:0.23M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:295.17M (Peak 826.59M) | Time:00:00.28 | Mem:0.23M, Peak:0.23M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:295.17M (Peak 826.59M) | Time:00:00.28 | Mem:0.23M, Peak:0.23M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:295.17M (Peak 826.59M) | Time:00:00.28 | Mem:0.23M, Peak:0.23M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:295.28M (Peak 826.59M) | Time:00:00.28 | Mem:0.34M, Peak:0.34M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:295.28M (Peak 826.59M) | Time:00:00.28 | Mem:0.34M, Peak:0.34M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:295.28M (Peak 826.59M) | Time:00:00.28 | Mem:0.34M, Peak:0.34M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:295.28M (Peak 826.59M) | Time:00:00.28 | Mem:0.34M, Peak:0.34M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:305.22M (Peak 826.59M) | Time:00:00.30 | Mem:0.34M, Peak:0.34M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:337.92M (Peak 826.59M) | Time:00:00.30 | Mem:0.39M, Peak:0.39M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:337.79M (Peak 826.59M) | Time:00:00.30 | Mem:32.91M, Peak:32.91M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:337.80M (Peak 826.59M) | Time:00:00.30 | Mem:32.91M, Peak:32.91M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:337.80M (Peak 826.59M) | Time:00:00.30 | Mem:52.79M, Peak:52.79M | Scene, ViewLayer | Updating Scene BVH | Building BVH 0%
+Fra:1 Mem:337.80M (Peak 826.59M) | Time:00:00.39 | Mem:74.91M, Peak:94.79M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:337.80M (Peak 826.59M) | Time:00:00.39 | Mem:74.91M, Peak:94.79M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:74.91M, Peak:94.79M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Images | Loading kia_orange_colour.jpg
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Images | Loading studio.exr
+Fra:1 Mem:370.04M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Images | Loading kia_aluminium_colour.jpg
+Fra:1 Mem:418.06M (Peak 826.59M) | Time:00:00.40 | Mem:107.15M, Peak:107.15M | Scene, ViewLayer | Updating Images | Loading eco_colour.jpg
+Fra:1 Mem:418.07M (Peak 826.59M) | Time:00:00.40 | Mem:107.17M, Peak:107.17M | Scene, ViewLayer | Updating Images | Loading cross_grill_colour.png
+Fra:1 Mem:418.13M (Peak 826.59M) | Time:00:00.40 | Mem:107.17M, Peak:107.17M | Scene, ViewLayer | Updating Images | Loading aluminium.png
+Fra:1 Mem:418.13M (Peak 826.59M) | Time:00:00.40 | Mem:107.17M, Peak:107.17M | Scene, ViewLayer | Updating Images | Loading rgb0.png
+Fra:1 Mem:418.13M (Peak 826.59M) | Time:00:00.40 | Mem:107.23M, Peak:107.23M | Scene, ViewLayer | Updating Images | Loading cross_grill_colour.png
+Fra:1 Mem:418.20M (Peak 826.59M) | Time:00:00.40 | Mem:107.23M, Peak:107.23M | Scene, ViewLayer | Updating Images | Loading rgb0.png
+Fra:1 Mem:418.20M (Peak 826.59M) | Time:00:00.40 | Mem:107.23M, Peak:107.23M | Scene, ViewLayer | Updating Images | Loading kia_carpet_colour.jpg
+Fra:1 Mem:419.20M (Peak 826.59M) | Time:00:00.40 | Mem:107.29M, Peak:107.29M | Scene, ViewLayer | Updating Images | Loading sorento_matlogo_colour.jpg
+Fra:1 Mem:419.45M (Peak 826.59M) | Time:00:00.40 | Mem:107.54M, Peak:107.54M | Scene, ViewLayer | Updating Images | Loading kia_stitchessteeringwheelwhite_colour.png
+Fra:1 Mem:420.25M (Peak 826.59M) | Time:00:00.40 | Mem:108.35M, Peak:108.35M | Scene, ViewLayer | Updating Images | Loading kia_steeringwheel_normal.jpg
+Fra:1 Mem:420.50M (Peak 826.59M) | Time:00:00.41 | Mem:108.60M, Peak:108.60M | Scene, ViewLayer | Updating Images | Loading kia_stitchesdark_colour.png
+Fra:1 Mem:420.58M (Peak 826.59M) | Time:00:00.41 | Mem:108.68M, Peak:108.68M | Scene, ViewLayer | Updating Images | Loading kia_interior_colour.jpg
+Fra:1 Mem:436.58M (Peak 826.59M) | Time:00:00.41 | Mem:109.68M, Peak:109.68M | Scene, ViewLayer | Updating Images | Loading rgb44.png
+Fra:1 Mem:436.58M (Peak 826.59M) | Time:00:00.41 | Mem:109.68M, Peak:109.68M | Scene, ViewLayer | Updating Images | Loading kia_seatbelt_colour.jpg
+Fra:1 Mem:436.82M (Peak 826.59M) | Time:00:00.41 | Mem:109.92M, Peak:109.92M | Scene, ViewLayer | Updating Images | Loading kia_sorento_seats_colour.jpg
+Fra:1 Mem:440.82M (Peak 826.59M) | Time:00:00.43 | Mem:113.92M, Peak:113.92M | Scene, ViewLayer | Updating Images | Loading plate_colour.jpg
+Fra:1 Mem:441.82M (Peak 826.59M) | Time:00:00.44 | Mem:129.92M, Peak:129.92M | Scene, ViewLayer | Updating Images | Loading ext_discbrake_colour.jpg
+Fra:1 Mem:443.19M (Peak 826.59M) | Time:00:00.44 | Mem:130.92M, Peak:130.92M | Scene, ViewLayer | Updating Images | Loading kia_leather_perf_colour.jpg
+Fra:1 Mem:444.19M (Peak 826.59M) | Time:00:00.44 | Mem:132.29M, Peak:132.29M | Scene, ViewLayer | Updating Images | Loading kia_red_colour.jpg
+Fra:1 Mem:444.19M (Peak 826.59M) | Time:00:00.44 | Mem:132.29M, Peak:132.29M | Scene, ViewLayer | Updating Images | Loading kia_stitcheswhite_colour.png
+Fra:1 Mem:444.28M (Peak 826.59M) | Time:00:00.44 | Mem:132.37M, Peak:132.37M | Scene, ViewLayer | Updating Images | Loading kia_icons_colour.png
+Fra:1 Mem:460.28M (Peak 826.59M) | Time:00:00.45 | Mem:148.37M, Peak:148.37M | Scene, ViewLayer | Updating Images | Loading kia_white_colour.jpg
+Fra:1 Mem:460.28M (Peak 826.59M) | Time:00:00.45 | Mem:148.37M, Peak:148.37M | Scene, ViewLayer | Updating Images | Loading kia_grey_colour.jpg
+Fra:1 Mem:460.28M (Peak 826.59M) | Time:00:00.45 | Mem:148.37M, Peak:148.37M | Scene, ViewLayer | Updating Images | Loading rgb255.png
+Fra:1 Mem:460.28M (Peak 826.59M) | Time:00:00.45 | Mem:148.37M, Peak:148.37M | Scene, ViewLayer | Updating Images | Loading kia_icons_colour.png
+Fra:1 Mem:476.28M (Peak 826.59M) | Time:00:00.51 | Mem:213.37M, Peak:213.37M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:476.28M (Peak 826.59M) | Time:00:00.51 | Mem:213.37M, Peak:213.37M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:476.28M (Peak 826.59M) | Time:00:00.51 | Mem:213.46M, Peak:213.46M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:476.28M (Peak 826.59M) | Time:00:00.51 | Mem:213.46M, Peak:213.46M | Scene, ViewLayer | Updating Lights | Importance map
+Fra:1 Mem:540.31M (Peak 828.28M) | Time:00:01.30 | Mem:277.50M, Peak:437.47M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:540.31M (Peak 828.28M) | Time:00:01.30 | Mem:277.51M, Peak:437.47M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:540.31M (Peak 828.28M) | Time:00:01.30 | Mem:277.51M, Peak:437.47M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:540.32M (Peak 828.28M) | Time:00:01.30 | Mem:277.42M, Peak:437.47M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:540.32M (Peak 828.28M) | Time:00:01.30 | Mem:277.51M, Peak:437.47M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:540.32M (Peak 828.28M) | Time:00:01.30 | Mem:277.51M, Peak:437.47M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:540.33M (Peak 828.28M) | Time:00:01.30 | Mem:277.51M, Peak:437.47M | Scene, ViewLayer | Loading denoising kernels (may take a few minutes the first time)
+Fra:1 Mem:540.33M (Peak 828.28M) | Time:00:01.30 | Mem:277.51M, Peak:437.47M | Scene, ViewLayer | Sample 0/48
+Fra:1 Mem:659.88M (Peak 828.28M) | Time:00:03.07 | Remaining:01:23.23 | Mem:397.04M, Peak:437.47M | Scene, ViewLayer | Sample 1/48
+Fra:1 Mem:659.88M (Peak 828.28M) | Time:00:28.03 | Remaining:00:48.73 | Mem:397.04M, Peak:437.47M | Scene, ViewLayer | Sample 17/48
+Fra:1 Mem:659.88M (Peak 828.28M) | Time:00:51.64 | Remaining:00:22.88 | Mem:397.04M, Peak:437.47M | Scene, ViewLayer | Sample 33/48
+Fra:1 Mem:688.00M (Peak 828.28M) | Time:01:29.33 | Mem:397.04M, Peak:437.47M | Scene, ViewLayer | Sample 48/48
+Fra:1 Mem:688.00M (Peak 828.28M) | Time:01:29.33 | Mem:397.04M, Peak:437.47M | Scene, ViewLayer | Finished
+Saved: 'out/hero.png'
+Time: 01:29.60 (Saving: 00:00.26)
+
+rendered hero
+
+Blender quit
