@@ -18,7 +18,9 @@ MODELS = {
     'crane': ('port-crane-sokol/source/Crane_2.fbx', '+X', ('h', 46.0)),
     'crane2': ('industrial-port-crane-model/source/base.obj', '+Y', ('h', 38.0)),
     'containers': ('shipping-containers/source/Crates.fbx', '+X', None),
-    'fir': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
+    'fir_a': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
+    'fir_b': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
+    'fir_c': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
 }
 
 
@@ -37,13 +39,8 @@ def _import(path):
     elif ext == 'blend':
         with bpy.data.libraries.load(path, link=False) as (src, dst):
             dst.objects = [n for n in src.objects]; dst.collections = [n for n in src.collections]
-        for c in dst.collections:
-            if c: print('BLENDCOL', c.name, [o.name for o in c.objects][:12], [ch.name for ch in c.children])
         for o in dst.objects:
             if o is None: continue
-            print('BLENDOBJ', o.name, o.type, [(m.type, getattr(m, 'node_group', None) and m.node_group.name) for m in o.modifiers],
-                  [ (ps.settings.render_type, ps.settings.instance_collection and ps.settings.instance_collection.name, ps.settings.instance_object and ps.settings.instance_object.name, ps.settings.count) for ps in o.particle_systems],
-                  o.instance_type, o.instance_collection and o.instance_collection.name, o.hide_render)
             bpy.context.scene.collection.objects.link(o)
     new = [o for o in bpy.data.objects if o not in before]
     return [o for o in new if o.type not in ('CAMERA', 'LIGHT')]
@@ -112,6 +109,12 @@ def template(key):
     try: bpy.ops.file.find_missing_files(directory=os.path.dirname(os.path.dirname(path)))
     except Exception: pass
     _fix_materials(key, objs)
+    if key.startswith('fir_'):   # one full tree (LOD0) per template; the file also holds parts and lower LODs
+        want = 'fir_tree_01_%s_LOD0' % key[-1]
+        keep = [o for o in objs if o.name.split('.')[0] == want]
+        for o in objs:
+            if o not in keep: bpy.data.objects.remove(o, do_unlink=True)
+        objs = keep
 
     col = bpy.data.collections.new('T_' + key); bpy.context.scene.collection.children.link(col)
     for o in objs:
