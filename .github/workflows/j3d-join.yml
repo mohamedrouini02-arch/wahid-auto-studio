@@ -1,0 +1,22 @@
+name: j3d-join
+# Join the frames of a finished j3d-clip run into clip.mp4 on the "j3d-clip" branch.
+on:
+  workflow_dispatch:
+    inputs:
+      run_id: { description: "j3d-clip run id", required: true }
+permissions:
+  contents: write
+  actions: read
+jobs:
+  join:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: fr, pattern: "frames-*", merge-multiple: true, run-id: "${{ inputs.run_id }}", github-token: "${{ github.token }}" }
+      - run: |
+          ls fr | wc -l; sudo apt-get -qq update && sudo apt-get -qq install -y ffmpeg >/dev/null
+          ffmpeg -loglevel error -framerate 24 -i fr/f%04d.jpg -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart /tmp/clip.mp4
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          git checkout --orphan j3d-clip && git rm -rq --cached . && rm -rf clip && mkdir clip && cp /tmp/clip.mp4 clip/ && cp fr/f0000.jpg fr/f0060.jpg fr/f0150.jpg fr/f0180.jpg fr/f0210.jpg fr/f0239.jpg clip/
+          git add clip && git commit -qm "clip ${{ inputs.run_id }}" && git push -q -f origin HEAD:j3d-clip
