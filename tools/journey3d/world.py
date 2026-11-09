@@ -18,6 +18,10 @@ MODELS = {
     'crane': ('port-crane-sokol/source/Crane_2.fbx', '+X', ('h', 46.0)),
     'crane2': ('industrial-port-crane-model/source/base.obj', '+Y', ('h', 38.0)),
     'containers': ('shipping-containers/source/Crates.fbx', '+X', None),
+    'crate0': ('shipping-containers/source/Crates.fbx', '+X', None),
+    'crate1': ('shipping-containers/source/Crates.fbx', '+X', None),
+    'crate2': ('shipping-containers/source/Crates.fbx', '+X', None),
+    'crate3': ('shipping-containers/source/Crates.fbx', '+X', None),
     'fir_a': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
     'fir_b': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
     'fir_c': (PH + '/fir_tree_01/fir_tree_01_1k.blend', '+X', None),
@@ -72,6 +76,18 @@ def pbr_material(name, base, rough=None, normal=None, metal=None, ao=None, tint=
 
 def _fix_materials(key, objs):
     """Models whose textures did not come through the import get their materials here."""
+    if key.startswith('crate'):     # one container per template, lying along X
+        objs_m = sorted([o for o in objs if o.type == 'MESH'], key=lambda o: o.name)
+        keep = objs_m[int(key[-1])]
+        _fix_materials('containers', objs_m)
+        for o in objs:
+            if o is not keep: bpy.data.objects.remove(o, do_unlink=True)
+        objs[:] = [keep]
+        keep.rotation_euler = (0, 0, 0); keep.location = (0, 0, 0)
+        bpy.context.view_layer.update()
+        d = keep.dimensions
+        if d.y > d.x: keep.rotation_euler = (0, 0, math.pi / 2)
+        return
     if key == 'containers':
         t = A + '/shipping-containers/textures/'
         mats = {c: pbr_material('cont_' + c, t + f'{c}_Base_color.png', t + f'{c}_Roughness.png', t + f'{c}_Normal_OpenGL.png', t + 'Cargo_Metallic.png')
@@ -84,6 +100,15 @@ def _fix_materials(key, objs):
         m = pbr_material('crane2', t + 'texture_diffuse.png', t + 'texture_roughness.png', t + 'texture_normal.png', t + 'texture_metallic.png')
         for o in objs:
             if o.type == 'MESH': o.data.materials.clear(); o.data.materials.append(m)
+    if key == 'sorento':
+        for o in objs:
+            for sl in getattr(o, 'material_slots', []):
+                m = sl.material
+                if m and any(k in m.name.lower() for k in ('tyre', 'tire', 'rubber')) and m.use_nodes:
+                    b = m.node_tree.nodes.get('Principled BSDF')
+                    if b:
+                        for l in list(b.inputs['Base Color'].links): m.node_tree.links.remove(l)
+                        b.inputs['Base Color'].default_value = hexc('#1B1C1D'); b.inputs['Roughness'].default_value = .85
     if key == 'ship':   # SketchUp export: some walls came in 73% transparent
         for o in objs:
             for sl in getattr(o, 'material_slots', []):
@@ -109,6 +134,7 @@ def template(key):
     try: bpy.ops.file.find_missing_files(directory=os.path.dirname(os.path.dirname(path)))
     except Exception: pass
     _fix_materials(key, objs)
+    objs = [o for o in objs if o.name in bpy.data.objects and bpy.data.objects[o.name] == o] if key.startswith('crate') else objs
     if key.startswith('fir_'):   # one full tree (LOD0) per template; the file also holds parts and lower LODs
         want = 'fir_tree_01_%s_LOD0' % key[-1]
         keep = [o for o in objs if o.name.split('.')[0] == want]

@@ -20,9 +20,9 @@ def studio():
     for i in range(0, 21): prof.append((-30 + i * 1.5, 0))
     for i in range(1, 13):
         a = i / 12 * math.pi / 2; prof.append((0 + math.sin(a) * 7, 7 - math.cos(a) * 7))
-    prof.append((7, 20))
+    prof.append((7, 40))
     rows = []
-    for x in (-40, 40):
+    for x in (-90, 90):
         rows.append([bm.verts.new((x, y, z)) for (y, z) in prof])
     for i in range(len(prof) - 1):
         bm.faces.new((rows[0][i], rows[1][i], rows[1][i + 1], rows[0][i + 1]))
@@ -81,7 +81,7 @@ def pctc(x, y, z=0., heading=0.):
     part('funnel', (8, 5, 8), (-L / 2 + 22, 0, 31.6), white)
     part('funnel_top', (8.1, 5.1, 2.2), (-L / 2 + 22, 0, 37.4), green)
     # stern ramp, lifeboat, deck rails, rows of vents on the side
-    part('ramp', (14, 7, .5), (-L / 2 - 6.5, -6, -.5), deck).rotation_euler = (0, math.radians(-9), 0)
+    rp = part('ramp', (7, 16, .5), (-L / 2 + 12, B / 2 + 6.5, 1.0), deck); rp.rotation_euler = (math.radians(7), 0, 0)
     part('lifeboat', (9, 3, 3), (-L / 2 + 10, -B / 2 - 1.5, 26), W.mat('lifeboat', '#E4632A', .5))
     for i in range(22):
         part('vent', (2.4, .25, 1.6), (-L / 2 + 16 + i * 7.6, -B / 2 + .25, 26.5), W.mat('vent', '#B9BCB8', .6))
@@ -126,7 +126,7 @@ def port():
     steel = W.mat('steel', '#3A3D3F', .5, metal=.6)
     W.plane('land', -420, 0, 420, 420, -.02, grass, thick=6)
     W.plane('quay', -420, 0, 420, 62, .02, concrete)
-    W.plane('yard', -150, 62, 280, 172, .03, asphalt)
+    W.plane('yard', -150, 62, 280, 175, .03, asphalt)
     W.plane('carlot', -400, 62, -152, 172, .03, asphalt)
     W.plane('road', -420, 176, 420, 190, .03, asphalt)
     W.plane('verge', -420, 190, 420, 196, .025, dirt)
@@ -137,21 +137,31 @@ def port():
     W.box('lane1', (840, .3, .02), (0, 58, .035), yellow)
     # the car carrier alongside, stern ramp down on the quay
     pctc(25, -18, 0)
-    W.sea(-900, -700, 900, -1, z=-.8)
+    sea_o, _ = W.sea(-900, -700, 900, -1, z=-.8)
+    sea_o.data.materials[0].node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value = W.hexc('#173F4A')
+    # cars queuing on the quay to drive up the ramp, bollards along the edge
+    for i in range(14):
+        W.place('sorento', (-82 + (i % 7) * 6.2, 9 + (i // 7) * 3.6, .03), heading=0)
+    for x in range(-400, 400, 18):
+        bpy.ops.mesh.primitive_cylinder_add(radius=.35, depth=.9, location=(x, 1.2, .45)); bpy.context.object.data.materials.append(W.mat('bollard', '#2C2F31', .5))
+    for x in range(-380, 400, 40):
+        W.box('pole', (.35, .35, 24), (x, 56, 0), W.mat('pole', '#9AA0A3', .4, metal=.5)); W.box('lamp', (3, 1.2, .5), (x, 56, 24), W.mat('pole', '#9AA0A3', .4, metal=.5))
     for x in (-55, 25, 105):
         sts_crane(x, 0, 0)
-    # container yard in natural colours
-    for ix in range(21):
-        for iy in range(8):
-            x, y = -138 + ix * 20.5, 74 + iy * 12.5
-            if (ix + 3) % 9 == 0: continue
-            for k in range(random.choice((1, 1, 2, 2, 3))):
-                W.place('containers', (x, y, k * 5.2), heading=random.choice((0, math.pi)))
+    # container yard: neat blocks, stacked 1 to 4 high, natural colours
+    for bx in range(5):
+        for by in range(3):
+            x0, y0 = -140 + bx * 82, 74 + by * 33
+            for i in range(10):
+                for j in range(9):
+                    h = random.choice((1, 2, 2, 3, 3, 4)) if random.random() > .06 else 0
+                    for k in range(h):
+                        W.place('crate%d' % random.choice((0, 1, 2, 3, 0, 3)), (x0 + i * 6.6, y0 + j * 2.75, k * 2.6), heading=0)
     # export car terminal: new cars waiting to board
     for row in range(6):
-        for i in range(32):
+        for i in range(30):
             if random.random() < .1: continue
-            W.place('sorento', (-395 + i * 7.4, 72 + row * 16, .03), heading=math.pi / 2 if row % 2 else -math.pi / 2)
+            W.place('sorento', (-385 + i * 7.4, 72 + row * 16, .03), heading=math.pi / 2 if row % 2 else -math.pi / 2)
         W.box('bayline', (238, .2, .02), (-277, 80 + row * 16, .04), white)
     # our car arriving on the truck
     W.real('truck', (-108, 36, .03), heading=0, name='truck')
@@ -170,7 +180,7 @@ def port():
         if abs(x - 230) < 50 and y < 240: continue
         W.place(random.choice(('fir_a', 'fir_b', 'fir_c')), (x, y, 0), heading=random.uniform(0, 6.28), scale=random.uniform(.8, 1.2))
     tgt = (-60, 40, 0)
-    W.camera((-215, -250, 205), tgt, lens=58, dof=tgt, fstop=.3)
+    W.camera((-330, -330, 300), tgt, lens=60, dof=tgt, fstop=.35)
     W.render_settings(RW, RH, SAMPLES, exposure=.15)
 
 
