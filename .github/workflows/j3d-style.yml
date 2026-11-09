@@ -28,11 +28,13 @@ jobs:
           for f in $(echo "${{ inputs.frames }}" | tr ',' ' '); do
             if [ "$f" = debug ]; then
               for k in $(echo "${{ inputs.keys }}" | tr ',' ' '); do
-                J3D_KEY=$k J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out debug ${{ inputs.size }} 2>&1 | grep -E "template|PART|MAT|Error|Traceback" | head -150 > out/debug-$k.txt
-                mv out/debug.jpg out/debug-$k.jpg
+                J3D_KEY=$k J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out debug ${{ inputs.size }} > /tmp/log-$k.txt 2>&1 || true
+                grep -E "template|PART|MAT|Error|Traceback" /tmp/log-$k.txt > out/debug-$k.txt || true
+                mv out/debug.jpg out/debug-$k.jpg || true
               done
             else
-              J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out $f ${{ inputs.size }} 2>&1 | grep -E "template|rendered|Error|Traceback|line [0-9]|Warning: (Cannot|Unable)" | head -60
+              J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out $f ${{ inputs.size }} > /tmp/log-$f.txt 2>&1 || true
+              grep -E "template|rendered|Error|Traceback|line [0-9]" /tmp/log-$f.txt | head -60 || true
             fi
           done
           ls out
