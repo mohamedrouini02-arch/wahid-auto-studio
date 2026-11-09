@@ -100,10 +100,12 @@ def _obj(name, bm, mat, loc, rot, parent, smooth=False):
     return ob
 
 
-def box(name, size, loc, mat, bev=0.04, parent=None, rot=(0, 0, 0), base=True):
+def box(name, size, loc, mat, bev=0.04, parent=None, rot=(0, 0, 0), base=True, taper=None):
     bm = bmesh.new(); bmesh.ops.create_cube(bm, size=1)
     for v in bm.verts:
+        top = v.co.z > 0
         v.co.x *= size[0]; v.co.y *= size[1]; v.co.z *= size[2]
+        if taper and top: v.co.x = v.co.x * taper[0] + taper[2]; v.co.y *= taper[1]
         if base: v.co.z += size[2] / 2
     ob = _obj(name, bm, mat, loc, rot, parent)
     if bev:
@@ -139,10 +141,10 @@ def empty(name, loc=(0, 0, 0)):
 def car(name, color='white', loc=(0, 0, 0), heading=0.):
     root = empty(name, loc); root.rotation_euler = (0, 0, heading)
     body = CARCOL[color]
-    box(name + '_body', (4.5, 1.86, .72), (0, 0, .32), body, bev=.22, parent=root)
-    box(name + '_hood', (1.3, 1.78, .12), (1.45, 0, .98), body, bev=.06, parent=root)
-    box(name + '_cabin', (2.55, 1.7, .62), (-.35, 0, 1.0), GLASS, bev=.16, parent=root)
-    box(name + '_roof', (2.3, 1.64, .1), (-.42, 0, 1.6), body, bev=.05, parent=root)
+    box(name + '_body', (4.5, 1.86, .74), (0, 0, .3), body, bev=.2, parent=root, taper=(.97, .96, 0))
+    box(name + '_cabin', (2.7, 1.72, .64), (-.45, 0, 1.0), GLASS, bev=.12, parent=root, taper=(.78, .86, -.12))
+    box(name + '_roof', (2.05, 1.5, .08), (-.57, 0, 1.62), body, bev=.04, parent=root)
+    box(name + '_sill', (4.4, 1.9, .16), (0, 0, .3), DARK, bev=.06, parent=root)
     for sx in (1.42, -1.42):
         for sy in (.84, -.84):
             cyl(name + '_t', .37, .27, (sx, sy, .37), TYRE, rot=(math.radians(90), 0, 0), parent=root)
@@ -204,26 +206,27 @@ box('sea_bed', (2000, 1200, .1), (200, 0, -1.6), SEA, bev=0)
 sea_plane = bpy.data.objects['sea_bed']
 box('land_kr', (240, 240, 3), (66, 40, -3), GROUND, bev=0)            # Korea: x -54 .. 186
 box('land_dz', (200, 240, 3), (430, 40, -3), GROUND, bev=0)           # Algeria: x 330 .. 530
-box('quay_kr', (24, 60, .06), (174, 0, 0), PAVE, bev=0)
-box('quay_dz', (40, 60, .06), (350, 0, 0), PAVE, bev=0)
+box('quay_kr', (24, 60, .03), (174, 0, 0), PAVE, bev=0)
+box('quay_dz', (40, 60, .03), (350, 0, 0), PAVE, bev=0)
 # hills behind both coasts
 for (x, y, r, m) in [(-20, 95, 26, HILL), (40, 110, 34, HILL2), (110, 100, 28, HILL), (160, 120, 30, HILL2),
                      (360, 100, 30, HILL), (420, 115, 38, HILL2), (480, 95, 28, HILL), (520, 120, 34, HILL2)]:
     ico('hill', r, (x, y, -r * .45), m, sub=2, scale=(1.4, 1, .75))
 
 # roads (y = 0) with dashes
-box('road_kr', (190, 7, .05), (90, 0, 0), ROAD, bev=0)
-box('road_dz', (100, 7, .05), (382, 0, 0), ROAD, bev=0)
+box('road_kr', (190, 7, .06), (90, 0, 0), ROAD, bev=0)
+box('road_dz', (100, 7, .06), (382, 0, 0), ROAD, bev=0)
 for x in range(-2, 186, 6):
-    box('dash', (2.6, .18, .02), (x, 0, .05), LINE, bev=0)
+    box('dash', (2.6, .18, .02), (x, 0, .061), LINE, bev=0)
 for x in range(334, 430, 6):
-    box('dash', (2.6, .18, .02), (x, 0, .05), LINE, bev=0)
+    box('dash', (2.6, .18, .02), (x, 0, .061), LINE, bev=0)
 
 # 1. dealer lot in Korea
-box('lot', (34, 20, .05), (10, 12, 0), PAVE, bev=0)
+box('lot', (34, 18, .04), (10, 13, 0), PAVE, bev=0)
 for i in range(7):
-    box('pline', (.15, 5, .02), (-6 + i * 4 + 2, 7.5, .05), LINE, bev=0)
-    box('pline', (.15, 5, .02), (-6 + i * 4 + 2, 16.5, .05), LINE, bev=0)
+    box('pline', (.15, 5, .02), (-6 + i * 4 + 2, 7.5, .041), LINE, bev=0)
+    box('pline', (.15, 5, .02), (-6 + i * 4 + 2, 16.5, .041), LINE, bev=0)
+box('lot_lane', (4, 2, .04), (12, 3, 0), PAVE, bev=0)
 cols = ['silver', 'black', 'grey', None, 'blue', 'white', 'silver']
 for i, c in enumerate(cols):
     if c: car('p%d' % i, c, (-4 + i * 4 + 2, 7.5, .05), -math.pi / 2)
@@ -233,7 +236,7 @@ building('dealer', 10, 28, 30, 8, 7, 'KOREA')
 lamp(-8, 3); lamp(28, 3)
 
 # 2. inspection bay
-box('bay_floor', (11, 8, .06), (34, 0, 0), M('bayfloor', '#DCEDE6', .7), bev=0)
+box('bay_floor', (11, 8, .075), (34, 0, 0), M('bayfloor', '#DCEDE6', .7), bev=0)
 for dx in (-5.3, 5.3):
     for dy in (-3.8, 3.8):
         box('bay_post', (.4, .4, 4.6), (34 + dx, dy, 0), WHITE, bev=.05)
@@ -299,7 +302,7 @@ barrier = empty('barrier', (359, -4.2, 1.05))
 for i in range(7):
     box('arm', (.22, 1, .22), (0, .5 + i, 0), RED if i % 2 == 0 else WHITE, bev=0, parent=barrier, base=False)
 box('barrier_post', (.5, .5, 1.1), (359, -4.2, 0), DARK, bev=.04)
-box('plaza', (40, 30, .05), (402, 8, 0), STONE, bev=0)
+box('plaza', (40, 26, .045), (402, 12.5, 0), STONE, bev=0)
 box('showroom', (30, 14, 8.5), (402, 18, 0), WHITE, bev=.12)
 box('show_glass', (27, .1, 6), (402, 10.96, .6), GLASS_L, bev=0)
 for i in range(6):
@@ -388,7 +391,7 @@ def car_visible(f): return not (240 <= f < 316)
 
 # camera: follows a smoothed focus, distance changes per chapter
 DIST = [(0, 64), (34, 30), (60, 26), (96, 28), (130, 34), (176, 40), (214, 50), (250, 66), (300, 56),
-        (320, 36), (356, 32), (400, 36)]
+        (320, 36), (356, 32), (372, 34), (400, 44)]
 def dist(f):
     for (a, da), (b, db) in zip(DIST, DIST[1:]):
         if a <= f <= b: return da + (db - da) * ease((f - a) / (b - a))
@@ -401,7 +404,9 @@ for f in range(N):
         p, _ = car_state(f)
     else:
         p = Vector((ship_x(f) + 20, 0, 3))
-    raw.append(Vector((p.x, p.y, max(p.z, 0) + 1)))
+    q = Vector((p.x, p.y, max(p.z, 0) + 1))
+    k = ease((f - 360) / 30)
+    raw.append(q.lerp(Vector((402, 3, 3.2)), k * .85))
 focus = []
 SIG = 9
 for f in range(N):
@@ -413,6 +418,7 @@ for f in range(N):
 DIR = Vector((-.32, -1.0, .66)).normalized()
 cam_data = bpy.data.cameras.new('cam'); cam_data.lens = 35 if CAM == 'land' else 30
 cam_data.sensor_fit = 'HORIZONTAL' if CAM == 'land' else 'VERTICAL'
+cam_data.shift_y = .04 if CAM == 'land' else .12
 cam = bpy.data.objects.new('cam', cam_data); coll.objects.link(cam); scene.camera = cam
 target = empty('target')
 tc_ = cam.constraints.new('TRACK_TO'); tc_.target = target; tc_.track_axis = 'TRACK_NEGATIVE_Z'; tc_.up_axis = 'UP_Y'
@@ -458,7 +464,7 @@ world = bpy.data.worlds.new('w'); scene.world = world; world.use_nodes = True
 world.node_tree.nodes['Background'].inputs['Color'].default_value = hexc('#E9EFED')
 world.node_tree.nodes['Background'].inputs['Strength'].default_value = 1.0
 sun = bpy.data.objects.new('sun', bpy.data.lights.new('sun', 'SUN')); coll.objects.link(sun)
-sun.data.energy = 3.4; sun.data.angle = math.radians(4); sun.rotation_euler = (math.radians(42), math.radians(8), math.radians(-35))
+sun.data.energy = 4.2; sun.data.angle = math.radians(4); sun.rotation_euler = (math.radians(42), math.radians(8), math.radians(-35))
 
 r = scene.render
 r.engine = 'CYCLES'; scene.cycles.device = 'CPU'
@@ -468,7 +474,7 @@ scene.cycles.max_bounces = 4; scene.cycles.diffuse_bounces = 2; scene.cycles.glo
 r.use_persistent_data = True
 r.resolution_x, r.resolution_y, r.resolution_percentage = W, H, 100
 scene.view_settings.view_transform = 'AgX'; scene.view_settings.look = 'AgX - Medium High Contrast'
-scene.view_settings.exposure = .25
+scene.view_settings.exposure = .3
 r.image_settings.file_format = 'JPEG'; r.image_settings.quality = 93
 os.makedirs(OUT, exist_ok=True)
 
