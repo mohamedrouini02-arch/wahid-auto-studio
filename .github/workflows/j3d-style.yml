@@ -1,0 +1,34 @@
+name: j3d-style
+# Style frames of the 3D journey (tools/journey3d/style.py) onto the "j3d-style" branch, for approval.
+on:
+  workflow_dispatch:
+    inputs:
+      frames: { description: "studio,port", required: false, default: "studio,port" }
+      size: { description: "W H SAMPLES", required: false, default: "1600 900 64" }
+permissions:
+  contents: write
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { ref: assets3d, path: a3d }
+      - name: Blender and Poly Haven trees
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libxkbcommon0 libsm6 >/dev/null
+          curl -sL https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz | tar -xJ -C /opt && sudo ln -sf /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender
+          mkdir -p ph/fir_tree_01/textures && cd ph/fir_tree_01
+          curl -sfLO https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/fir_tree_01/fir_tree_01_1k.blend
+          cd textures && for t in bark_diff bark_nor_gl bark_rough trunk_a_diff trunk_a_nor_gl trunk_a_rough trunk_b_diff trunk_b_nor_gl trunk_b_rough trunk_c_diff trunk_c_nor_gl trunk_c_rough twig_alpha twig_diff twig_mask twig_nor_gl twig_rough; do curl -sfLO https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fir_tree_01/fir_tree_01_${t}_1k.png; done; ls | wc -l
+      - run: |
+          mkdir -p out
+          for f in $(echo "${{ inputs.frames }}" | tr ',' ' '); do
+            J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out $f ${{ inputs.size }} 2>&1 | grep -E "template|rendered|Error|Traceback|line [0-9]|Warning: (Cannot|Unable)" | head -60
+          done
+          ls out
+      - run: |
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          mv out /tmp/out && git checkout --orphan j3d-style && git rm -rq --cached . ; rm -rf style && mkdir style && cp /tmp/out/* style/
+          git add style && git commit -qm "style ${{ github.run_id }}" && git push -q -f origin HEAD:j3d-style
