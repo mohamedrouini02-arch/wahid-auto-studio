@@ -192,7 +192,7 @@ def paint_sorento(colour='#575C60', objs=None):
         if coat: b.inputs['Coat Weight'].default_value = coat; b.inputs['Coat Roughness'].default_value = .03
         return m
     paint = new('sorento_paint', colour, .32, .7, 1.)
-    gloss_black = new('sorento_rims', '#060607', .18, 0., 1.)
+    gloss_black = new('sorento_rims', '#030303', .38, 0., .25)
     trim = new('sorento_trim', '#0E0F10', .25, 0, .6)
     rubber = new('sorento_rubber', '#141516', .85)
     for o in (objs if objs is not None else bpy.data.objects):
@@ -224,10 +224,6 @@ def paint_sorento(colour='#575C60', objs=None):
                     if n and n != 'sorento_rubber' and not any(k in n for k in ('disc', 'brake', 'caliper', 'red')):
                         print('RIM', o.name, n, flush=True); sl.material = gloss_black
                 break
-    for o in meshes:
-        c, d = bbox(o)
-        if c.z < .9 and any((Vector((c.x, c.y, 0)) - Vector((wc.x, wc.y, 0))).length < 1.2 for wc, wd in wheels):
-            print('NEAR', o.name, tuple(round(v, 2) for v in c), tuple(round(v, 2) for v in d), [sl.material.name for sl in o.material_slots if sl.material], flush=True)
 
 
 def on_white():
