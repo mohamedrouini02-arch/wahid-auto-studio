@@ -184,36 +184,41 @@ def port():
     W.render_settings(RW, RH, SAMPLES, exposure=.15)
 
 
-def paint_sorento(objs_root_names=None, colour='#7D8285'):
-    """Grey metallic paint like the real car; dark rubber tyres. Prints the material names it sees."""
-    seen = {}
-    for m in bpy.data.materials:
-        base = m.name.split('.')[0]
-        seen[base] = seen.get(base, 0) + 1
-    print('SORENTO_MATS', sorted(seen.items(), key=lambda x: -x[1])[:80])
-    for m in bpy.data.materials:
-        if not m.use_nodes: continue
-        b = m.node_tree.nodes.get('Principled BSDF')
-        if not b: continue
-        n = m.name.lower()
-        imgs = ' '.join(nd.image.name.lower() for nd in m.node_tree.nodes if nd.type == 'TEX_IMAGE' and nd.image)
-        if 'tyre' in n or 'tire' in n or 'tyre' in imgs or 'rubber' in n:
-            for l in list(b.inputs['Base Color'].links): m.node_tree.links.remove(l)
-            b.inputs['Base Color'].default_value = W.hexc('#161718'); b.inputs['Roughness'].default_value = .82
-        if 'paint' in n or 'carpaint' in n or 'body_colour' in n or n.startswith('kia_paint') or 'exterior_colour' in n:
-            for l in list(b.inputs['Base Color'].links): m.node_tree.links.remove(l)
-            b.inputs['Base Color'].default_value = W.hexc(colour); b.inputs['Metallic'].default_value = .65
-            b.inputs['Roughness'].default_value = .28
-            try: b.inputs['Coat Weight'].default_value = 1; b.inputs['Coat Roughness'].default_value = .04
-            except Exception: pass
-            print('PAINTED', m.name)
+def paint_sorento(colour='#575C60'):
+    """Grey metallic paint like the real car, black trim, black rubber tyres."""
+    def new(name, col, rough, metal=0., coat=0.):
+        m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes['Principled BSDF']
+        b.inputs['Base Color'].default_value = W.hexc(col); b.inputs['Roughness'].default_value = rough; b.inputs['Metallic'].default_value = metal
+        if coat: b.inputs['Coat Weight'].default_value = coat; b.inputs['Coat Roughness'].default_value = .03
+        return m
+    paint = new('sorento_paint', colour, .32, .7, 1.)
+    trim = new('sorento_trim', '#0E0F10', .25, 0, .6)
+    rubber = new('sorento_rubber', '#141516', .85)
+    for o in bpy.data.objects:
+        for sl in getattr(o, 'material_slots', []):
+            m = sl.material
+            if not m: continue
+            n = m.name.split('.')[0]
+            if n in ('template_carpaint',): sl.material = paint
+            elif n == 'template_blackpaint': sl.material = trim
+            elif n in ('template_tyres', 'template_rubber'): sl.material = rubber
+
+
+def on_white():
+    """Transparent render with the shadow, laid on pure white in the compositor."""
+    sc = bpy.context.scene; sc.render.film_transparent = True; sc.use_nodes = True
+    nt = sc.node_tree
+    for n in list(nt.nodes): nt.nodes.remove(n)
+    rl = nt.nodes.new('CompositorNodeRLayers'); ao = nt.nodes.new('CompositorNodeAlphaOver'); out = nt.nodes.new('CompositorNodeComposite')
+    ao.inputs[1].default_value = (1, 1, 1, 1)
+    nt.links.new(rl.outputs['Image'], ao.inputs[2]); nt.links.new(ao.outputs['Image'], out.inputs['Image'])
 
 
 def hero():
     """The grey Sorento, photoreal, on pure white with a soft shadow (the emons truck look)."""
     sc = bpy.context.scene
     # floor: white, catches the shadow; the background is pure white for the camera
-    floor = W.plane('floor', -60, -60, 60, 60, 0, W.mat('floor', '#FFFFFF', .9))
+    floor = W.plane('floor', -60, -60, 60, 60, 0, W.mat('floor', '#FFFFFF', .9)); floor.is_shadow_catcher = True
     car = W.real('sorento', (0, 0, 0), heading=math.radians(-12))
     paint_sorento()
     w = bpy.data.worlds.new('studio'); sc.world = w; w.use_nodes = True; nt = w.node_tree
@@ -230,8 +235,9 @@ def hero():
     l = bpy.data.lights.new('soft', 'AREA'); l.shape = 'RECTANGLE'; l.size = 10; l.size_y = 6; l.energy = 2200
     ob = bpy.data.objects.new('soft', l); sc.collection.objects.link(ob); ob.location = (0, 0, 9)
     W.camera((6.6, -9.0, 2.0), (0, .15, .78), lens=55, dof=(0, 0, .8), fstop=8)
-    W.render_settings(RW, RH, SAMPLES, exposure=.35)
+    W.render_settings(RW, RH, SAMPLES, exposure=.25)
     sc.view_settings.look = 'AgX - Medium High Contrast'
+    on_white()
 
 
 def debug():
