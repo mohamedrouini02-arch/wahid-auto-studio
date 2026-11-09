@@ -184,6 +184,56 @@ def port():
     W.render_settings(RW, RH, SAMPLES, exposure=.15)
 
 
+def paint_sorento(objs_root_names=None, colour='#7D8285'):
+    """Grey metallic paint like the real car; dark rubber tyres. Prints the material names it sees."""
+    seen = {}
+    for m in bpy.data.materials:
+        base = m.name.split('.')[0]
+        seen[base] = seen.get(base, 0) + 1
+    print('SORENTO_MATS', sorted(seen.items(), key=lambda x: -x[1])[:80])
+    for m in bpy.data.materials:
+        if not m.use_nodes: continue
+        b = m.node_tree.nodes.get('Principled BSDF')
+        if not b: continue
+        n = m.name.lower()
+        imgs = ' '.join(nd.image.name.lower() for nd in m.node_tree.nodes if nd.type == 'TEX_IMAGE' and nd.image)
+        if 'tyre' in n or 'tire' in n or 'tyre' in imgs or 'rubber' in n:
+            for l in list(b.inputs['Base Color'].links): m.node_tree.links.remove(l)
+            b.inputs['Base Color'].default_value = W.hexc('#161718'); b.inputs['Roughness'].default_value = .82
+        if 'paint' in n or 'carpaint' in n or 'body_colour' in n or n.startswith('kia_paint') or 'exterior_colour' in n:
+            for l in list(b.inputs['Base Color'].links): m.node_tree.links.remove(l)
+            b.inputs['Base Color'].default_value = W.hexc(colour); b.inputs['Metallic'].default_value = .65
+            b.inputs['Roughness'].default_value = .28
+            try: b.inputs['Coat Weight'].default_value = 1; b.inputs['Coat Roughness'].default_value = .04
+            except Exception: pass
+            print('PAINTED', m.name)
+
+
+def hero():
+    """The grey Sorento, photoreal, on pure white with a soft shadow (the emons truck look)."""
+    sc = bpy.context.scene
+    # floor: white, catches the shadow; the background is pure white for the camera
+    floor = W.plane('floor', -60, -60, 60, 60, 0, W.mat('floor', '#FFFFFF', .9))
+    car = W.real('sorento', (0, 0, 0), heading=math.radians(-12))
+    paint_sorento()
+    w = bpy.data.worlds.new('studio'); sc.world = w; w.use_nodes = True; nt = w.node_tree
+    env = nt.nodes.new('ShaderNodeTexEnvironment'); env.image = bpy.data.images.load(os.path.join(W.PH, 'studio.exr'))
+    tc = nt.nodes.new('ShaderNodeTexCoord'); mp = nt.nodes.new('ShaderNodeMapping'); mp.inputs['Rotation'].default_value = (0, 0, math.radians(200))
+    nt.links.new(tc.outputs['Generated'], mp.inputs['Vector']); nt.links.new(mp.outputs['Vector'], env.inputs['Vector'])
+    bg = nt.nodes['Background']; bg.inputs['Strength'].default_value = 1.1
+    nt.links.new(env.outputs['Color'], bg.inputs['Color'])
+    white = nt.nodes.new('ShaderNodeBackground'); white.inputs['Color'].default_value = (1, 1, 1, 1); white.inputs['Strength'].default_value = 1
+    lp = nt.nodes.new('ShaderNodeLightPath'); mix = nt.nodes.new('ShaderNodeMixShader')
+    nt.links.new(lp.outputs['Is Camera Ray'], mix.inputs['Fac']); nt.links.new(bg.outputs['Background'], mix.inputs[1]); nt.links.new(white.outputs['Background'], mix.inputs[2])
+    nt.links.new(mix.outputs['Shader'], nt.nodes['World Output'].inputs['Surface'])
+    # one large soft light above, like a photo studio ceiling
+    l = bpy.data.lights.new('soft', 'AREA'); l.shape = 'RECTANGLE'; l.size = 10; l.size_y = 6; l.energy = 2200
+    ob = bpy.data.objects.new('soft', l); sc.collection.objects.link(ob); ob.location = (0, 0, 9)
+    W.camera((6.6, -9.0, 2.0), (0, .15, .78), lens=55, dof=(0, 0, .8), fstop=8)
+    W.render_settings(RW, RH, SAMPLES, exposure=.35)
+    sc.view_settings.look = 'AgX - Medium High Contrast'
+
+
 def debug():
     # each tricky model alone, with a list of its parts (to spot strays and broken materials)
     import bpy
@@ -206,7 +256,7 @@ def debug():
     W.render_settings(RW, RH, SAMPLES)
 
 
-{'studio': studio, 'port': port, 'debug': debug}[FRAME]()
+{'studio': studio, 'port': port, 'debug': debug, 'hero': hero}[FRAME]()
 bpy.context.scene.render.filepath = os.path.join(OUT, FRAME + '.jpg')
 bpy.ops.render.render(write_still=True)
 print('rendered', FRAME, flush=True)

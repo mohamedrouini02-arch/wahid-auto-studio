@@ -22,6 +22,7 @@ jobs:
           curl -sL https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz | tar -xJ -C /opt && sudo ln -sf /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender
           mkdir -p ph/fir_tree_01/textures && cd ph/fir_tree_01
           curl -sfLO https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/fir_tree_01/fir_tree_01_1k.blend
+          curl -sfL -o ../studio.exr https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/2k/studio_small_09_2k.exr; ls -la ../studio.exr
           cd textures && for t in bark_diff bark_nor_gl bark_rough trunk_a_diff trunk_a_nor_gl trunk_a_rough trunk_b_diff trunk_b_nor_gl trunk_b_rough trunk_c_diff trunk_c_nor_gl trunk_c_rough twig_alpha twig_diff twig_mask twig_nor_gl twig_rough; do curl -sfLO https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fir_tree_01/fir_tree_01_${t}_1k.png; done; ls | wc -l
       - run: |
           mkdir -p out
@@ -34,7 +35,7 @@ jobs:
               done
             else
               J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out $f ${{ inputs.size }} > /tmp/log-$f.txt 2>&1 || true
-              grep -E "template|rendered|Error|Traceback|line [0-9]" /tmp/log-$f.txt | head -60 || true
+              grep -E "template|rendered|Error|Traceback|line [0-9]|SORENTO_MATS|PAINTED" /tmp/log-$f.txt | head -80 || true; cp /tmp/log-$f.txt out/log-$f.txt
             fi
           done
           ls out
