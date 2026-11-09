@@ -14,7 +14,7 @@ jobs:
       - run: |
           sudo apt-get -qq update && sudo apt-get -qq install -y libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libxkbcommon0 libsm6 >/dev/null
           curl -sL https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz | tar -xJ -C /opt && sudo ln -sf /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender
-      - run: blender -b -noaudio -P tools/journey3d/inspect.py -- a3d/assets out 2>&1 | grep -E "^MODEL|^  |Error|Traceback" | grep -v "^  File" | tee out/report.txt
+      - run: mkdir -p out && blender -b -noaudio -P tools/journey3d/inspect.py -- a3d/assets out 2>&1 | grep -E "^MODEL|^  |Error|Traceback" | grep -v "^  File" | tee out/report.txt
       - run: |
           git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
           mv out /tmp/out && git checkout --orphan j3d-inspect && git rm -rq --cached . ; rm -rf inspect && mkdir inspect && cp /tmp/out/* inspect/
