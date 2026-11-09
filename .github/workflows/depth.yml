@@ -1,0 +1,21 @@
+name: depth
+# Car masks + depth maps for the photos on the "orbit" branch (orbit/src/*.jpg) -> orbit/maps/
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  maps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: orbit }
+      - uses: actions/checkout@v4
+        with: { ref: main, path: studio }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install -q "rembg[cpu]==2.0.59" pillow "transformers==4.46.3" "torch==2.5.1" --extra-index-url https://download.pytorch.org/whl/cpu
+      - run: python studio/tools/depth_mask.py orbit/src orbit/maps
+      - run: |
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          git add orbit/maps && git commit -qm "orbit maps ${{ github.run_id }}" && git push -q origin HEAD:orbit
