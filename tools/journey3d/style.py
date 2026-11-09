@@ -341,15 +341,17 @@ def clay_port():
     W.real('truck', (-38, 30, .03), heading=0, name='truck')
     W.box('deck', (13.4, 2.55, .35), (-48.5, 30, 1.15), clay_mat())
     # trees in soft clusters
-    for (cx, cy, n) in [(-280, 60, 14), (-40, 150, 18), (60, 200, 22), (230, 120, 16), (280, 40, 10), (-250, 200, 20), (180, 240, 24)]:
+    for (cx, cy, n) in [(-280, 50, 22), (-30, 150, 26), (70, 205, 30), (235, 120, 22), (290, 30, 16), (-250, 190, 30), (180, 250, 34), (-120, 230, 30)]:
         for i in range(n):
-            lowpoly_tree(cx + random.gauss(0, 14), cy + random.gauss(0, 10), random.uniform(.8, 1.3))
-    for x in range(-300, 320, 26):
-        lowpoly_tree(x + random.uniform(-3, 3), 110 + random.uniform(-2, 2), random.uniform(.7, .95))
+            lowpoly_tree(cx + random.gauss(0, 16), cy + random.gauss(0, 12), random.uniform(1.6, 2.5))
+    for x in range(-300, 320, 16):
+        lowpoly_tree(x + random.uniform(-3, 3), 112 + random.uniform(-2, 2), random.uniform(1.2, 1.6))
+    for y in range(12, 84, 14):
+        lowpoly_tree(-245 + random.uniform(-2, 2), y, random.uniform(1.1, 1.4))
     for x in range(-300, 320, 30):
         W.box('pole', (.25, .25, 14), (x, 4, 0), clay_mat()); W.box('lamp', (1.8, .6, .3), (x, 4, 14), clay_mat())
-    tgt = (-35, 30, 0)
-    W.camera((-170, -175, 160), tgt, lens=55, dof=tgt, fstop=.55)
+    tgt = (-45, 40, 0)
+    W.camera((-300, -290, 290), tgt, lens=50, dof=(-46, 30, 0), fstop=.8)
     W.render_settings(RW, RH, SAMPLES, exposure=.45)
 
 
