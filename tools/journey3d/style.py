@@ -205,13 +205,9 @@ def paint_sorento(colour='#575C60'):
 
 
 def on_white():
-    """Transparent render with the shadow, laid on pure white in the compositor."""
-    sc = bpy.context.scene; sc.render.film_transparent = True; sc.use_nodes = True
-    nt = sc.node_tree
-    for n in list(nt.nodes): nt.nodes.remove(n)
-    rl = nt.nodes.new('CompositorNodeRLayers'); ao = nt.nodes.new('CompositorNodeAlphaOver'); out = nt.nodes.new('CompositorNodeComposite')
-    ao.inputs[1].default_value = (1, 1, 1, 1)
-    nt.links.new(rl.outputs['Image'], ao.inputs[2]); nt.links.new(ao.outputs['Image'], out.inputs['Image'])
+    """Transparent PNG with the car's shadow; laid on pure white afterwards (outside the colour transform)."""
+    sc = bpy.context.scene; sc.render.film_transparent = True
+    sc.render.image_settings.file_format = 'PNG'; sc.render.image_settings.color_mode = 'RGBA'
 
 
 def hero():
@@ -263,6 +259,6 @@ def debug():
 
 
 {'studio': studio, 'port': port, 'debug': debug, 'hero': hero}[FRAME]()
-bpy.context.scene.render.filepath = os.path.join(OUT, FRAME + '.jpg')
+bpy.context.scene.render.filepath = os.path.join(OUT, FRAME + ('.png' if FRAME == 'hero' else '.jpg'))
 bpy.ops.render.render(write_still=True)
 print('rendered', FRAME, flush=True)
