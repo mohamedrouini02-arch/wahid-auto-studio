@@ -211,8 +211,13 @@ def paint_sorento(colour='#575C60', objs=None):
         return (lo + hi) / 2, hi - lo
     meshes = [o for o in (objs if objs is not None else []) if o.type == 'MESH']
     bpy.context.view_layer.update()
+    base_z = 0.
+    if meshes:
+        r = meshes[0]
+        while r.parent: r = r.parent
+        base_z = r.matrix_world.translation.z
     wheels = [bbox(o) for o in meshes if any(sl.material and sl.material.name == 'sorento_rubber' for sl in o.material_slots)
-              and bbox(o)[0].z < .8]
+              and bbox(o)[0].z - base_z < .8]
     wheels = [w for w in wheels if max(w[1]) < 1.0]
     print('WHEELS', [(tuple(round(v, 2) for v in c), round(max(d), 2)) for c, d in wheels], flush=True)
     for o in meshes:
@@ -452,9 +457,10 @@ def clay_port():
         t = W.real('truck', (x, y, .02), heading=heading, name='truck')
         dx, dy = math.cos(heading), math.sin(heading)
         d = W.box('deck', (13.4, 2.55, .35), (x - dx * 8.45, y - dy * 8.45, 1.15), clay_mat('clay2', '#E2E3E0')); d.rotation_euler = (0, 0, heading)
-        for off in (11.6, 13.0):
+        ch = W.box('chassis', (11.8, 1.6, .55), (x - dx * 8.9, y - dy * 8.9, .6), clay_mat('clay2', '#E2E3E0')); ch.rotation_euler = (0, 0, heading)
+        for off in (11.4, 12.5):
             for side in (-1, 1):
-                bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=.5, depth=.4, location=(x - dx * off + side * dy * 1.05, y - dy * off - side * dx * 1.05, .5), rotation=(math.pi / 2, 0, heading))
+                bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=.45, depth=.32, location=(x - dx * off + side * dy * .92, y - dy * off - side * dx * .92, .45), rotation=(math.pi / 2, 0, heading + math.pi / 2))
                 bpy.context.object.data.materials.append(tyre)
         if not our:
             for k in (0, 1): W.place('sorento', (x - dx * (5.5 + k * 5.7), y - dy * (5.5 + k * 5.7), 1.5), heading=heading)
