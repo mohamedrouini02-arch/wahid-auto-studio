@@ -34,7 +34,7 @@ def studio():
     bpy.ops.mesh.primitive_cylinder_add(vertices=128, radius=3.6, depth=.08, location=(0, 0, .04))
     tt = bpy.context.object; tt.data.materials.append(W.mat('tt', '#D9DCD9', .35))
     for p in tt.data.polygons: p.use_smooth = True
-    car = W.real('sorento', (0, 0, .08), heading=math.radians(-150))
+    car = W.real('sorento', (0, 0, .08), heading=math.radians(-12))
     # lights: big soft top, key from the front left, rim from behind
     def area(name, loc, rot, size, power, sy=None):
         l = bpy.data.lights.new(name, 'AREA'); l.shape = 'RECTANGLE'; l.size = size; l.size_y = sy or size; l.energy = power
