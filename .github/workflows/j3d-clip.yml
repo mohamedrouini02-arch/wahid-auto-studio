@@ -1,0 +1,43 @@
+name: j3d-clip
+# Test clip of the 3D journey: frames rendered in parallel chunks, joined into an mp4 on the "j3d-clip" branch.
+on:
+  workflow_dispatch:
+    inputs:
+      size: { description: "W H SAMPLES", required: false, default: "1280 720 24" }
+permissions:
+  contents: write
+jobs:
+  frames:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      matrix: { chunk: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: { ref: assets3d, path: a3d }
+      - name: Blender
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libxkbcommon0 libsm6 >/dev/null
+          curl -sL https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz | tar -xJ -C /opt && sudo ln -sf /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender
+          mkdir -p ph && curl -sfL -o ph/studio.exr https://dl.polyhaven.org/file/ph-assets/HDRIs/exr/2k/studio_small_09_2k.exr
+      - run: |
+          A=$(( ${{ matrix.chunk }} * 24 )); B=$(( A + 24 ))
+          J3D_FROM=$A J3D_TO=$B J3D_ASSETS=a3d/assets J3D_POLYHAVEN=ph blender -b -noaudio -P tools/journey3d/style.py -- out clip ${{ inputs.size }} > /tmp/log.txt 2>&1 || true
+          grep -E "rendered|Error|Traceback" /tmp/log.txt | tail -30; ls out | wc -l
+      - uses: actions/upload-artifact@v4
+        with: { name: "frames-${{ matrix.chunk }}", path: out/ }
+  join:
+    needs: frames
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: fr, pattern: "frames-*", merge-multiple: true }
+      - run: |
+          ls fr | wc -l
+          ffmpeg -loglevel error -framerate 24 -i fr/f%04d.jpg -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart /tmp/clip.mp4
+          cp fr/f0000.jpg /tmp/first.jpg; cp fr/f0060.jpg /tmp/orbit.jpg; cp fr/f0180.jpg /tmp/pull.jpg; cp fr/f0239.jpg /tmp/last.jpg
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          git checkout --orphan j3d-clip && git rm -rq --cached . && rm -rf clip && mkdir clip && cp /tmp/clip.mp4 /tmp/first.jpg /tmp/orbit.jpg /tmp/pull.jpg /tmp/last.jpg clip/
+          git add clip && git commit -qm "clip ${{ github.run_id }}" && git push -q -f origin HEAD:j3d-clip

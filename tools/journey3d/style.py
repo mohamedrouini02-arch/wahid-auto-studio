@@ -480,7 +480,7 @@ def clay_port():
             if random.random() < .45: continue
             lowpoly_tree(x + random.uniform(-3, 3), yy + random.uniform(-2, 2), random.uniform(.8, 1.5))
     for y in range(22, 84, 11):
-        lowpoly_tree(-256 + random.uniform(-1, 1), y, random.uniform(1.0, 1.3)); lowpoly_tree(-106 + random.uniform(-1, 1), y, random.uniform(.9, 1.1))
+        lowpoly_tree(-256 + random.uniform(-1, 1), y, random.uniform(1.0, 1.3)); lowpoly_tree(-112 + random.uniform(-1, 1), y, random.uniform(.9, 1.1))
     for i in range(7):
         lowpoly_tree(-60 + random.gauss(0, 3.5), 128 + random.gauss(0, 3.5), random.uniform(1.0, 1.5))
     W.render_settings(RW, RH, SAMPLES, exposure=.45)
@@ -515,7 +515,48 @@ def debug():
     W.render_settings(RW, RH, SAMPLES)
 
 
-if FRAME == 'clay':
+def ease(t):
+    t = min(max(t, 0.), 1.); return t * t * (3 - 2 * t)
+
+
+def ease_io(t):          # slower start and end than smoothstep
+    t = min(max(t, 0.), 1.); return t * t * t * (t * (6 * t - 15) + 10)
+
+
+def clip_cam(f, N=240, SPLIT=120):
+    """Frame f: orbit once around our Sorento on its truck (the 360), then rise and pull back over the whole port."""
+    from mathutils import Vector
+    car = Vector((-96, 61.2, 2.35))
+    wide_t, wide_c = Vector((-70, 70, 0)), Vector((-330, -260, 270))
+    rel = wide_c - car
+    az_end = math.atan2(rel.y, rel.x)
+    if f < SPLIT:
+        t = ease_io(f / SPLIT)
+        az = az_end - 2 * math.pi * (1 - t); el = math.radians(9 + 3 * t); dist = 7.8
+        tgt = car; lens = 50; fstop = 2.8
+    else:
+        t = ease_io((f - SPLIT) / (N - SPLIT))
+        el_end = math.asin((wide_c - wide_t).z / (wide_c - wide_t).length)
+        az = az_end; el = math.radians(12) + (el_end - math.radians(12)) * ease(t * 1.15)
+        dist = math.exp(math.log(7.8) + (math.log((wide_c - wide_t).length) - math.log(7.8)) * t)
+        tgt = car.lerp(wide_t, ease(t)); lens = 50 - 8 * t; fstop = 2.8 * (1 - t) + 1.2 * t
+    loc = tgt + Vector((math.cos(az) * math.cos(el), math.sin(az) * math.cos(el), math.sin(el))) * dist
+    return loc, tgt, lens, (car - loc).length, fstop
+
+
+if FRAME == 'clip':
+    from mathutils import Vector
+    clay_port()
+    cam = W.camera((0, -10, 5), (0, 0, 0), lens=50, dof=(0, 0, 0), fstop=2.8)
+    a, b = int(os.environ.get('J3D_FROM', 0)), int(os.environ.get('J3D_TO', 240))
+    for f in range(a, b):
+        loc, tgt, lens, focus, fstop = clip_cam(f)
+        cam.location = loc; cam.rotation_euler = (tgt - loc).to_track_quat('-Z', 'Y').to_euler()
+        cam.data.lens = lens; cam.data.dof.focus_distance = focus; cam.data.dof.aperture_fstop = fstop
+        bpy.context.scene.render.filepath = os.path.join(OUT, 'f%04d.jpg' % f)
+        bpy.ops.render.render(write_still=True)
+        print('rendered', f, flush=True)
+elif FRAME == 'clay':
     clay_port()
     for name, (loc, tgt, lens, focus, fstop) in CLAY_VIEWS.items():
         W.camera(loc, tgt, lens=lens, dof=focus, fstop=fstop)
