@@ -36,9 +36,15 @@ def _import(path):
     elif ext in ('glb', 'gltf'): bpy.ops.import_scene.gltf(filepath=path)
     elif ext == 'blend':
         with bpy.data.libraries.load(path, link=False) as (src, dst):
-            dst.objects = [n for n in src.objects]
+            dst.objects = [n for n in src.objects]; dst.collections = [n for n in src.collections]
+        for c in dst.collections:
+            if c: print('BLENDCOL', c.name, [o.name for o in c.objects][:12], [ch.name for ch in c.children])
         for o in dst.objects:
-            if o is not None: bpy.context.scene.collection.objects.link(o)
+            if o is None: continue
+            print('BLENDOBJ', o.name, o.type, [(m.type, getattr(m, 'node_group', None) and m.node_group.name) for m in o.modifiers],
+                  [ (ps.settings.render_type, ps.settings.instance_collection and ps.settings.instance_collection.name, ps.settings.instance_object and ps.settings.instance_object.name, ps.settings.count) for ps in o.particle_systems],
+                  o.instance_type, o.instance_collection and o.instance_collection.name, o.hide_render)
+            bpy.context.scene.collection.objects.link(o)
     new = [o for o in bpy.data.objects if o not in before]
     return [o for o in new if o.type not in ('CAMERA', 'LIGHT')]
 
@@ -81,6 +87,12 @@ def _fix_materials(key, objs):
         m = pbr_material('crane2', t + 'texture_diffuse.png', t + 'texture_roughness.png', t + 'texture_normal.png', t + 'texture_metallic.png')
         for o in objs:
             if o.type == 'MESH': o.data.materials.clear(); o.data.materials.append(m)
+    if key == 'ship':   # SketchUp export: some walls came in 73% transparent
+        for o in objs:
+            for sl in getattr(o, 'material_slots', []):
+                m = sl.material
+                if m and m.use_nodes and 'Principled BSDF' in m.node_tree.nodes:
+                    m.node_tree.nodes['Principled BSDF'].inputs['Alpha'].default_value = 1; m.blend_method = 'OPAQUE'
     if key == 'crane':
         t = A + '/port-crane-sokol/textures/'
         for o in objs:
@@ -100,11 +112,7 @@ def template(key):
     try: bpy.ops.file.find_missing_files(directory=os.path.dirname(os.path.dirname(path)))
     except Exception: pass
     _fix_materials(key, objs)
-    if key == 'fir':  # the blend holds several LODs and variants: keep the full tree only
-        keep = [o for o in objs if o.type == 'MESH' and 'LOD' not in o.name.upper()] or objs
-        for o in objs:
-            if o not in keep: bpy.data.objects.remove(o, do_unlink=True)
-        objs = keep
+
     col = bpy.data.collections.new('T_' + key); bpy.context.scene.collection.children.link(col)
     for o in objs:
         for c in list(o.users_collection): c.objects.unlink(o)
