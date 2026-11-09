@@ -1,0 +1,21 @@
+name: shipping-cleanup
+# Back up every shipping form + its files (downloadable artifact, kept 90 days), then delete them.
+on:
+  workflow_dispatch:
+    inputs:
+      delete: { description: "type DELETE to delete after the backup (otherwise: backup only)", required: false, default: "" }
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python tools/shipping_cleanup.py backup backup
+      - uses: actions/upload-artifact@v4
+        with: { name: shipping-forms-backup, path: backup, retention-days: 90 }
+      - if: ${{ inputs.delete == 'DELETE' }}
+        run: python tools/shipping_cleanup.py delete backup
