@@ -1,0 +1,85 @@
+name: journey3d
+# Render the 3D order-to-keys film (tools/journey3d/scene.py) with Blender Cycles.
+# mode=preview: a few stills for both cameras onto the "j3d-preview" branch.
+# mode=full: every frame, split over parallel jobs, encoded to webp onto the "j3d-frames" branch.
+on:
+  workflow_dispatch:
+    inputs:
+      mode: { description: "preview or full", required: true, default: preview }
+      frames: { description: "preview frames", required: false, default: "0,30,55,85,110,150,185,228,270,300,322,345,375,399" }
+      samples: { description: "Cycles samples", required: false, default: "28" }
+permissions:
+  contents: write
+env:
+  BLENDER_URL: https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+jobs:
+  preview:
+    if: inputs.mode == 'preview'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Blender
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libxkbcommon0 libsm6 webp >/dev/null
+          curl -sL "$BLENDER_URL" | tar -xJ -C /opt && ln -s /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender || sudo ln -s /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender
+      - run: |
+          blender -b -noaudio -P tools/journey3d/scene.py -- out/land land "${{ inputs.frames }}" 960 540 16 2>&1 | grep -E "rendered|Error|Traceback|line [0-9]" || true
+          blender -b -noaudio -P tools/journey3d/scene.py -- out/port port "${{ inputs.frames }}" 405 720 16 2>&1 | grep -E "rendered|Error|Traceback" || true
+          ls out/land out/port
+      - run: |
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          mv out /tmp/out && git checkout --orphan j3d-preview && git rm -rq --cached . ; rm -rf preview && mkdir preview && cp -r /tmp/out/* preview/
+          git add preview && git commit -qm "j3d preview ${{ github.run_id }}" && git push -q -f origin HEAD:j3d-preview
+  render:
+    if: inputs.mode == 'full'
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { cam: land, range: "0-49" }
+          - { cam: land, range: "50-99" }
+          - { cam: land, range: "100-149" }
+          - { cam: land, range: "150-199" }
+          - { cam: land, range: "200-249" }
+          - { cam: land, range: "250-299" }
+          - { cam: land, range: "300-349" }
+          - { cam: land, range: "350-399" }
+          - { cam: port, range: "0-99" }
+          - { cam: port, range: "100-199" }
+          - { cam: port, range: "200-299" }
+          - { cam: port, range: "300-399" }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Blender
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y libxi6 libxxf86vm1 libxfixes3 libxrender1 libgl1 libxkbcommon0 libsm6 >/dev/null
+          curl -sL "$BLENDER_URL" | tar -xJ -C /opt && sudo ln -sf /opt/blender-4.2.3-linux-x64/blender /usr/local/bin/blender
+      - run: |
+          if [ "${{ matrix.cam }}" = land ]; then S="1280 720"; else S="720 1280"; fi
+          blender -b -noaudio -P tools/journey3d/scene.py -- out/${{ matrix.cam }} ${{ matrix.cam }} ${{ matrix.range }} $S ${{ inputs.samples }} 2>&1 | grep -E "rendered|Error|Traceback" || true
+      - uses: actions/upload-artifact@v4
+        with: { name: "frames-${{ matrix.cam }}-${{ matrix.range }}", path: out, retention-days: 7 }
+  assemble:
+    if: inputs.mode == 'full'
+    needs: render
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: art, pattern: "frames-*", merge-multiple: true }
+      - run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y webp ffmpeg >/dev/null
+          mkdir -p j3d/land j3d/port
+          for c in land port; do
+            ls art/$c | wc -l
+            for f in art/$c/*.jpg; do n=$(basename $f .jpg); cwebp -quiet -q 72 -m 6 -sharp_yuv $f -o j3d/$c/$n.webp; done
+            ffmpeg -loglevel error -y -framerate 30 -i art/$c/%04d.jpg -c:v libx264 -crf 22 -pix_fmt yuv420p j3d/$c-preview.mp4
+          done
+          du -sh j3d/land j3d/port
+      - run: |
+          git config user.name "Wahid Auto studio" && git config user.email "studio@wahid-auto.com"
+          mv j3d /tmp/j3d && git checkout --orphan j3d-frames && git rm -rq --cached . ; rm -rf j3d && mv /tmp/j3d j3d
+          git add j3d && git commit -qm "j3d frames ${{ github.run_id }}" && git push -q -f origin HEAD:j3d-frames
