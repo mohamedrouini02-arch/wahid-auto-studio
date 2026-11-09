@@ -460,7 +460,7 @@ def clay_port():
         ch = W.box('chassis', (11.8, 1.6, .55), (x - dx * 8.9, y - dy * 8.9, .6), clay_mat('clay2', '#E2E3E0')); ch.rotation_euler = (0, 0, heading)
         for off in (11.4, 12.5):
             for side in (-1, 1):
-                bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=.45, depth=.32, location=(x - dx * off + side * dy * .92, y - dy * off - side * dx * .92, .45), rotation=(math.pi / 2, 0, heading + math.pi / 2))
+                bpy.ops.mesh.primitive_cylinder_add(vertices=24, radius=.45, depth=.32, location=(x - dx * off + side * dy * .92, y - dy * off - side * dx * .92, .45), rotation=(math.pi / 2, 0, heading))
                 bpy.context.object.data.materials.append(tyre)
         if not our:
             for k in (0, 1): W.place('sorento', (x - dx * (5.5 + k * 5.7), y - dy * (5.5 + k * 5.7), 1.5), heading=heading)
