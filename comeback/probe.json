@@ -1,0 +1,77 @@
+{
+    "streams": [
+        {
+            "codec_name": "hevc",
+            "codec_type": "video",
+            "width": 3840,
+            "height": 2160,
+            "pix_fmt": "yuv420p10le",
+            "color_transfer": "arib-std-b67",
+            "r_frame_rate": "60/1",
+            "tags": {
+
+            },
+            "side_data_list": [
+                {
+
+                },
+                {
+                    "rotation": 90
+                },
+                {
+
+                }
+            ]
+        },
+        {
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "sample_rate": "48000",
+            "channels": 2,
+            "r_frame_rate": "0/0",
+            "tags": {
+
+            }
+        },
+        {
+            "codec_type": "data",
+            "r_frame_rate": "0/0",
+            "tags": {
+
+            }
+        },
+        {
+            "codec_type": "data",
+            "r_frame_rate": "0/0",
+            "tags": {
+
+            }
+        },
+        {
+            "codec_type": "data",
+            "r_frame_rate": "0/0",
+            "tags": {
+
+            }
+        },
+        {
+            "codec_type": "data",
+            "r_frame_rate": "0/0",
+            "tags": {
+
+            }
+        },
+        {
+            "codec_type": "data",
+            "r_frame_rate": "0/0",
+            "tags": {
+
+            }
+        }
+    ],
+    "format": {
+        "duration": "145.666667",
+        "size": "994513100",
+        "bit_rate": "54618568"
+    }
+}
