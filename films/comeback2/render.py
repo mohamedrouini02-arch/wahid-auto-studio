@@ -111,6 +111,7 @@ def load(name):
     p = f'{ov}/{name}.png'
     if not os.path.exists(p): return None
     im = cv2.imread(p, cv2.IMREAD_UNCHANGED)
+    if im.shape[2] == 3: im = cv2.cvtColor(im, cv2.COLOR_BGR2BGRA)      # a fully opaque frame comes without alpha
     return im if OUT_W == 1080 else cv2.resize(im, (OUT_W, OUT_H), interpolation=cv2.INTER_AREA)
 def person(frame):
     """Where he is in the frame (0..1): the neural mask says roughly, the white wall gives the clean edge."""
@@ -143,7 +144,7 @@ for i in range(N):
         if i < f0: continue
         patch(frame, p)
         s = zoom(t)
-        ax, ay = (p[0] + tw / 2) / k + 95, (p[1] + m) / k + 700            # his face, measured from the remote
+        ax, ay = (p[0] + tw / 2) / k + 95, (p[1] + th - m) / k + 292           # his face, measured from the remote
         tx = min(0, max(1080 - 1080 * s, 600 - ax * s)); ty = min(0, max(1920 - PH / k * s, 1105 - ay * s))
         M = np.float32([[s / k * o, 0, tx * o], [0, s / k * o, ty * o]])
         base = cv2.warpAffine(frame, M, (OUT_W, OUT_H), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
