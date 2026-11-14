@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<!-- Graphics and captions of the comeback video. Rendered frame by frame: seek(t) draws time t, layer(name) shows
+     only what sits behind the speaker ("behind") or in front of him ("front"). The page itself is transparent. -->
+<style>
+@font-face { font-family: Manal; src: url(assets/manal.ttf); }
+@font-face { font-family: Plex; src: url(assets/IBMPlexSansArabic-Medium.woff2); font-weight: 500; }
+@font-face { font-family: Plex; src: url(assets/IBMPlexSansArabic-SemiBold.woff2); font-weight: 600; }
+@font-face { font-family: Jost; src: url(assets/jost.woff2); font-weight: 100 900; }
+:root { --ink: #0B0D0C; --green: #3F9C7F; --deep: #2E7A62; --soft: #E7F2EE; --mute: #6D7772; --line: #C9D3CE; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+body { font-family: Plex, sans-serif; font-weight: 600; color: var(--ink); }
+.layer { position: absolute; inset: 0; }
+.sc { position: absolute; inset: 0; display: none; will-change: transform, opacity; }
+.lat { font-family: Jost, sans-serif; direction: ltr; unicode-bidi: isolate; }
+.abs { position: absolute; }
+
+/* captions */
+#cap { position: absolute; left: 0; right: 0; top: 1392px; display: flex; justify-content: center; gap: 10px; direction: rtl;
+       font: 600 62px/1 Plex; color: #fff; white-space: nowrap; }
+#cap span { padding: 16px 16px 20px; border-radius: 16px; text-shadow: 0 3px 18px rgba(0,0,0,.8), 0 0 4px rgba(0,0,0,.65); }
+#cap span.on { background: var(--green); text-shadow: none; box-shadow: 0 10px 28px rgba(20,60,45,.35); }
+
+/* shared pieces */
+.card { position: absolute; background: #fff; border-radius: 30px; box-shadow: 0 30px 70px rgba(30,40,36,.22), 0 0 0 1px rgba(20,30,26,.04); }
+.card.dark { background: var(--ink); color: #F2F2EE; box-shadow: 0 30px 70px rgba(10,14,12,.35); }
+.edge:before { content: ""; position: absolute; right: 0; top: 44px; bottom: 44px; width: 10px; border-radius: 6px 0 0 6px; background: var(--green); }
+.tag { display: inline-flex; align-items: center; gap: 12px; font: 600 34px/1.2 Plex; color: var(--green); }
+.tag b { width: 14px; height: 14px; border-radius: 50%; background: var(--green); display: block; flex: none; }
+.chip { display: inline-block; background: var(--soft); color: #24614D; font: 600 34px/1 Plex; padding: 14px 24px 19px; border-radius: 40px; white-space: nowrap; }
+.chip.solid { background: var(--green); color: #fff; }
+.big { font-family: Manal; font-weight: 400; line-height: 1.02; }
+
+/* hook */
+.brandline { display: inline-flex; align-items: center; gap: 18px; font: 500 40px/1 Jost; letter-spacing: .32em; direction: ltr; }
+.brandline i { width: 64px; height: 3px; background: var(--green); display: block; }
+
+/* phone */
+.phone { position: absolute; width: 330px; height: 694px; border-radius: 52px; background: #0b0d0c; padding: 12px; box-shadow: 0 40px 80px rgba(20,30,26,.35); transform-origin: 50% 40%; }
+.phone .scr { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; background: #fff; position: relative; }
+.phone img { position: absolute; left: 0; top: 0; width: 100%; display: block; }
+.phone:after { content: ""; position: absolute; top: 24px; left: 50%; width: 92px; height: 24px; margin-left: -46px; background: #0b0d0c; border-radius: 14px; }
+.steps { position: absolute; display: flex; flex-direction: column; }
+.step { display: flex; align-items: center; gap: 22px; height: 104px; position: relative; font: 600 42px/1 Plex; color: #9AA5A0; }
+.step .dot { width: 34px; height: 34px; border-radius: 50%; border: 4px solid var(--line); background: #fff; flex: none; position: relative; z-index: 1; }
+.step .bar { position: absolute; right: 15px; top: 68px; width: 4px; height: 74px; background: var(--line); }
+.step .bar i { display: block; width: 100%; height: 0; background: var(--green); }
+.step.done { color: var(--ink); } .step.done .dot { background: var(--green); border-color: var(--green); }
+
+/* places */
+.place { position: absolute; right: 90px; width: 720px; padding: 34px 44px 38px; display: flex; align-items: center; gap: 30px; border-radius: 30px; }
+.place .pin { width: 84px; height: 84px; flex: none; }
+.place .n { font: 400 84px/1 Manal; }
+.place .s { font: 600 34px/1.2 Plex; color: var(--green); margin-top: 10px; }
+.place.soon { background: transparent; border: 4px dashed #AEBBB5; box-shadow: none; }
+.place.soon .s { color: var(--mute); }
+
+/* price */
+.price { padding: 44px 54px 48px; width: 800px; }
+.price .name { font: 600 62px/1.1 Jost; direction: ltr; text-align: left; letter-spacing: .01em; }
+.price .ver { font: 500 34px/1 Jost; direction: ltr; text-align: left; color: var(--mute); margin-top: 10px; letter-spacing: .14em; }
+.price .num { display: flex; align-items: baseline; gap: 22px; margin-top: 26px; direction: rtl; }
+.price .num b { font: 700 230px/0.9 Jost; color: var(--green); letter-spacing: -6px; font-variant-numeric: tabular-nums; }
+.price .num span { font: 400 92px/1 Manal; }
+
+/* outro */
+#outro { background: #fff; display: none; }
+#outro .col { position: absolute; left: 0; right: 0; top: 380px; display: flex; flex-direction: column; align-items: center; }
+#outro .name { font: 400 84px/1 Jost; letter-spacing: .3em; margin-right: -.3em; margin-top: 44px; direction: ltr; }
+#outro .route { font: 500 30px/1 Jost; letter-spacing: .3em; color: var(--green); margin-top: 22px; direction: ltr; }
+#outro .ar { font: 400 92px/1.1 Manal; margin-top: 70px; }
+#outro .nums { display: flex; flex-direction: column; gap: 18px; margin-top: 60px; align-items: center; }
+#outro .nums div { font: 500 68px/1 Jost; direction: ltr; letter-spacing: .06em; padding: 16px 44px; border-radius: 60px; border: 3px solid var(--green); }
+#outro .foot { font: 500 36px/1 Jost; letter-spacing: .14em; color: var(--mute); margin-top: 54px; direction: ltr; }
+</style>
+<div id="behind" class="layer"></div>
+<div id="front" class="layer"><div id="scenes"></div><div id="cap"></div>
+  <div id="outro" class="layer"><div class="col">
+    <svg id="oMono" width="300" height="300" viewBox="0 0 120 120" style="overflow:visible"><circle data-draw cx="60" cy="60" r="56" pathLength="1" fill="none" stroke="#0B0D0C" stroke-width="2.4" transform="rotate(-90 60 60)"/><polyline data-draw pathLength="1" points="30,40 44,82 60,50" fill="none" stroke="#0B0D0C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline data-draw pathLength="1" points="60,50 76,82 90,40" fill="none" stroke="#3F9C7F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="name" data-o="0.5">WAHID AUTO</div><div class="route" data-o="0.7">KOREA · CHINA → ALGERIA</div>
+    <div class="ar" data-o="0.9">راسلونا على الواتساب</div>
+    <div class="nums"><div data-o="1.15">0557 06 04 78</div><div data-o="1.3">0781 66 32 01</div><div data-o="1.45">0672 14 73 90</div></div>
+    <div class="foot" data-o="1.7">@wahidautokr · Jijel - Algeria</div>
+  </div></div>
+</div>
+<script src="timeline.js"></script>
+<script>
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const E = { out: x => 1 - Math.pow(1 - x, 3), out5: x => 1 - Math.pow(1 - x, 5), io: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+            back: x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); } };
+const A = i => TL.anchors[i] ?? (() => { throw new Error('no anchor ' + i); })();
+const D = TL.duration, OUTRO = 3.6;
+const pin = c => `<svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-7.1 7-12.2A7 7 0 0 0 5 9.8C5 14.9 12 22 12 22z" fill="${c}"/><circle cx="12" cy="9.6" r="2.7" fill="#fff"/></svg>`;
+const mono = (s, ink) => `<svg width="${s}" height="${s}" viewBox="0 0 120 120" style="overflow:visible"><circle cx="60" cy="60" r="56" fill="none" stroke="${ink}" stroke-width="2.4"/><polyline points="30,40 44,82 60,50" fill="none" stroke="${ink}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#3F9C7F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+// d(i): the moment word i is spoken, as an attribute for the element that should arrive with it
+let BASE = 0; const d = (i, off = 0) => `data-in="${(A(i) - BASE + off).toFixed(3)}"`;
+const S = [];
+const scene = (layer, a, b, build, tick) => { BASE = a; S.push({ layer, a, b, html: build(), tick }); };
+
+/* 1 — hook: "we are back", written on the wall behind him */
+scene('behind', 0, A(13), () => `<div class="abs" style="left:0;right:0;top:550px;text-align:center"><div class="brandline" data-in="0.15"><i></i>WAHID AUTO<i></i></div>
+  <div class="big" style="font-size:400px;letter-spacing:-2px;margin-top:10px" data-in="0.3" data-fx="wipe" data-dur="0.7">رجعنا</div></div>`);
+scene('front', A(9) - 0.1, A(13), () => `<div class="abs" style="left:0;right:0;top:410px;text-align:center"><span class="chip solid" style="font-size:50px;padding:18px 32px 26px;border-radius:16px" data-in="0.05" data-fx="pop">وبجديد كبير</span></div>`);
+
+/* 2 — the showroom in Jijel */
+scene('front', A(13), A(24), () => `<div class="card" style="left:150px;top:176px;width:780px;height:560px;overflow:hidden;transform:rotate(-1.4deg)" data-in="0.05">
+    <img id="showImg" src="assets/showroom-aerial.jpg" style="position:absolute;left:0;top:-520px;width:100%">
+    <div class="abs" style="left:0;right:0;bottom:0;height:230px;background:linear-gradient(transparent,rgba(8,12,10,.82))"></div>
+    <div class="abs" style="right:36px;bottom:30px;display:flex;align-items:center;gap:16px;color:#fff" ${d(18)}><div style="width:74px;height:74px">${pin('#5FB89B')}</div><div><div class="big" style="font-size:86px">جيجل</div></div></div>
+    <div class="abs chip solid" style="left:30px;bottom:44px" ${d(20)} data-fx="pop">لافامي تاع وحيد أوتو</div></div>`,
+  (el, lt) => { el.querySelector('#showImg').style.transform = `scale(${1.06 + lt * 0.012}) translateY(${-lt * 6}px)`; });
+
+/* 3 — away from social media for a while */
+scene('front', A(24), A(31), () => `<div class="card" style="right:110px;top:300px;padding:40px 54px 44px;transform:rotate(1.2deg)" data-in="0.05">
+    <div class="tag"><b></b>مدة طويلة…</div><div class="lat" style="font:600 76px/1 Jost;margin-top:18px;text-align:left">@wahidautokr</div>
+    <div style="display:flex;gap:14px;margin-top:26px;direction:ltr"><span class="chip lat" style="font-family:Jost" ${d(28)} data-fx="pop">TikTok</span><span class="chip lat" style="font-family:Jost" ${d(29)} data-fx="pop">Facebook</span></div></div>`);
+
+/* 4 — organisation before sales, big on the wall behind him */
+scene('behind', A(33), A(44), () => `<div class="abs" style="left:0;right:0;top:250px;text-align:center">
+    <div class="big" style="font-size:270px;color:var(--green)" ${d(35)} data-fx="wipe" data-dur="0.6">التنظيم</div>
+    <div class="big" style="font-size:118px;margin-top:6px" ${d(37)}>أهم من البيع</div></div>`);
+
+/* 5–7 — the website on a phone: what it is, the tracking steps, then the journey scrolling */
+const P5 = A(44), P6 = A(70), P7 = A(93), P8 = A(117);
+scene('front', P5, P8, () => `<div class="phone" id="ph" style="left:96px;top:150px" data-in="0.05"><div class="scr"><img id="phImg" src="site/top.jpg"></div></div>
+  <div id="p5" class="abs" style="right:64px;top:250px;width:520px">
+    <div class="tag" ${d(45)}><b></b>الموقع الجديد</div>
+    <div class="big" style="font-size:112px;margin-top:20px" ${d(47)}>أحسن موقع</div>
+    <div class="big" style="font-size:78px;color:var(--green)" ${d(49)}>ممكن في الجزائر</div>
+    <div style="margin-top:34px"><span class="chip" ${d(53)} data-fx="pop">نظام جدّ رائع</span></div></div>
+  <div id="p6" class="abs" style="right:64px;top:170px;width:520px">
+    <div class="tag" ${d(66)}><b></b>تتبّع سيارتك خطوة بخطوة</div>
+    <div class="steps" style="right:0;top:78px">${['تسديد المبلغ', 'ميناء كوريا', 'في البحر', 'ميناء الجزائر', 'الاستلام'].map((s, i) =>
+      `<div class="step" data-step="${i}" ${d(70, i * 0.09)}><i class="dot"></i>${s}${i < 4 ? '<span class="bar"><i></i></span>' : ''}</div>`).join('')}</div></div>
+  <div id="p7" class="abs" style="right:70px;top:300px;width:470px">
+    <div class="tag" ${d(107)}><b></b>مخطط تروا دي</div>
+    <div class="big" style="font-size:96px;margin-top:18px" ${d(111)}>شحن السيارة</div>
+    <div class="big" style="font-size:70px;color:var(--green)" ${d(114)}>من البداية للنهاية</div>
+    <div class="lat" style="font:500 30px/1 Jost;letter-spacing:.22em;color:var(--mute);margin-top:30px;text-align:right" ${d(114, 0.4)}>KOREA → ALGERIA</div></div>`,
+  (el, lt, t) => {
+    const fade = (id, a, b) => { const e = el.querySelector(id); const o = clamp((t - a) / 0.01) * clamp((b - t) / 0.3); e.style.display = o > 0 ? '' : 'none'; e.style.opacity = E.out(o); e.style.transform = `translateY(${-(1 - E.out(o)) * 24}px)`; };
+    fade('#p5', P5, P6 - 0.75); fade('#p6', P6 - 0.75, P7); fade('#p7', P7, P8 + 1);
+    // tracking steps fill one after the other, from "payment" to "delivery in Algeria"
+    const t0 = A(82) - 0.1, t1 = A(92) + 0.3, per = (t1 - t0) / 5;
+    el.querySelectorAll('.step').forEach((s, i) => { const p = clamp((t - (t0 + i * per)) / per); s.classList.toggle('done', t >= t0 + i * per);
+      const bar = s.querySelector('.bar i'); if (bar) bar.style.height = (E.io(p) * 100) + '%';
+      const dot = s.querySelector('.dot'); const pulse = clamp((t - (t0 + i * per)) / 0.35); dot.style.boxShadow = pulse > 0 && pulse < 1 ? `0 0 0 ${pulse * 18}px rgba(63,156,127,${(1 - pulse) * 0.35})` : 'none'; });
+    // the phone: still at the top of the site, then it grows a little and the journey scrolls
+    const g = E.io(clamp((t - (P7 - 0.2)) / 0.7)); const ph = el.querySelector('#ph');
+    ph.style.transform = `translate(${g * 34}px, ${g * 20}px) rotate(${-5 + g * 3}deg) scale(${1 + g * 0.09})`;
+    const a = A(95), b = P8 - 0.5; const img = el.querySelector('#phImg');
+    const src = t < a ? 'site/top.jpg' : 'site/s' + String(Math.round(clamp((t - a) / (b - a)) * 239)).padStart(3, '0') + '.jpg';
+    if (img.dataset.src !== src) { img.dataset.src = src; img.src = src; PENDING.push(img.decode().catch(() => {})); }
+  });
+
+/* 8 — where to find us */
+scene('front', A(117), A(148), () => `<div class="abs tag" style="right:96px;top:190px;font-size:40px" ${d(122)}><b></b>أقرب نقطة لكم</div>
+  <div class="card place" style="top:270px" ${d(127)}>${pin('#3F9C7F')}<div><div class="n">جيجل</div><div class="s">نقطة بيع ✓</div></div></div>
+  <div class="place soon" style="top:520px" ${d(138)}>${pin('#AEBBB5')}<div><div class="n">الجزائر العاصمة</div><div class="s">قريباً إن شاء الله</div></div></div>`);
+
+/* 9 — Chinese and Korean cars */
+scene('front', A(148), A(163), () => `<div class="abs tag" style="right:96px;top:200px;font-size:40px" ${d(149)}><b></b>العروض</div>
+  <div class="card" style="right:90px;top:280px;width:430px;padding:40px 44px 46px" ${d(154)}><div class="lat" style="font:500 30px/1 Jost;letter-spacing:.3em;color:var(--mute);text-align:right">CHINA</div><div class="big" style="font-size:92px;margin-top:14px">الصينية</div></div>
+  <div class="card" style="left:90px;top:280px;width:430px;padding:40px 44px 46px" ${d(159)}><div class="lat" style="font:500 30px/1 Jost;letter-spacing:.3em;color:var(--mute);text-align:right">KOREA</div><div class="big" style="font-size:92px;margin-top:14px">الكورية</div></div>
+  <div class="abs" style="left:0;right:0;top:560px;text-align:center"><span class="chip solid big" style="font-size:96px;padding:14px 44px 34px;border-radius:22px;display:inline-block;transform:rotate(-4deg)" ${d(161)} data-fx="pop">بدون منافس</span></div>`);
+
+/* 10 — any price you see, we can match */
+scene('front', A(163), A(174), () => `<div class="card edge" style="right:110px;top:250px;width:860px;padding:44px 60px 50px" data-in="0.05">
+    <div class="tag"><b></b>أي سعر تشوفوه في السوق</div>
+    <div class="big" style="font-size:150px;margin-top:16px" ${d(169)}>قادرين عليه <span style="color:var(--green)" ${d(171)} data-fx="pop">✓</span></div></div>`);
+
+/* 11 — "the market fell": what people say, then what is really happening */
+scene('front', A(174), A(216), () => `<div class="abs tag" style="right:96px;top:176px;font-size:40px;color:var(--mute)" ${d(176)}><b style="background:var(--mute)"></b>الناس تقول…</div>
+  <div class="card" style="right:90px;top:250px;padding:38px 54px 48px;border-radius:30px 30px 6px 30px" ${d(180)}>
+    <div class="big" style="font-size:112px;position:relative;white-space:nowrap">«السوق طاح»<i id="strike" style="position:absolute;left:-10px;right:-10px;top:58%;height:10px;border-radius:5px;background:#D8574B;transform-origin:100% 50%"></i></div></div>
+  <div class="card dark" style="left:90px;top:530px;padding:38px 54px 46px" ${d(202)}>
+    <div class="tag" style="color:#8FD3BC"><b style="background:#8FD3BC"></b>الحقيقة</div>
+    <div class="big" style="font-size:100px;margin-top:12px;white-space:nowrap">الخوف هو اللي يبيع</div></div>`,
+  (el, lt, t) => { el.querySelector('#strike').style.transform = `scaleX(${E.out5(clamp((t - A(198)) / 0.45))})`; });
+
+/* 12 — less than three years old */
+scene('front', A(216), A(246), () => `<div class="card edge" style="right:110px;top:220px;width:860px;padding:44px 60px 50px" ${d(218)}>
+    <div style="display:flex;align-items:center;gap:36px">
+      <div class="lat" style="width:210px;height:210px;border-radius:50%;border:10px solid var(--green);display:flex;align-items:center;justify-content:center;font:700 130px/1 Jost;color:var(--green);flex:none" ${d(220)} data-fx="pop">3</div>
+      <div><div class="big" style="font-size:92px;white-space:nowrap">أقل من 3 سنوات</div><div class="lat" style="font:500 32px/1 Jost;letter-spacing:.2em;color:var(--mute);margin-top:12px;text-align:right">MOINS DE 3 ANS</div></div></div>
+    <div style="display:flex;gap:14px;margin-top:34px"><span class="chip" ${d(224)} data-fx="pop">✓ السعر شامل</span><span class="chip" ${d(236)} data-fx="pop">✓ متوفر عندنا من زمان</span></div></div>`);
+
+/* 13–15 — the market's examples, as price cards */
+const priceCard = (a, b, name, ver, n, wn, wchip) => scene('front', a, b, () => `<div class="card price edge" style="left:140px;top:200px" data-in="0.05">
+    <div class="tag" style="margin-bottom:22px"><b></b>مثال من السوق</div><div class="name">${name}</div><div class="ver">${ver}</div>
+    <div class="num" ${d(wn, -0.1)}><b class="lat cnt">0</b><span>مليون</span></div>
+    <div style="display:flex;gap:14px;margin-top:28px"><span class="chip" ${d(wchip)} data-fx="pop">✓ شاملة جميع التكاليف</span></div></div>`,
+  (el, lt, t) => { el.querySelector('.cnt').textContent = Math.round(n * E.out5(clamp((t - A(wn) + 0.1) / 0.8))); });
+priceCard(A(250), A(266), 'LIVAN', 'MOINS DE 3 ANS', 285, 260, 263);
+scene('front', A(266), A(277), () => `<div class="card" style="right:140px;top:300px;padding:40px 56px 46px;display:flex;align-items:center;gap:34px" data-in="0.05"><div class="big" style="font-size:96px">كيف كيف</div><div class="lat" style="font:600 110px/1 Jost;color:var(--green)" ${d(269)} data-fx="pop">MG5</div></div>`);
+priceCard(A(277), A(292), 'GEELY COOLRAY', 'BOÎTE MANUELLE', 310, 283, 289);
+
+/* 16 — but: it comes in as "less than three years", and you keep it three years */
+scene('front', A(292), A(331), () => `<div class="card dark" style="right:100px;top:190px;width:880px;padding:46px 60px 54px" data-in="0.05">
+    <div class="tag" style="color:#8FD3BC;font-size:40px"><b style="background:#8FD3BC"></b>لكن ما ننساوش…</div>
+    <div class="big" style="font-size:86px;margin-top:16px;white-space:nowrap" ${d(296)}>تدخل «أقل من 3 سنوات»</div>
+    <div style="display:flex;gap:16px;margin-top:40px;direction:rtl" ${d(318)}>${[1, 2, 3].map(i => `<div style="flex:1"><div style="height:22px;border-radius:11px;background:#2A302D;overflow:hidden"><i class="yr" style="display:block;height:100%;width:0;background:#5FB89B;float:right"></i></div><div class="lat" style="font:500 30px/1 Jost;color:#9AA5A0;margin-top:14px;text-align:center;letter-spacing:.1em">${i}</div></div>`).join('')}</div>
+    <div style="font:600 44px/1.3 Plex;margin-top:22px" ${d(319)}>تستغلها <span style="color:#8FD3BC">3 سنوات</span> قبل ما تبيع</div></div>`,
+  (el, lt, t) => { const a = A(319), per = (A(323) + 0.5 - a) / 3; el.querySelectorAll('.yr').forEach((y, i) => { y.style.width = (E.io(clamp((t - a - i * per) / per)) * 100) + '%'; }); });
+
+/* 17 — a new car costs more */
+scene('front', A(331), A(349), () => `<div class="card" style="right:110px;top:200px;width:860px;height:560px;padding:44px 60px" data-in="0.05">
+    <div class="abs" style="right:90px;bottom:120px;width:280px;height:0;background:var(--soft);border-radius:18px 18px 0 0" id="barA"></div>
+    <div class="abs" style="left:90px;bottom:120px;width:280px;height:0;background:var(--green);border-radius:18px 18px 0 0" id="barB"></div>
+    <div class="abs" style="right:90px;bottom:44px;width:280px;text-align:center;font:600 36px/1.2 Plex">أقل من 3 سنوات</div>
+    <div class="abs" style="left:90px;bottom:44px;width:280px;text-align:center;font:600 36px/1.2 Plex">جديدة</div>
+    <div class="abs chip solid" style="left:126px;top:44px" ${d(344)} data-fx="pop">سعر مرتفع ↑</div></div>`,
+  (el, lt, t) => { el.querySelector('#barA').style.height = (E.out5(clamp((t - A(332)) / 0.7)) * 190) + 'px'; el.querySelector('#barB').style.height = (E.out5(clamp((t - A(336)) / 0.9)) * 330) + 'px'; });
+
+/* 18 — we do not play with people's feelings */
+scene('behind', A(349), A(367), () => `<div class="abs" style="left:0;right:0;top:230px;text-align:center">
+    <div class="big" style="font-size:200px" ${d(351)} data-fx="wipe" data-dur="0.6">ما نلعبوش</div>
+    <div class="big" style="font-size:150px;color:var(--green)" ${d(355)} data-fx="wipe" data-dur="0.6">بمشاعر الناس</div></div>`);
+scene('front', A(361), A(367), () => `<div class="abs" style="left:0;right:0;top:770px;text-align:center"><span class="chip solid" style="font-size:46px;padding:18px 32px 26px;border-radius:16px" data-in="0.05" data-fx="pop">واش كاين في السوق… بالضبط</span></div>`);
+
+/* 19 — sign-off on the wall */
+scene('front', A(369), D + 0.2, () => `<div class="abs" style="left:0;right:0;top:250px;display:flex;flex-direction:column;align-items:center">
+    <div data-in="0.1" data-fx="pop">${mono(210, '#0B0D0C')}</div>
+    <div class="lat" style="font:400 70px/1 Jost;letter-spacing:.3em;margin-right:-.3em;margin-top:34px" ${d(373)}>WAHID AUTO</div>
+    <div class="big" style="font-size:84px;margin-top:30px" ${d(375)}>مرافقكم الدائم</div>
+    <div style="display:flex;gap:16px;margin-top:26px"><span class="chip" ${d(378)} data-fx="pop">الكورية</span><span class="chip" ${d(379)} data-fx="pop">الصينية</span></div></div>`);
+
+// build
+let PENDING = [];
+S.forEach((s, i) => { const el = document.createElement('div'); el.className = 'sc'; el.innerHTML = s.html; s.el = el;
+  (s.layer === 'behind' ? document.getElementById('behind') : document.getElementById('scenes')).appendChild(el); });
+const capEl = document.getElementById('cap'), outro = document.getElementById('outro');
+
+function drawCaption(t) {
+  const l = TL.lines.find(l => t >= l.t && t < l.e);
+  if (!l || t >= D) { capEl.style.display = 'none'; return; }
+  let on = 0; l.words.forEach((w, i) => { if (t >= w.t - 0.02) on = i; });
+  const key = l.t + ':' + on;
+  if (capEl.dataset.key !== key) { capEl.dataset.key = key; capEl.innerHTML = l.words.map((w, i) => `<span class="${i === on ? 'on' : ''}">${w.w}</span>`).join(''); }
+  const n = l.words.reduce((a, w) => a + w.w.length + 1, 0);
+  const p = clamp((t - l.t) / 0.16);
+  capEl.style.display = 'flex'; capEl.style.fontSize = (n > 23 ? 52 : n > 19 ? 57 : 62) + 'px';
+  capEl.style.opacity = 0.35 + 0.65 * p; capEl.style.transform = `scale(${0.95 + 0.05 * E.out(p)})`;
+}
+
+window.seek = async t => {
+  PENDING = [];
+  for (const s of S) {
+    const on = t >= s.a && t < s.b; s.el.style.display = on ? 'block' : 'none'; if (!on) continue;
+    const lt = t - s.a, q = clamp((s.b - t) / 0.28);
+    s.el.style.opacity = E.out(q); s.el.style.transform = q < 1 ? `translateY(${-(1 - E.out(q)) * 26}px)` : '';
+    s.el.querySelectorAll('[data-in]').forEach(e => {
+      const p = clamp((lt - parseFloat(e.dataset.in)) / parseFloat(e.dataset.dur || 0.5)), fx = e.dataset.fx || 'up';
+      if (fx === 'wipe') { e.style.clipPath = `inset(-10% 0 -30% ${(1 - E.io(p)) * 100}%)`; e.style.opacity = p > 0 ? 1 : 0; }
+      else if (fx === 'pop') { e.style.opacity = clamp(p * 3); e.style.scale = String(p <= 0 ? 0.6 : 0.6 + 0.4 * E.back(p)); }
+      else { e.style.opacity = clamp(p * 2); e.style.translate = `0 ${(1 - E.out5(p)) * 44}px`; }
+    });
+    if (s.tick) s.tick(s.el, lt, t);
+  }
+  drawCaption(t);
+  // end card after his last word
+  const o = t - D; outro.style.display = o > 0 ? 'block' : 'none';
+  if (o > 0) { outro.style.opacity = E.out(clamp(o / 0.35));
+    outro.querySelectorAll('[data-draw]').forEach((e, i) => { e.style.strokeDasharray = 1; e.style.strokeDashoffset = 1 - E.io(clamp((o - 0.15 - i * 0.18) / 0.7)); });
+    outro.querySelectorAll('[data-o]').forEach(e => { const p = clamp((o - parseFloat(e.dataset.o)) / 0.5); e.style.opacity = clamp(p * 2); e.style.translate = `0 ${(1 - E.out5(p)) * 36}px`; }); }
+  await Promise.all(PENDING); await document.fonts.ready;
+};
+window.layer = name => { document.getElementById('behind').style.visibility = name === 'front' ? 'hidden' : 'visible'; document.getElementById('front').style.visibility = name === 'behind' ? 'hidden' : 'visible'; };
+window.info = () => ({ duration: D + OUTRO, video: D, fps: TL.fps,
+  behind: S.filter(s => s.layer === 'behind').map(s => [s.a, s.b]),
+  sfx: S.map(s => ({ t: s.a, kind: s.layer === 'behind' ? 'whoosh' : 'pop' })) });
+</script>
