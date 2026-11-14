@@ -1,0 +1,69 @@
+name: ingest
+# Look at a source clip before editing: download it, then publish a small proxy, contact sheets,
+# and a word-level transcript on the "ingest" branch under <name>/.
+on:
+  workflow_dispatch:
+    inputs:
+      src: { description: "Drive link / uploaded url / storage path", required: true }
+      name: { description: "Folder name on the ingest branch", required: true }
+      model: { description: "Whisper model", required: false, default: "large-v3" }
+permissions:
+  contents: write
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: ffmpeg (static build)
+        timeout-minutes: 6
+        run: |
+          if curl -fsSL https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz | tar -xJ -C /tmp; then
+            sudo cp /tmp/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /tmp/ffmpeg-master-latest-linux64-gpl/bin/ffprobe /usr/local/bin/
+          else
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          fi
+      - run: pip install -q faster-whisper
+      - name: Fetch and describe
+        env: { SRC: "${{ inputs.src }}", MODEL: "${{ inputs.model }}" }
+        run: |
+          mkdir -p work/in pub
+          python studio/fetch_media.py "$SRC" work/in/raw.mp4
+          ls -la work/in/raw.mp4
+          ffprobe -v error -show_entries format=duration,size,bit_rate:stream=codec_name,codec_type,width,height,r_frame_rate,pix_fmt,color_transfer,sample_rate,channels:stream_side_data=rotation:stream_tags=rotate -of json work/in/raw.mp4 > pub/probe.json
+          cat pub/probe.json
+          D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 work/in/raw.mp4); echo "duration $D"
+          # proxy small enough for a git branch: 360 px short side, about 350 kb/s
+          ffmpeg -loglevel error -y -i work/in/raw.mp4 -vf "scale='if(gt(iw,ih),-2,360)':'if(gt(iw,ih),360,-2)',fps=25" -c:v libx264 -preset veryfast -b:v 350k -maxrate 450k -bufsize 900k -c:a aac -b:a 64k -ac 1 pub/proxy.mp4
+          ffmpeg -loglevel error -y -i work/in/raw.mp4 -vn -ac 1 -ar 16000 -c:a libmp3lame -b:a 48k pub/audio.mp3
+          # one frame every 2 s, 40 per sheet
+          ffmpeg -loglevel error -y -i work/in/raw.mp4 -vf "fps=1/2,scale=-2:300,drawtext=text='%{pts\:hms}':x=6:y=6:fontsize=20:fontcolor=white:box=1:boxcolor=black@0.6,tile=10x4" pub/sheet-%02d.jpg
+          # three full-size stills to judge framing and sharpness
+          for p in 0.1 0.5 0.9; do t=$(python -c "print(round($D*$p,2))"); ffmpeg -loglevel error -y -ss $t -i work/in/raw.mp4 -frames:v 1 -vf "scale='min(1080,iw)':-2" -q:v 3 pub/still-$p.jpg; done
+          python - <<'PY'
+          import sys, json, os
+          sys.path.insert(0, 'studio')
+          from faster_whisper import WhisperModel
+          m = WhisperModel(os.environ['MODEL'], device='cpu', compute_type='int8')
+          segs, info = m.transcribe('pub/audio.mp3', language='ar', word_timestamps=True, vad_filter=True, beam_size=5)
+          words, lines = [], []
+          for s in segs:
+              lines.append('[%7.2f - %7.2f] %s' % (s.start, s.end, s.text.strip()))
+              print(lines[-1], flush=True)
+              for w in (s.words or []):
+                  words.append({'start': round(float(w.start), 2), 'end': round(float(w.end), 2), 'w': w.word.strip()})
+          json.dump(words, open('pub/words.json', 'w'), ensure_ascii=False)
+          open('pub/transcript.txt', 'w').write('\n'.join(lines))
+          PY
+          ls -la pub
+      - name: Publish
+        env: { NAME: "${{ inputs.name }}" }
+        run: |
+          cp -r pub /tmp/pub
+          git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
+          git fetch -q origin ingest || true
+          if git rev-parse --verify origin/ingest >/dev/null 2>&1; then git checkout -q -B ingest origin/ingest; else git checkout -q --orphan ingest && git rm -rqf .; fi
+          rm -rf "$NAME" && mkdir -p "$NAME" && cp /tmp/pub/* "$NAME/"
+          git add "$NAME" && git commit -qm "ingest $NAME ${{ github.run_id }}" && git push -q origin ingest
