@@ -84,18 +84,29 @@ def matte(frame):
     wall = np.clip((hsv[..., 2] - 0.5) / 0.12, 0, 1) * np.clip((0.2 - hsv[..., 1]) / 0.08, 0, 1)
     band = (m > 0.08) & (m < 0.92)
     m = np.where(band, np.minimum(m, 1 - 0.85 * wall), m)
+    # the network sometimes loses an arm in the fleece: everything not-wall joined to his body is him too
+    body, _, _ = cleanwall.person_mask(frame)
+    m = np.maximum(m, cv2.GaussianBlur(body.astype(np.float32), (0, 0), 1.2))
     return np.clip(m, 0, 1)
 
 def clean_frame(frame, m):
-    """Take the clock off the wall, never touching him."""
+    """Take the clock off the wall, never touching him: only dark, compact things with wall all around them."""
     hsv, non = cleanwall.split(frame)
     him = cv2.dilate((m > 0.15).astype(np.uint8), np.ones((9, 9), np.uint8))
     cand = non & (1 - him)
     cand = cv2.morphologyEx(cand, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    wall = 1 - non
     n, lab, st, _ = cv2.connectedComponentsWithStats(cand)
     keep = np.zeros_like(cand)
     for j in range(1, n):
-        if st[j, 4] > 18: keep[lab == j] = 1
+        x, y, w, h, area = st[j]
+        if area < 18 or area > 40000 or y + h > frame.shape[0] * 0.75: continue
+        comp = (lab[y:y + h, x:x + w] == j)
+        if hsv[y:y + h, x:x + w, 2][comp].mean() > 0.42: continue
+        y0, y1, x0, x1 = max(0, y - 12), y + h + 12, max(0, x - 12), x + w + 12
+        ring = cv2.dilate((lab[y0:y1, x0:x1] == j).astype(np.uint8), np.ones((13, 13), np.uint8)) - (lab[y0:y1, x0:x1] == j)
+        if wall[y0:y1, x0:x1][ring > 0].mean() < 0.6: continue
+        keep[lab == j] = 1
     keep = cv2.dilate(keep, np.ones((17, 17), np.uint8)) & (1 - him)
     if not keep.any(): return frame
     return cleanwall.clean(frame, keep)

@@ -87,10 +87,10 @@ body { font-family: Plex, sans-serif; font-weight: 600; color: var(--ink); }
 .car .m { font: 600 64px/0.98 Jost; margin-top: 14px; letter-spacing: -.5px; }
 .car .v { font: 500 30px/1.1 Jost; letter-spacing: .1em; color: var(--mute); margin-top: 14px; }
 .car .bar { position: absolute; left: 0; top: 40px; bottom: 40px; width: 10px; border-radius: 0 6px 6px 0; background: var(--green); }
-.pricebox { position: absolute; left: 60px; top: 572px; width: 520px; background: #fff; border-radius: 30px; padding: 30px 40px 38px;
+.pricebox { position: absolute; left: 60px; top: 1060px; width: 600px; background: #fff; border-radius: 30px; padding: 30px 40px 38px;
             box-shadow: 0 30px 70px rgba(30,40,36,.22); }
 .pricebox .num { display: flex; align-items: baseline; gap: 18px; direction: rtl; }
-.pricebox .num b { font: 700 180px/0.86 Jost; color: var(--green); letter-spacing: -6px; font-variant-numeric: tabular-nums; direction: ltr; }
+.pricebox .num b { font: 700 150px/0.86 Jost; color: var(--green); letter-spacing: -6px; font-variant-numeric: tabular-nums; direction: ltr; }
 .pricebox .num span { font: 400 74px/1 Manal; }
 .slots { display: flex; gap: 18px; direction: ltr; }
 .slots i { width: 92px; height: 92px; border-radius: 50%; border: 5px solid var(--line); display: flex; align-items: center; justify-content: center;
@@ -126,7 +126,7 @@ const carScene = (a, b, k, name, ver, img, cover, priceWord, price, chips) => {
   scene('front', a, b, () => `<div class="car" data-in="0.02"><span class="bar"></span>
       <div class="info"><div class="n">${k} / 4</div><div class="m">${name}</div><div class="v">${ver}</div></div>${CAR(img, cover)}</div>`,
     (el, lt) => { const im = el.querySelector('.ph img'); im.style.transform = `scale(${1.02 + lt * 0.006}) translateX(${-lt * 3}px)`; });
-  scene('behind', a, b, () => `<div class="pricebox" ${d(priceWord, -0.15)}><div class="num"><b class="lat cnt">0</b><span>مليون</span></div>
+  scene('front', a, b, () => `<div class="pricebox" ${d(priceWord, -0.15)}><div class="num"><b class="lat cnt">0</b><span>مليون</span></div>
       <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px">${chips.map(([w, t]) => `<span class="chip" ${d(w)} data-fx="pop">${t}</span>`).join('')}</div></div>`,
     (el, lt, t) => { el.querySelector('.cnt').textContent = Math.round(price * E.out5(clamp((t - A(priceWord) + 0.1) / 0.9))); });
 };
@@ -173,9 +173,9 @@ scene('front', A(141), A(159), () => `<div class="abs" style="left:60px;right:60
     ${[['LIVAN X3 PRO', 275, 'livan.png'], ['MG5', 275, 'mg5.jpg'], ['ROEWE i5', 265, 'roewe.jpg'], ['GEELY COOLRAY', 310, 'geely.jpg']].map(([n, p, f], i) =>
       `<div class="card" style="position:relative;padding:16px 14px 18px;border-radius:22px" ${d(143, i * 0.12)}><div style="height:120px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px"><img src="assets/${f}" style="max-width:100%;max-height:100%;object-fit:${f.endsWith('jpg') ? 'cover' : 'contain'};${f.endsWith('jpg') ? 'width:100%;height:100%' : ''}"></div>
        <div class="lat" style="font:600 22px/1.1 Jost;margin-top:12px;text-align:center">${n}</div><div style="font:600 40px/1 Jost;color:var(--green);text-align:center;margin-top:8px;direction:rtl"><span class="lat">${p}</span> <span style="font:400 30px/1 Manal;color:var(--ink)">مليون</span></div></div>`).join('')}</div>`);
-scene('behind', A(150), A(159), () => `<div class="abs" style="left:60px;top:500px;text-align:right">
-    <div class="big" style="font-size:130px" data-in="0.05" data-fx="wipe" data-dur="0.6">الطلب مفتوح</div>
-    <div class="big" style="font-size:84px;color:var(--green)" ${d(154)}>من اليوم</div></div>`);
+scene('front', A(150), A(159), () => `<div class="card edge" style="left:60px;top:1090px;padding:26px 46px 34px" data-in="0.05">
+    <div class="big" style="font-size:96px">الطلب مفتوح</div>
+    <div class="big" style="font-size:64px;color:var(--green)" ${d(154)}>من اليوم ✓</div></div>`);
 
 /* 10 — other prices in the next video */
 scene('front', A(159), A(180), () => `<div class="card edge" style="left:60px;right:60px;top:150px;padding:40px 54px 46px" data-in="0.05">
