@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<!-- One car from the WhatsApp catalogue as a 9:16 video. The job (window.JOB) lists the photos in order, the labels and the price.
+     seek(t) draws time t; render.js films it frame by frame. -->
+<style>
+@font-face { font-family: Manal; src: url(assets/manal.ttf); }
+@font-face { font-family: Plex; src: url(assets/IBMPlexSansArabic-SemiBold.woff2); font-weight: 600; }
+@font-face { font-family: Plex; src: url(assets/IBMPlexSansArabic-Medium.woff2); font-weight: 500; }
+@font-face { font-family: Jost; src: url(assets/jost.woff2); font-weight: 100 900; }
+:root { --ink: #0B0D0C; --green: #3F9C7F; --mint: #8FD3BC; --soft: #E7F2EE; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0B0D0C; }
+body { font-family: Plex, sans-serif; font-weight: 600; color: var(--ink); }
+.abs { position: absolute; }
+.lat { font-family: Jost, sans-serif; direction: ltr; unicode-bidi: isolate; }
+.big { font-family: Manal; font-weight: 400; line-height: 1.05; }
+.shot { position: absolute; inset: 0; overflow: hidden; display: none; }
+.shot .bg { position: absolute; inset: -60px; background-size: cover; background-position: center; filter: blur(38px) brightness(.62) saturate(1.1); }
+.shot img { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; will-change: transform; }
+.shade-top { z-index: 30; position: absolute; left: 0; right: 0; top: 0; height: 420px; background: linear-gradient(rgba(6,9,8,.62), rgba(6,9,8,0)); }
+.shade-bot { z-index: 30; position: absolute; left: 0; right: 0; bottom: 0; height: 900px; background: linear-gradient(rgba(6,9,8,0), rgba(6,9,8,.78)); }
+#top { z-index: 40; position: absolute; left: 0; right: 0; top: 108px; display: flex; justify-content: center; align-items: center; gap: 18px; color: #fff; font: 500 30px/1 Jost; letter-spacing: .34em; direction: ltr; }
+#top i { width: 46px; height: 2px; background: var(--mint); display: block; }
+.title { position: absolute; left: 70px; right: 70px; bottom: 470px; color: #fff; direction: ltr; text-align: left; }
+.title .brand { font: 500 40px/1 Jost; letter-spacing: .3em; color: var(--mint); }
+.title .model { font: 600 132px/0.95 Jost; letter-spacing: -1px; margin-top: 18px; }
+.title .ver { font: 500 54px/1 Jost; letter-spacing: .04em; margin-top: 18px; opacity: .92; }
+.chips { position: absolute; right: 70px; bottom: 330px; display: flex; gap: 14px; direction: rtl; }
+.chip { background: #fff; color: var(--ink); font: 600 40px/1 Plex; padding: 18px 28px 24px; border-radius: 50px; white-space: nowrap; box-shadow: 0 12px 30px rgba(0,0,0,.25); }
+.chip.g { background: var(--green); color: #fff; }
+.label { position: absolute; right: 70px; bottom: 360px; background: #fff; border-radius: 28px; padding: 30px 44px 36px; box-shadow: 0 24px 60px rgba(0,0,0,.35); min-width: 420px; }
+.label:before { content: ""; position: absolute; right: 0; top: 30px; bottom: 30px; width: 9px; border-radius: 5px 0 0 5px; background: var(--green); }
+.label .l { font: 600 92px/1 Jost; direction: ltr; text-align: right; }
+.label .a { font: 600 44px/1.2 Plex; color: var(--green); margin-top: 10px; }
+#price { position: absolute; inset: 0; display: none; }
+#price .card { position: absolute; left: 70px; right: 70px; top: 520px; background: #fff; border-radius: 40px; padding: 60px 64px 64px; box-shadow: 0 40px 90px rgba(0,0,0,.4); }
+#price .card:before { content: ""; position: absolute; right: 0; top: 60px; bottom: 60px; width: 12px; border-radius: 6px 0 0 6px; background: var(--green); }
+#price .name { font: 600 64px/1.05 Jost; direction: ltr; text-align: left; }
+#price .sub { font: 500 36px/1 Jost; letter-spacing: .14em; color: #6D7772; direction: ltr; text-align: left; margin-top: 14px; }
+#price .num { display: flex; align-items: baseline; gap: 26px; margin-top: 44px; }
+#price .num b { font: 700 270px/0.85 Jost; color: var(--green); letter-spacing: -8px; direction: ltr; }
+#price .num span { font: 400 110px/1 Manal; }
+#price .was { font: 500 50px/1 Jost; color: #9AA5A0; text-decoration: line-through; text-decoration-thickness: 4px; direction: ltr; text-align: right; margin-top: 18px; }
+#price .note { margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; }
+#price .note .chip { background: var(--soft); color: #24614D; box-shadow: none; font-size: 36px; }
+#end { position: absolute; inset: 0; background: #fff; display: none; }
+#end .col { position: absolute; left: 0; right: 0; top: 400px; display: flex; flex-direction: column; align-items: center; }
+#end .name { font: 400 84px/1 Jost; letter-spacing: .3em; margin-right: -.3em; margin-top: 44px; direction: ltr; }
+#end .route { font: 500 30px/1 Jost; letter-spacing: .3em; color: var(--green); margin-top: 22px; direction: ltr; }
+#end .ar { font: 400 92px/1.1 Manal; margin-top: 70px; }
+#end .nums { display: flex; flex-direction: column; gap: 18px; margin-top: 56px; align-items: center; }
+#end .nums div { font: 500 68px/1 Jost; direction: ltr; letter-spacing: .06em; padding: 16px 44px; border-radius: 60px; border: 3px solid var(--green); }
+#end .foot { font: 500 36px/1 Jost; letter-spacing: .14em; color: #6D7772; margin-top: 54px; direction: ltr; }
+</style>
+<div id="shots"></div>
+<div class="shade-top"></div><div class="shade-bot" id="shade"></div>
+<div id="top"><i></i>WAHID AUTO<i></i></div>
+<div id="layer" style="position:absolute;inset:0;z-index:40"></div>
+<div id="price"><div class="shot" style="display:block"><div class="bg" id="pbg"></div></div><div class="card" id="pcard"></div></div>
+<div id="end"><div class="col">
+  <svg width="300" height="300" viewBox="0 0 120 120" style="overflow:visible"><circle data-draw cx="60" cy="60" r="56" pathLength="1" fill="none" stroke="#0B0D0C" stroke-width="2.4" transform="rotate(-90 60 60)"/><polyline data-draw pathLength="1" points="30,40 44,82 60,50" fill="none" stroke="#0B0D0C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline data-draw pathLength="1" points="60,50 76,82 90,40" fill="none" stroke="#3F9C7F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="name" data-o="0.5">WAHID AUTO</div><div class="route" data-o="0.7">KOREA · CHINA → ALGERIA</div>
+  <div class="ar" data-o="0.9">راسلونا على الواتساب</div>
+  <div class="nums"><div data-o="1.1">0557 06 04 78</div><div data-o="1.25">0781 66 32 01</div><div data-o="1.4">0672 14 73 90</div></div>
+  <div class="foot" data-o="1.65">@wahidautokr · Jijel - Algeria</div></div></div>
+<script>
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const E = { out: x => 1 - Math.pow(1 - x, 3), out5: x => 1 - Math.pow(1 - x, 5), io: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+            back: x => { const c = 1.5; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); } };
+let J, T = [], PRICE0, END0, DUR, XF = 0.22;
+window.setup = async job => {
+  J = job; let t = 0;
+  const host = document.getElementById('shots');
+  for (const s of J.shots) {
+    const el = document.createElement('div'); el.className = 'shot';
+    el.innerHTML = `<div class="bg" style="background-image:url('${s.src}')"></div><img src="${s.src}">`;
+    host.appendChild(el);
+    const img = el.querySelector('img'); await img.decode();
+    // cover the frame; landscape photos keep a little more of the picture (zoomed less) over a blurred copy
+    const w = img.naturalWidth, h = img.naturalHeight, land = w > h;
+    const cover = Math.max(1080 / w, 1920 / h), fit = 1080 / w;
+    const base = land ? Math.max(fit * 1.32, Math.min(cover, fit * 1.55)) : cover;
+    img.style.width = w + 'px'; img.style.height = h + 'px';
+    T.push({ el, img, a: t, b: t + s.d, base, s, i: T.length }); t += s.d;
+  }
+  PRICE0 = t; END0 = t + J.price.d; DUR = END0 + 3.4;
+  document.getElementById('pbg').style.backgroundImage = `url('${J.shots[0].src}')`;
+  document.getElementById('pcard').innerHTML = `<div class="name">${J.brand} ${J.model}</div><div class="sub">${J.sub}</div>
+    <div class="num"><b class="cnt">0</b><span>مليون</span></div>${J.price.was ? `<div class="was">${J.price.was} M</div>` : ''}
+    <div class="note">${J.price.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>`;
+  await document.fonts.ready;
+  return { duration: DUR, cuts: T.map(x => x.a).slice(1), price: PRICE0, end: END0 };
+};
+function drawShot(x, t) {
+  const lt = t - x.a, d = x.s.d, p = lt / d;
+  const vis = t >= x.a - (x.i ? XF : 0) && t < x.b + XF;
+  x.el.style.display = vis ? 'block' : 'none'; if (!vis) return;
+  // a slow push in (or out), a small drift; the next photo fades in over the last frames of this one
+  const z = x.s.zoom ?? (x.i % 2 ? -1 : 1);
+  const s = x.base * (1.04 + 0.07 * (z > 0 ? E.io(clamp(p)) : 1 - E.io(clamp(p))));
+  const dx = (x.s.pan || 0) * 60 * (E.io(clamp(p)) - .5);
+  x.img.style.transform = `translate(-50%, -50%) translate(${dx}px, ${(x.s.y || 0)}px) scale(${s})`;
+  x.el.style.opacity = x.i === 0 ? 1 : E.out(clamp((t - (x.a - XF)) / XF));
+  x.el.style.zIndex = x.i;
+}
+window.seek = async t => {
+  for (const x of T) drawShot(x, t);
+  const L = document.getElementById('layer'); let html = '';
+  // title on the first shot
+  const h = T[0];
+  if (t < h.b + 0.1) {
+    const q = clamp((h.b - t) / 0.3), a = k => clamp((t - 0.25 - k * 0.12) / 0.55);
+    html += `<div class="title" style="opacity:${q}"><div class="brand" style="opacity:${a(0)};translate:0 ${(1 - E.out5(a(0))) * 30}px">${J.brand}</div>
+      <div class="model" style="clip-path:inset(-20% ${(1 - E.io(a(1))) * 100}% -20% 0)">${J.model}</div>
+      <div class="ver" style="opacity:${a(2)};translate:0 ${(1 - E.out5(a(2))) * 30}px">${J.version}</div></div>
+      <div class="chips" style="opacity:${q}">${J.chips.map((c, i) => { const p = clamp((t - 0.9 - i * 0.15) / 0.45); return `<span class="chip ${i ? '' : 'g'}" style="opacity:${clamp(p * 3)};scale:${p ? 0.7 + 0.3 * E.back(p) : 0.7}">${c}</span>`; }).join('')}</div>`;
+  }
+  // labels on the shots that have one
+  for (const x of T.slice(1)) if (x.s.label && t >= x.a && t < x.b) {
+    const p = clamp((t - x.a - 0.15) / 0.5), q = clamp((x.b - t) / 0.25);
+    html += `<div class="label" style="opacity:${clamp(p * 2) * q};translate:${(1 - E.out5(p)) * -60}px 0"><div class="l">${x.s.label[0]}</div><div class="a">${x.s.label[1]}</div></div>`;
+  }
+  L.innerHTML = html;
+  // price
+  const P = document.getElementById('price'), pt = t - PRICE0;
+  P.style.display = pt > -XF && t < END0 ? 'block' : 'none';
+  if (P.style.display === 'block') {
+    P.style.opacity = E.out(clamp((pt + XF) / XF)); P.style.zIndex = 50;
+    const c = P.querySelector('.card'), p = clamp((pt - 0.05) / 0.6);
+    c.style.opacity = clamp(p * 2); c.style.translate = `0 ${(1 - E.out5(p)) * 80}px`;
+    P.querySelector('.cnt').textContent = Math.round(J.price.m * E.out5(clamp((pt - 0.3) / 1.1)));
+    P.querySelectorAll('.note .chip').forEach((e, i) => { const k = clamp((pt - 1.3 - i * 0.15) / 0.45); e.style.opacity = clamp(k * 3); e.style.scale = k ? 0.7 + 0.3 * E.back(k) : 0.7; });
+  }
+  // end card
+  const N = document.getElementById('end'), o = t - END0;
+  N.style.display = o > -XF ? 'block' : 'none'; N.style.zIndex = 60;
+  if (o > -XF) { N.style.opacity = E.out(clamp((o + XF) / XF));
+    N.querySelectorAll('[data-draw]').forEach((e, i) => { e.style.strokeDasharray = 1; e.style.strokeDashoffset = 1 - E.io(clamp((o - 0.1 - i * 0.18) / 0.7)); });
+    N.querySelectorAll('[data-o]').forEach(e => { const p = clamp((o - parseFloat(e.dataset.o)) / 0.5); e.style.opacity = clamp(p * 2); e.style.translate = `0 ${(1 - E.out5(p)) * 36}px`; }); }
+  document.getElementById('top').style.opacity = o > -XF ? 0 : 1;
+  await document.fonts.ready;
+};
+</script>

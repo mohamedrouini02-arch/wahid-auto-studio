@@ -1,0 +1,19 @@
+{
+  "brand": "KIA",
+  "model": "MORNING",
+  "version": "SIGNATURE 2024",
+  "sub": "SIGNATURE · 2024 · 48.000 KM",
+  "chips": ["واصلة للجزائر", "48.000 كلم"],
+  "shots": [
+    {"src": "photos/morning-signature-2024-48k/10.jpg", "d": 2.8, "pan": -1},
+    {"src": "photos/morning-signature-2024-48k/09.jpg", "d": 1.9, "label": ["48.000 KM", "كيلومتراج"]},
+    {"src": "photos/morning-signature-2024-48k/08.jpg", "d": 1.9, "label": ["0 PEINTURE", "زيرو صبغة"]},
+    {"src": "photos/morning-signature-2024-48k/07.jpg", "d": 1.4},
+    {"src": "photos/morning-signature-2024-48k/01.jpg", "d": 1.9, "label": ["FULL OPTION", "فول أوبسيون"], "pan": 1},
+    {"src": "photos/morning-signature-2024-48k/05.jpg", "d": 1.4, "pan": -1},
+    {"src": "photos/morning-signature-2024-48k/03.jpg", "d": 1.4},
+    {"src": "photos/morning-signature-2024-48k/04.jpg", "d": 1.4},
+    {"src": "photos/morning-signature-2024-48k/06.jpg", "d": 1.4}
+  ],
+  "price": {"m": 340, "was": "345", "d": 3.6, "chips": ["✓ زيرو صبغة", "✓ فول أوبسيون", "✓ واصلة للجزائر"]}
+}
