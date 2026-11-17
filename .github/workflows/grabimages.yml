@@ -1,0 +1,39 @@
+name: grabimages
+# Collect the large photos a few web pages load, on the "grabimages" branch under <set>/.
+on:
+  workflow_dispatch:
+    inputs:
+      set: { description: "Folder name", required: true }
+      pages: { description: "Space separated name=url pairs", required: true }
+permissions:
+  contents: write
+jobs:
+  grab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q playwright pillow && python -m playwright install --with-deps chromium >/dev/null
+      - env: { PAGES: "${{ inputs.pages }}" }
+        run: |
+          mkdir -p /tmp/g && python tools/grabimages.py /tmp/g $PAGES
+          python - <<'PY'
+          import os, glob
+          from PIL import Image
+          for f in glob.glob('/tmp/g/*/*'):
+              if f.endswith('.txt'): continue
+              try:
+                  im = Image.open(f); w, h = im.size
+                  if w < 700: os.remove(f); continue
+                  if im.mode in ('RGBA', 'LA', 'P'): im.convert('RGBA').save(os.path.splitext(f)[0] + '.png'); 
+                  else: im.convert('RGB').save(os.path.splitext(f)[0] + '.jpg', quality=92)
+                  if not f.endswith(('.png', '.jpg')): os.remove(f)
+              except Exception: os.remove(f)
+          PY
+          find /tmp/g -type f | wc -l; du -sh /tmp/g
+      - run: |
+          git config user.name "wahid-auto-studio" && git config user.email "studio@wahid-auto.com"
+          git fetch -q origin grabimages || true
+          if git rev-parse --verify origin/grabimages >/dev/null 2>&1; then git checkout -q -B grabimages origin/grabimages; else git checkout -q --orphan grabimages && git rm -rqf .; fi
+          rm -rf "${{ inputs.set }}" && mkdir -p "${{ inputs.set }}" && cp -r /tmp/g/* "${{ inputs.set }}/"
+          git add "${{ inputs.set }}" && git commit -qm "grab ${{ inputs.set }}" && git push -q origin grabimages
