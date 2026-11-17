@@ -162,15 +162,15 @@ scene('front', A(53), A(65), () => `<div class="card edge" style="left:60px;righ
 
 /* 5–8 — the four cars */
 carScene(A(65), A(82), 1, 'LIVAN<br>X3 PRO', 'BOÎTE MANUELLE', 'assets/livan.png', false, 75, 275, [[68, 'بواط مانيال'], [79, '✓ ما زيد تخلص والو']]);
-carScene(A(82), A(96), 2, 'MG5', 'BERLINE', 'assets/mg5.png', false, 93, 275, [[89, 'كيف كيف بنفس السعر']]);
+carScene(A(82), A(96), 2, 'MG5', 'BERLINE · 2025', 'assets/mg5.jpg', true, 93, 275, [[89, 'كيف كيف بنفس السعر']]);
 carScene(A(105), A(125), 3, 'ROEWE<br>i5', 'BERLINE', 'assets/roewe.jpg', true, 109, 265, [[113, '✓ شاملة جميع التكاليف'], [117, 'توصل · تهز · تروح للدار']]);
-carScene(A(129), A(141), 4, 'GEELY<br>COOLRAY', 'BOÎTE MANUELLE', 'assets/geely.png', false, 137, 310, [[129, 'محبوبة الجماهير'], [139, '✓ كأحسن سعر']]);
+carScene(A(129), A(141), 4, 'GEELY<br>COOLRAY', 'BOÎTE MANUELLE', 'assets/geely.jpg', true, 137, 310, [[129, 'محبوبة الجماهير'], [139, '✓ كأحسن سعر']]);
 scene('front', A(96), A(105), () => `<div class="card edge" style="left:60px;right:60px;top:150px;padding:40px 54px 46px" data-in="0.05">
     <div class="tag"><b></b>حابين سيارة</div><div class="big" style="font-size:118px;margin-top:10px" ${d(99)}>بأقل سعر؟</div></div>`);
 
 /* 9 — orders are open from today */
 scene('front', A(141), A(159), () => `<div class="abs" style="left:60px;right:60px;top:140px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;direction:ltr">
-    ${[['LIVAN X3 PRO', 275, 'livan.png'], ['MG5', 275, 'mg5.png'], ['ROEWE i5', 265, 'roewe.jpg'], ['GEELY COOLRAY', 310, 'geely.png']].map(([n, p, f], i) =>
+    ${[['LIVAN X3 PRO', 275, 'livan.png'], ['MG5', 275, 'mg5.jpg'], ['ROEWE i5', 265, 'roewe.jpg'], ['GEELY COOLRAY', 310, 'geely.jpg']].map(([n, p, f], i) =>
       `<div class="card" style="position:relative;padding:16px 14px 18px;border-radius:22px" ${d(143, i * 0.12)}><div style="height:120px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px"><img src="assets/${f}" style="max-width:100%;max-height:100%;object-fit:${f.endsWith('jpg') ? 'cover' : 'contain'};${f.endsWith('jpg') ? 'width:100%;height:100%' : ''}"></div>
        <div class="lat" style="font:600 22px/1.1 Jost;margin-top:12px;text-align:center">${n}</div><div style="font:600 40px/1 Jost;color:var(--green);text-align:center;margin-top:8px;direction:rtl"><span class="lat">${p}</span> <span style="font:400 30px/1 Manal;color:var(--ink)">مليون</span></div></div>`).join('')}</div>`);
 scene('behind', A(150), A(159), () => `<div class="abs" style="left:60px;top:500px;text-align:right">
