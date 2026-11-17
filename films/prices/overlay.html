@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<!-- Graphics and captions of the prices video (follow-up to the comeback video). Rendered frame by frame: seek(t) draws time t, layer(name) shows
+     only what sits behind the speaker ("behind") or in front of him ("front"). The page itself is transparent. -->
+<style>
+@font-face { font-family: Manal; src: url(assets/manal.ttf); }
+@font-face { font-family: Plex; src: url(assets/IBMPlexSansArabic-Medium.woff2); font-weight: 500; }
+@font-face { font-family: Plex; src: url(assets/IBMPlexSansArabic-SemiBold.woff2); font-weight: 600; }
+@font-face { font-family: Jost; src: url(assets/jost.woff2); font-weight: 100 900; }
+:root { --ink: #0B0D0C; --green: #3F9C7F; --deep: #2E7A62; --soft: #E7F2EE; --mute: #6D7772; --line: #C9D3CE; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+body { font-family: Plex, sans-serif; font-weight: 600; color: var(--ink); }
+.layer { position: absolute; inset: 0; }
+.sc { position: absolute; inset: 0; display: none; will-change: transform, opacity; }
+.lat { font-family: Jost, sans-serif; direction: ltr; unicode-bidi: isolate; }
+.abs { position: absolute; }
+
+/* captions */
+#cap { position: absolute; left: 0; right: 0; top: 1392px; display: flex; justify-content: center; gap: 10px; direction: rtl;
+       font: 600 62px/1 Plex; color: #fff; white-space: nowrap; }
+#cap span { padding: 16px 16px 20px; border-radius: 16px; text-shadow: 0 3px 18px rgba(0,0,0,.8), 0 0 4px rgba(0,0,0,.65); }
+#cap span.on { background: var(--green); text-shadow: none; box-shadow: 0 10px 28px rgba(20,60,45,.35); }
+
+/* shared pieces */
+.card { position: absolute; background: #fff; border-radius: 30px; box-shadow: 0 30px 70px rgba(30,40,36,.22), 0 0 0 1px rgba(20,30,26,.04); }
+.card.dark { background: var(--ink); color: #F2F2EE; box-shadow: 0 30px 70px rgba(10,14,12,.35); }
+.edge:before { content: ""; position: absolute; right: 0; top: 44px; bottom: 44px; width: 10px; border-radius: 6px 0 0 6px; background: var(--green); }
+.tag { display: inline-flex; align-items: center; gap: 12px; font: 600 34px/1.2 Plex; color: var(--green); }
+.tag b { width: 14px; height: 14px; border-radius: 50%; background: var(--green); display: block; flex: none; }
+.chip { display: inline-block; background: var(--soft); color: #24614D; font: 600 34px/1 Plex; padding: 14px 24px 19px; border-radius: 40px; white-space: nowrap; }
+.chip.solid { background: var(--green); color: #fff; }
+.big { font-family: Manal; font-weight: 400; line-height: 1.02; }
+
+/* hook */
+.brandline { display: inline-flex; align-items: center; gap: 18px; font: 500 40px/1 Jost; letter-spacing: .32em; direction: ltr; }
+.brandline i { width: 64px; height: 3px; background: var(--green); display: block; }
+
+/* phone */
+.phone { position: absolute; width: 330px; height: 694px; border-radius: 52px; background: #0b0d0c; padding: 12px; box-shadow: 0 40px 80px rgba(20,30,26,.35); transform-origin: 50% 40%; }
+.phone .scr { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; background: #fff; position: relative; }
+.phone img { position: absolute; left: 0; top: 0; width: 100%; display: block; }
+.phone:after { content: ""; position: absolute; top: 24px; left: 50%; width: 92px; height: 24px; margin-left: -46px; background: #0b0d0c; border-radius: 14px; }
+.steps { position: absolute; display: flex; flex-direction: column; }
+.step { display: flex; align-items: center; gap: 22px; height: 104px; position: relative; font: 600 42px/1 Plex; color: #9AA5A0; }
+.step .dot { width: 34px; height: 34px; border-radius: 50%; border: 4px solid var(--line); background: #fff; flex: none; position: relative; z-index: 1; }
+.step .bar { position: absolute; right: 15px; top: 68px; width: 4px; height: 74px; background: var(--line); }
+.step .bar i { display: block; width: 100%; height: 0; background: var(--green); }
+.step.done { color: var(--ink); } .step.done .dot { background: var(--green); border-color: var(--green); }
+
+/* places */
+.place { position: absolute; right: 90px; width: 720px; padding: 34px 44px 38px; display: flex; align-items: center; gap: 30px; border-radius: 30px; }
+.place .pin { width: 84px; height: 84px; flex: none; }
+.place .n { font: 400 84px/1 Manal; }
+.place .s { font: 600 34px/1.2 Plex; color: var(--green); margin-top: 10px; }
+.place.soon { background: transparent; border: 4px dashed #AEBBB5; box-shadow: none; }
+.place.soon .s { color: var(--mute); }
+
+/* price */
+.price { padding: 44px 54px 48px; width: 800px; }
+.price .name { font: 600 62px/1.1 Jost; direction: ltr; text-align: left; letter-spacing: .01em; }
+.price .ver { font: 500 34px/1 Jost; direction: ltr; text-align: left; color: var(--mute); margin-top: 10px; letter-spacing: .14em; }
+.price .num { display: flex; align-items: baseline; gap: 22px; margin-top: 26px; direction: rtl; }
+.price .num b { font: 700 230px/0.9 Jost; color: var(--green); letter-spacing: -6px; font-variant-numeric: tabular-nums; }
+.price .num span { font: 400 92px/1 Manal; }
+
+/* outro */
+#outro { background: #fff; display: none; }
+#outro .col { position: absolute; left: 0; right: 0; top: 380px; display: flex; flex-direction: column; align-items: center; }
+#outro .name { font: 400 84px/1 Jost; letter-spacing: .3em; margin-right: -.3em; margin-top: 44px; direction: ltr; }
+#outro .route { font: 500 30px/1 Jost; letter-spacing: .3em; color: var(--green); margin-top: 22px; direction: ltr; }
+#outro .ar { font: 400 92px/1.1 Manal; margin-top: 70px; }
+#outro .nums { display: flex; flex-direction: column; gap: 18px; margin-top: 60px; align-items: center; }
+#outro .nums div { font: 500 68px/1 Jost; direction: ltr; letter-spacing: .06em; padding: 16px 44px; border-radius: 60px; border: 3px solid var(--green); }
+#outro .foot { font: 500 36px/1 Jost; letter-spacing: .14em; color: var(--mute); margin-top: 54px; direction: ltr; }
+
+/* car cards (prices video) */
+.car { position: absolute; left: 60px; right: 60px; top: 132px; height: 400px; background: #fff; border-radius: 34px; overflow: hidden;
+       box-shadow: 0 30px 70px rgba(30,40,36,.22), 0 0 0 1px rgba(20,30,26,.04); }
+.car .ph { position: absolute; left: 330px; right: 10px; top: 10px; bottom: 10px; display: flex; align-items: center; justify-content: center; }
+.car .ph img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.car .ph.cover { left: 320px; right: 0; top: 0; bottom: 0; }
+.car .ph.cover img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; }
+.car .info { position: absolute; left: 0; top: 0; bottom: 0; width: 330px; padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; direction: ltr; text-align: left; }
+.car .n { font: 600 30px/1 Jost; letter-spacing: .3em; color: var(--green); }
+.car .m { font: 600 64px/0.98 Jost; margin-top: 14px; letter-spacing: -.5px; }
+.car .v { font: 500 30px/1.1 Jost; letter-spacing: .1em; color: var(--mute); margin-top: 14px; }
+.car .bar { position: absolute; left: 0; top: 40px; bottom: 40px; width: 10px; border-radius: 0 6px 6px 0; background: var(--green); }
+.pricebox { position: absolute; left: 60px; top: 572px; width: 520px; background: #fff; border-radius: 30px; padding: 30px 40px 38px;
+            box-shadow: 0 30px 70px rgba(30,40,36,.22); }
+.pricebox .num { display: flex; align-items: baseline; gap: 18px; direction: rtl; }
+.pricebox .num b { font: 700 180px/0.86 Jost; color: var(--green); letter-spacing: -6px; font-variant-numeric: tabular-nums; direction: ltr; }
+.pricebox .num span { font: 400 74px/1 Manal; }
+.slots { display: flex; gap: 18px; direction: ltr; }
+.slots i { width: 92px; height: 92px; border-radius: 50%; border: 5px solid var(--line); display: flex; align-items: center; justify-content: center;
+           font: 600 48px/1 Jost; font-style: normal; color: #9AA5A0; background: #fff; }
+.slots i.on { border-color: var(--green); background: var(--green); color: #fff; }
+</style>
+<div id="behind" class="layer"></div>
+<div id="front" class="layer"><div id="scenes"></div><div id="cap"></div>
+  <div id="outro" class="layer"><div class="col">
+    <svg id="oMono" width="300" height="300" viewBox="0 0 120 120" style="overflow:visible"><circle data-draw cx="60" cy="60" r="56" pathLength="1" fill="none" stroke="#0B0D0C" stroke-width="2.4" transform="rotate(-90 60 60)"/><polyline data-draw pathLength="1" points="30,40 44,82 60,50" fill="none" stroke="#0B0D0C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline data-draw pathLength="1" points="60,50 76,82 90,40" fill="none" stroke="#3F9C7F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="name" data-o="0.5">WAHID AUTO</div><div class="route" data-o="0.7">KOREA · CHINA → ALGERIA</div>
+    <div class="ar" data-o="0.9">راسلونا على الواتساب</div>
+    <div class="nums"><div data-o="1.15">0557 06 04 78</div><div data-o="1.3">0781 66 32 01</div><div data-o="1.45">0672 14 73 90</div></div>
+    <div class="foot" data-o="1.7">@wahidautokr · Jijel - Algeria</div>
+  </div></div>
+</div>
+<script src="timeline.js"></script>
+<script>
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const E = { out: x => 1 - Math.pow(1 - x, 3), out5: x => 1 - Math.pow(1 - x, 5), io: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+            back: x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); } };
+const A = i => TL.anchors[i] ?? (() => { throw new Error('no anchor ' + i); })();
+const D = TL.duration, OUTRO = 3.6;
+const pin = c => `<svg class="pin" viewBox="0 0 24 24"><path d="M12 22s7-7.1 7-12.2A7 7 0 0 0 5 9.8C5 14.9 12 22 12 22z" fill="${c}"/><circle cx="12" cy="9.6" r="2.7" fill="#fff"/></svg>`;
+const mono = (s, ink) => `<svg width="${s}" height="${s}" viewBox="0 0 120 120" style="overflow:visible"><circle cx="60" cy="60" r="56" fill="none" stroke="${ink}" stroke-width="2.4"/><polyline points="30,40 44,82 60,50" fill="none" stroke="${ink}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60,50 76,82 90,40" fill="none" stroke="#3F9C7F" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+// d(i): the moment word i is spoken, as an attribute for the element that should arrive with it
+let BASE = 0; const d = (i, off = 0) => `data-in="${(A(i) - BASE + off).toFixed(3)}"`;
+const S = [];
+const scene = (layer, a, b, build, tick) => { BASE = a; S.push({ layer, a, b, html: build(), tick }); };
+
+const CAR = (img, cover) => `<div class="ph${cover ? ' cover' : ''}"><img src="${img}"></div>`;
+const carScene = (a, b, k, name, ver, img, cover, priceWord, price, chips) => {
+  scene('front', a, b, () => `<div class="car" data-in="0.02"><span class="bar"></span>
+      <div class="info"><div class="n">${k} / 4</div><div class="m">${name}</div><div class="v">${ver}</div></div>${CAR(img, cover)}</div>`,
+    (el, lt) => { const im = el.querySelector('.ph img'); im.style.transform = `scale(${1.02 + lt * 0.006}) translateX(${-lt * 3}px)`; });
+  scene('behind', a, b, () => `<div class="pricebox" ${d(priceWord, -0.15)}><div class="num"><b class="lat cnt">0</b><span>مليون</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px">${chips.map(([w, t]) => `<span class="chip" ${d(w)} data-fx="pop">${t}</span>`).join('')}</div></div>`,
+    (el, lt, t) => { el.querySelector('.cnt').textContent = Math.round(price * E.out5(clamp((t - A(priceWord) + 0.1) / 0.9))); });
+};
+
+/* 1 — hook: the title on the wall behind him */
+scene('behind', 0, A(14), () => `<div class="abs" style="left:0;right:0;top:64px;text-align:center"><div class="brandline" data-in="0.1"><i></i>WAHID AUTO<i></i></div>
+  <div class="big" style="font-size:122px;margin-top:10px;line-height:1" data-in="0.25" data-fx="wipe" data-dur="0.7">وحيد أوتو يفاجئ</div>
+  <div class="big" style="font-size:122px;color:var(--green);line-height:1.05" data-in="0.75" data-fx="wipe" data-dur="0.7">الجميع!</div></div>`);
+scene('front', A(5) - 0.1, A(14), () => `<div class="abs" style="left:60px;top:640px"><span class="chip solid" style="font-size:46px;padding:18px 30px 26px;border-radius:16px" data-in="0.05" data-fx="pop">أحسن الأسعار في الجزائر</span></div>`);
+
+/* 2 — who Wahid Auto is */
+scene('front', A(14), A(30), () => `<div class="card edge" style="left:60px;right:60px;top:150px;padding:40px 54px 46px" data-in="0.05">
+    <div class="tag"><b></b>شركة جزائرية</div>
+    <div style="display:flex;align-items:center;gap:26px;margin-top:22px;direction:ltr">
+      <span class="chip lat" style="font-family:Jost;font-size:40px" ${d(21)} data-fx="pop">CHINA</span>
+      <span class="chip lat" style="font-family:Jost;font-size:40px" ${d(21, 0.15)} data-fx="pop">KOREA</span>
+      <span class="lat" style="font:500 54px/1 Jost;color:var(--green)" ${d(21, 0.35)}>→</span>
+      <span class="chip solid lat" style="font-family:Jost;font-size:40px" ${d(21, 0.5)} data-fx="pop">ALGERIA</span></div></div>`);
+
+/* 3 — we promised the cheapest prices, today we deliver */
+scene('behind', A(30), A(53), () => `<div class="abs" style="left:60px;right:60px;top:150px;text-align:right">
+    <div class="tag" ${d(36)}><b></b>وعدناكم</div>
+    <div class="big" style="font-size:140px;margin-top:8px" ${d(42)} data-fx="wipe" data-dur="0.6">أرخص الأسعار</div>
+    <div class="big" style="font-size:82px;color:var(--green)" ${d(45)}>في السوق الصيني</div></div>`);
+scene('front', A(47), A(53), () => `<div class="abs" style="left:60px;top:640px"><span class="chip solid" style="font-size:44px;padding:16px 28px 24px;border-radius:16px" data-in="0.05" data-fx="pop">واليوم جينا ✓</span></div>`);
+
+/* 4 — four cars everyone knows */
+scene('front', A(53), A(65), () => `<div class="card edge" style="left:60px;right:60px;top:150px;padding:40px 54px 46px" data-in="0.05">
+    <div class="tag" ${d(58)}><b></b>معروفين على كامل التراب الوطني</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px">
+      <div class="big" style="font-size:118px" ${d(58)}>4 سيارات</div>
+      <div class="slots" ${d(59)}><i>1</i><i>2</i><i>3</i><i>4</i></div></div></div>`);
+
+/* 5–8 — the four cars */
+carScene(A(65), A(82), 1, 'LIVAN<br>X3 PRO', 'BOÎTE MANUELLE', 'assets/livan.png', false, 75, 275, [[68, 'بواط مانيال'], [79, '✓ ما زيد تخلص والو']]);
+carScene(A(82), A(96), 2, 'MG5', 'BERLINE', 'assets/mg5.png', false, 93, 275, [[89, 'كيف كيف بنفس السعر']]);
+carScene(A(105), A(125), 3, 'ROEWE<br>i5', 'BERLINE', 'assets/roewe.jpg', true, 109, 275, [[113, '✓ شاملة جميع التكاليف'], [117, 'توصل · تهز · تروح للدار']]);
+carScene(A(129), A(141), 4, 'GEELY<br>COOLRAY', 'BOÎTE MANUELLE', 'assets/geely.png', false, 137, 310, [[129, 'محبوبة الجماهير'], [139, '✓ كأحسن سعر']]);
+scene('front', A(96), A(105), () => `<div class="card edge" style="left:60px;right:60px;top:150px;padding:40px 54px 46px" data-in="0.05">
+    <div class="tag"><b></b>حابين سيارة</div><div class="big" style="font-size:118px;margin-top:10px" ${d(99)}>بأقل سعر؟</div></div>`);
+
+/* 9 — orders are open from today */
+scene('front', A(141), A(159), () => `<div class="abs" style="left:60px;right:60px;top:140px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;direction:ltr">
+    ${[['LIVAN X3 PRO', 275, 'livan.png'], ['MG5', 275, 'mg5.png'], ['ROEWE i5', 275, 'roewe.jpg'], ['GEELY COOLRAY', 310, 'geely.png']].map(([n, p, f], i) =>
+      `<div class="card" style="position:relative;padding:16px 14px 18px;border-radius:22px" ${d(143, i * 0.12)}><div style="height:120px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:12px"><img src="assets/${f}" style="max-width:100%;max-height:100%;object-fit:${f.endsWith('jpg') ? 'cover' : 'contain'};${f.endsWith('jpg') ? 'width:100%;height:100%' : ''}"></div>
+       <div class="lat" style="font:600 22px/1.1 Jost;margin-top:12px;text-align:center">${n}</div><div style="font:600 40px/1 Jost;color:var(--green);text-align:center;margin-top:8px;direction:rtl"><span class="lat">${p}</span> <span style="font:400 30px/1 Manal;color:var(--ink)">مليون</span></div></div>`).join('')}</div>`);
+scene('behind', A(150), A(159), () => `<div class="abs" style="left:60px;top:500px;text-align:right">
+    <div class="big" style="font-size:130px" data-in="0.05" data-fx="wipe" data-dur="0.6">الطلب مفتوح</div>
+    <div class="big" style="font-size:84px;color:var(--green)" ${d(154)}>من اليوم</div></div>`);
+
+/* 10 — other prices in the next video */
+scene('front', A(159), A(180), () => `<div class="card edge" style="left:60px;right:60px;top:150px;padding:40px 54px 46px" data-in="0.05">
+    <div class="tag"><b></b>في فيديو آخر</div>
+    <div class="big" style="font-size:96px;margin-top:12px" ${d(167)}>أسعار السيارات الأخرى</div>
+    <div style="margin-top:22px"><span class="chip solid" ${d(165)} data-fx="pop">قريباً</span></div></div>`);
+
+/* 11 — sign-off */
+scene('front', A(183), D + 0.2, () => `<div class="abs" style="left:0;right:0;top:170px;display:flex;flex-direction:column;align-items:center">
+    <div data-in="0.1" data-fx="pop">${mono(170, '#0B0D0C')}</div>
+    <div class="lat" style="font:400 62px/1 Jost;letter-spacing:.3em;margin-right:-.3em;margin-top:28px" ${d(183)}>WAHID AUTO</div>
+    <div class="big" style="font-size:76px;margin-top:22px" ${d(185)}>مرافقكم الدائم</div></div>`);
+
+// build
+let PENDING = [];
+S.forEach((s, i) => { const el = document.createElement('div'); el.className = 'sc'; el.innerHTML = s.html; s.el = el;
+  (s.layer === 'behind' ? document.getElementById('behind') : document.getElementById('scenes')).appendChild(el); });
+const capEl = document.getElementById('cap'), outro = document.getElementById('outro');
+
+function drawCaption(t) {
+  const l = TL.lines.find(l => t >= l.t && t < l.e);
+  if (!l || t >= D) { capEl.style.display = 'none'; return; }
+  let on = 0; l.words.forEach((w, i) => { if (t >= w.t - 0.02) on = i; });
+  const key = l.t + ':' + on;
+  if (capEl.dataset.key !== key) { capEl.dataset.key = key; capEl.innerHTML = l.words.map((w, i) => `<span class="${i === on ? 'on' : ''}">${w.w}</span>`).join(''); }
+  const n = l.words.reduce((a, w) => a + w.w.length + 1, 0);
+  const p = clamp((t - l.t) / 0.16);
+  capEl.style.display = 'flex'; capEl.style.fontSize = (n > 23 ? 52 : n > 19 ? 57 : 62) + 'px';
+  capEl.style.opacity = 0.35 + 0.65 * p; capEl.style.transform = `scale(${0.95 + 0.05 * E.out(p)})`;
+}
+
+window.seek = async t => {
+  PENDING = [];
+  for (const s of S) {
+    const on = t >= s.a && t < s.b; s.el.style.display = on ? 'block' : 'none'; if (!on) continue;
+    const lt = t - s.a, q = clamp((s.b - t) / 0.28);
+    s.el.style.opacity = E.out(q); s.el.style.transform = q < 1 ? `translateY(${-(1 - E.out(q)) * 26}px)` : '';
+    s.el.querySelectorAll('[data-in]').forEach(e => {
+      const p = clamp((lt - parseFloat(e.dataset.in)) / parseFloat(e.dataset.dur || 0.5)), fx = e.dataset.fx || 'up';
+      if (fx === 'wipe') { e.style.clipPath = `inset(-10% 0 -30% ${(1 - E.io(p)) * 100}%)`; e.style.opacity = p > 0 ? 1 : 0; }
+      else if (fx === 'pop') { e.style.opacity = clamp(p * 3); e.style.scale = String(p <= 0 ? 0.6 : 0.6 + 0.4 * E.back(p)); }
+      else { e.style.opacity = clamp(p * 2); e.style.translate = `0 ${(1 - E.out5(p)) * 44}px`; }
+    });
+    if (s.tick) s.tick(s.el, lt, t);
+  }
+  drawCaption(t);
+  // end card after his last word
+  const o = t - D; outro.style.display = o > 0 ? 'block' : 'none';
+  if (o > 0) { outro.style.opacity = E.out(clamp(o / 0.35));
+    outro.querySelectorAll('[data-draw]').forEach((e, i) => { e.style.strokeDasharray = 1; e.style.strokeDashoffset = 1 - E.io(clamp((o - 0.15 - i * 0.18) / 0.7)); });
+    outro.querySelectorAll('[data-o]').forEach(e => { const p = clamp((o - parseFloat(e.dataset.o)) / 0.5); e.style.opacity = clamp(p * 2); e.style.translate = `0 ${(1 - E.out5(p)) * 36}px`; }); }
+  await Promise.all(PENDING); await document.fonts.ready;
+};
+window.layer = name => { document.getElementById('behind').style.visibility = name === 'front' ? 'hidden' : 'visible'; document.getElementById('front').style.visibility = name === 'behind' ? 'hidden' : 'visible'; };
+window.info = () => ({ duration: D + OUTRO, video: D, fps: TL.fps,
+  behind: S.filter(s => s.layer === 'behind').map(s => [s.a, s.b]),
+  sfx: S.map(s => ({ t: s.a, kind: s.layer === 'behind' ? 'whoosh' : 'pop' })) });
+</script>
